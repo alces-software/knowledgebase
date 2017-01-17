@@ -1,0 +1,7 @@
+# The following lines are desirable for IPv4 capable hosts
+127.0.0.1 localhost.localdomain localhost
+127.0.0.1 localhost4.localdomain4 localhost4
+
+# The following lines are desirable for IPv6 capable hosts
+::1 localhost.localdomain localhost
+::1 localhost6.localdomain6 localhost6
