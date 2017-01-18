@@ -16,7 +16,7 @@ selinux --disabled
 
 #AUTH
 auth  --useshadow  --enablemd5
-rootpw --iscrypted $6$sVWLjXgUfeZhT08d$3d/GlurC7Hcr5lHIuhUAPazCT/rIrbabLRwMCe3zUvaBTH/HZNU2RBHWuzQRVUNMCUybA8r1Z09/P/d5x9XU41
+rootpw A1ce550ftware
 
 #LOCALIZATION
 keyboard uk
@@ -24,7 +24,7 @@ lang en_GB
 timezone  Europe/London
 
 #REPOS
-url --url=http://<MASTERIP>/<CLUSTER>/repos/centos/
+url --url=http:///repo.alces-software.com/pulp/repos/centos/7/os/
 
 #DISK
 %include /tmp/disk.part
@@ -43,20 +43,18 @@ bootloader --location=mbr --driveorder=$disk1 --append="$bootloaderappend"
 clearpart --all --initlabel
 
 #Disk partitioning information
-part /boot --fstype ext4 --size=1024 --asprimary --ondisk $disk1
+part /boot --fstype ext4 --size=4096 --asprimary --ondisk $disk1
 part pv.01 --size=1 --grow --asprimary --ondisk $disk1
-volgroup rootvg pv.01
-logvol  /  --fstype ext4 --vgname=rootvg  --size=16384 --name=root
-logvol  /var --fstype ext4 --vgname=rootvg --size=16384 --name=var
-logvol  /tmp --fstype ext4 --vgname=rootvg --size=8096 --name=tmp
-logvol  swap  --fstype swap --vgname=rootvg  --size=32768  --name=swap1
-logvol /scratch --fstype ext4 --vgname=rootvg --size=262144 --name=scratch
+volgroup system pv.01
+logvol  /  --fstype ext4 --vgname=system  --size=32786 --name=root
+logvol  /var --fstype ext4 --vgname=system --size=32768 --name=var
+logvol  /tmp --fstype ext4 --vgname=system --size=32768 --grow --name=tmp
+logvol  swap  --fstype swap --vgname=system  --size=32768  --name=swap1
 EOF
 %end
 
 #PACKAGES
 %packages --ignoremissing
-
 
 vim
 emacs
@@ -90,14 +88,12 @@ set -x -v
 exec 1>/root/ks-post.log 2>&1
 
 export BASE_HOSTNAME=`hostname -s | sed -e 's/e$//g'`
-export PROFILE=SLAVE
+export PROFILE=INFRA
+export MASTERIP=<MASTERIP>
 
 export INSTALLURL=http://${MASTERIP}/epel/scripts/install/
 
-curl ${INSTALLURL}/base.sh | bash -x
-curl ${INSTALLURL}/lustreclient.sh | bash -x
-curl ${INSTALLURL}/nfsclient.sh | bash -x
-curl ${INSTALLURL}/nisclient.sh | bash -x
-curl ${INSTALLURL}/sgeclient.sh | bash -x
+#curl ${INSTALLURL}/base.sh | bash -x
+#curl ${INSTALLURL}/infiniband.sh | bash -x
 
 %end
