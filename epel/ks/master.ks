@@ -24,7 +24,7 @@ lang en_GB
 timezone  Europe/London
 
 #REPOS
-url --url=http:///repo.alces-software.com/pulp/repos/centos/7/os/
+url --url=http://mirror.ox.ac.uk/sites/mirror.centos.org/7.2.1511/os/x86_64/
 
 #DISK
 %include /tmp/disk.part
