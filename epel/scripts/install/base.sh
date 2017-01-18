@@ -21,10 +21,10 @@ PRVINTERFACE=em1
 MGTINTERFACE=""
 IBINTERFACE=ib0
 
-PRVHOSTNAME=${BASE_HOSTNAME}e
-MGTHOSTNAME=${BASE_HOSTNAME}n
-IBHOSTNAME=${BASE_HOSTNAME}
-BMCHOSTNAME=${BASE_HOSTNAME}s
+PRVHOSTNAME=${BASE_HOSTNAME}.prv
+MGTHOSTNAME=${BASE_HOSTNAME}.mgt
+IBHOSTNAME=${BASE_HOSTNAME}.ib
+BMCHOSTNAME=${BASE_HOSTNAME}.bmc
 
 systemctl disable NetworkManager
 service NetworkManager stop
@@ -52,6 +52,8 @@ yum -y install yum-plugin-priorities
 yum -y install net-tools bind-utils ipmitool
 
 yum -y update 
+
+systemctl disable firewalld
 
 if ! [ -z $PRVHOSTNAME ]; then
 cat << EOF > /etc/sysconfig/network-scripts/ifcfg-$PRVINTERFACE
@@ -159,3 +161,4 @@ if [ $PROFILE -eq 'INFRA' ]; then
 else
     
 fi
+
