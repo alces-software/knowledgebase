@@ -5,3 +5,8 @@
 # The following lines are desirable for IPv6 capable hosts
 ::1 localhost.localdomain localhost
 ::1 localhost6.localdomain6 localhost6
+
+10.10.0.11	headnode1.prv.cluster.alces.network headnode1.prv headnode1
+10.11.0.11	headnode1.bmc.cluster.alces.network headnode1.bmc
+10.11.1.11      headnode1.mgt.cluster.alces.network headnode1.mgt
+10.12.0.11	headnode1.ib.cluster.alces-.network headnode1.ib

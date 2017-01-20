@@ -46,11 +46,11 @@ clearpart --all --initlabel
 part /boot --fstype ext4 --size=1024 --asprimary --ondisk $disk1
 part pv.01 --size=1 --grow --asprimary --ondisk $disk1
 volgroup rootvg pv.01
-logvol  /  --fstype ext4 --vgname=rootvg  --size=16384 --name=root
-logvol  /var --fstype ext4 --vgname=rootvg --size=16384 --name=var
-logvol  /tmp --fstype ext4 --vgname=rootvg --size=8096 --name=tmp
+logvol  /  --fstype ext4 --vgname=rootvg  --size=8096 --name=root
+logvol  /var --fstype ext4 --vgname=rootvg --size=8096 --name=var
+logvol  /tmp --fstype ext4 --vgname=rootvg --size=2048 --name=tmp
 logvol  swap  --fstype swap --vgname=rootvg  --size=32768  --name=swap1
-logvol /scratch --fstype ext4 --vgname=rootvg --size=262144 --name=scratch
+logvol /scratch --fstype ext4 --vgname=rootvg --size=1 --grow --name=scratch
 EOF
 %end
 
@@ -74,6 +74,7 @@ vconfig
 bridge-utils
 patch
 tcl-devel
+gettext
 
 %end
 
@@ -92,12 +93,16 @@ exec 1>/root/ks-post.log 2>&1
 export BASE_HOSTNAME=`hostname -s | sed -e 's/e$//g'`
 export PROFILE=SLAVE
 
-export INSTALLURL=http://${MASTERIP}/epel/scripts/install/
+export MASTERIP=<MASTERIP>
 
-curl ${INSTALLURL}/base.sh | bash -x
-curl ${INSTALLURL}/lustreclient.sh | bash -x
-curl ${INSTALLURL}/nfsclient.sh | bash -x
-curl ${INSTALLURL}/nisclient.sh | bash -x
-curl ${INSTALLURL}/sgeclient.sh | bash -x
+export SCRIPTURL=http://${MASTERIP}/epel/scripts/
+
+curl ${SCRIPTURL}/conf/config > /root/.alcesconf
+
+curl ${SCRIPTURL}/base.sh | bash -x
+curl ${SCRIPTURL}/lustreclient.sh | bash -x
+curl ${SCRIPTURL}/nfsclient.sh | bash -x
+curl ${SCRIPTURL}/nisclient.sh | bash -x
+curl ${SCRIPTURL}/sgeclient.sh | bash -x
 
 %end

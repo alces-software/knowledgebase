@@ -3,49 +3,58 @@
 #Job ID: <JOB>
 #Cluster: <CLUSTER>
 
-if [ -z $BASE_HOSTNAME ]; then
-  echo 'export hostname as $BASE_HOSTNAME' >&2
-  exit 1
+if [ -f /root/.alcesconf ]; then
+  . /root/.alcesconf
 fi
 
-if [ -z $PROFILE ]; then
-  echo 'export role as $PROFILE, eg INFRA,COMPUTE' >&2
-  exit 1
+if [ -z "${BASE_HOSTNAME}" ]; then
+  BASE_HOSTNAME=${_ALCES_BASE_HOSTNAME}
 fi
+DOMAIN=${_ALCES_DOMAIN}
 
-BUILDSERVER=<MASTERIP>
+BUILDSERVER=$_ALCES_BUILDSERVER
 
-FILES_URL=http://$BUILDSERVER/<CLUSTER>/files/
+FILES_URL=http://${BUILDSERVER}/epel/files/${_ALCES_CLUSTER}/
 
-PRVINTERFACE=em1
-MGTINTERFACE=""
-IBINTERFACE=ib0
+PRVINTERFACE=${_ALCES_PRVINTERFACE}
+MGTINTERFACE=${_ALCES_MGTINTERFACE}
+IBINTERFACE=${_ALCES_IBINTERFACE}
 
-PRVHOSTNAME=${BASE_HOSTNAME}.prv
-MGTHOSTNAME=${BASE_HOSTNAME}.mgt
-IBHOSTNAME=${BASE_HOSTNAME}.ib
-BMCHOSTNAME=${BASE_HOSTNAME}.bmc
+PRVNETMASK=255.255.0.0
+MGTNETMASK=255.255.0.0
+BMCNETMASK=255.255.0.0
+IBNETMASK=255.255.0.0
+
+PRVGATEWAY=10.10.0.1
+BMCGATEWAY=10.11.0.1
+
+PRVHOSTNAME=${_ALCES_BASE_HOSTNAME}.prv
+MGTHOSTNAME=${_ALCES_BASE_HOSTNAME}.mgt
+IBHOSTNAME=${_ALCES_BASE_HOSTNAME}.ib
+BMCHOSTNAME=${_ALCES_BASE_HOSTNAME}.bmc
+
+BMCPASSWORD=${_ALCES_BMC_PASSWORD}
 
 systemctl disable NetworkManager
 service NetworkManager stop
 
-curl $FILES_URL/hosts > /etc/hosts
+curl $FILES_URL/hosts | envsubst > /etc/hosts
 
 rm -rf /etc/yum.repos.d/*.repo
-curl $FILES_URL/yum > /etc/yum.repos.d/cluster.repo
+curl $FILES_URL/yum | envsubst > /etc/yum.repos.d/cluster.repo
 
-curl $FILES_URL/ntp > /etc/ntp.conf
+curl $FILES_URL/ntp | envsubst > /etc/ntp.conf
 
-curl $FILES_URL/postfix > /etc/postfix/main.cf
+curl $FILES_URL/postfix | envsubst > /etc/postfix/main.cf
 
 mkdir -m 0700 /root/.ssh
-curl $FILES_URL/authorized_keys > /root/.ssh/authorized_keys
+curl $FILES_URL/authorized_keys | envsubst > /root/.ssh/authorized_keys
 chmod 600 /root/.ssh/authorized_keys
 
 echo "StrictHostKeyChecking no" >> /root/.ssh/config
 
-echo "HOSTNAME=${BASE_HOSTNAME}.<CLUSTERDOMAIN>" >> /etc/sysconfig/network
-echo "${BASE_HOSTNAME}.<CLUSTERDOMAIN>" > /etc/hostname
+echo "HOSTNAME=${_ALCES_BASE_HOSTNAME}.${DOMAIN}" >> /etc/sysconfig/network
+echo "${_ALCES_BASE_HOSTNAME}.${DOMAIN}" > /etc/hostname
 
 yum -y install yum-plugin-priorities
 
@@ -73,9 +82,9 @@ NAME=$PRVINTERFACE
 DEVICE=$PRVINTERFACE
 ONBOOT=yes
 IPADDR=`getent hosts $PRVHOSTNAME | awk ' { print $1 }'`
-NETMASK=255.255.248.0
+NETMASK=$PRVNETMASK
 ZONE=trusted
-GATEWAY=10.10.192.128
+GATEWAY=$PRVGATEWAY
 EOF
 fi
 
@@ -97,7 +106,7 @@ NAME=$MGTINTERFACE
 DEVICE=$MGTINTERFACE
 ONBOOT=yes
 IPADDR=`getent hosts $MGTHOSTNAME | awk ' { print $1 }'`
-NETMASK=255.255.248.0
+NETMASK=$MGTNETMASK
 ZONE=trusted
 EOF
 fi
@@ -120,7 +129,7 @@ NAME=$IBINTERFACE
 DEVICE=$IBINTERFACE
 ONBOOT=yes
 IPADDR=`getent hosts $IBHOSTNAME | awk ' { print $1 }'`
-NETMASK=255.255.248.0
+NETMASK=$IBNETMASK
 ZONE=trusted
 EOF
 fi
@@ -134,13 +143,13 @@ if ! [ -z $BMCHOSTNAME ]; then
   sleep 2
   ipmitool lan set $IPMILANCHANNEL ipaddr `getent hosts $BMCHOSTNAME | awk ' { print $1 }'`
   sleep 2
-  ipmitool lan set $IPMILANCHANNEL netmask 255.255.248.0
+  ipmitool lan set $IPMILANCHANNEL netmask $BMCNETMASK
   sleep 2
-  ipmitool lan set $IPMILANCHANNEL defgw ipaddr 10.10.208.1
+  ipmitool lan set $IPMILANCHANNEL defgw ipaddr $BMCGATEWAY
   sleep 2
   ipmitool user set name $IPMIUSERID admin
   sleep 2
-  ipmitool user set password $IPMIUSERID Rercyig7
+  ipmitool user set password $IPMIUSERID $BMCPASSWORD
   sleep 2
   ipmitool lan print $IPMILANCHANNEL
   ipmitool user list 2
@@ -148,17 +157,17 @@ if ! [ -z $BMCHOSTNAME ]; then
 fi
 
 cat << EOF > /etc/resolv.conf
-search <CLUSTERDOMAIN> 
-nameserver <MASTERIP>
+search $DOMAIN
+nameserver $BUILDSERVER
 EOF
 
 #Branch for profile
-if [ $PROFILE -eq 'INFRA' ]; then
+if [ "${_ALCES_PROFILE}" -eq 'INFRA' ]; then
   yum -y install device-mapper-multipath sg3_utils
   yum -y groupinstall "Gnome Desktop"
   mpathconf
   mpathconf --enable
 else
-    
+  echo "Unrecognised profile"    
 fi
 

@@ -24,7 +24,7 @@ lang en_GB
 timezone  Europe/London
 
 #REPOS
-url --url=http://mirror.ox.ac.uk/sites/mirror.centos.org/7.2.1511/os/x86_64/
+url --url=http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
 
 #DISK
 %include /tmp/disk.part
@@ -48,8 +48,8 @@ part pv.01 --size=1 --grow --asprimary --ondisk $disk1
 volgroup system pv.01
 logvol  /  --fstype ext4 --vgname=system  --size=32786 --name=root
 logvol  /var --fstype ext4 --vgname=system --size=32768 --name=var
-logvol  /tmp --fstype ext4 --vgname=system --size=32768 --grow --name=tmp
-logvol  swap  --fstype swap --vgname=system  --size=32768  --name=swap1
+logvol  /tmp --fstype ext4 --vgname=system --size=1 --grow --name=tmp
+logvol  swap  --fstype swap --vgname=system  --size=16384  --name=swap1
 EOF
 %end
 
@@ -72,6 +72,7 @@ vconfig
 bridge-utils
 patch
 tcl-devel
+gettext
 
 %end
 
@@ -87,13 +88,12 @@ ntpdate 0.centos.pool.ntp.org
 set -x -v
 exec 1>/root/ks-post.log 2>&1
 
-export BASE_HOSTNAME=`hostname -s | sed -e 's/e$//g'`
-export PROFILE=INFRA
-export MASTERIP=<MASTERIP>
+export MASTERIP=10.50.50.1
 
-export INSTALLURL=http://${MASTERIP}/epel/scripts/install/
+export SCRIPTURL=http://${MASTERIP}/epel/scripts/
 
-#curl ${INSTALLURL}/base.sh | bash -x
-#curl ${INSTALLURL}/infiniband.sh | bash -x
+curl ${SCRIPTURL}/conf/config > /root/.alcesconf
+curl ${SCRIPTURL}/install/base.sh | bash -x
+curl ${SCRIPTURL}/install/infiniband.sh | bash -x
 
 %end

@@ -1,1 +1,1 @@
-ssh-rsa <SSHKEY> 
+ssh-rsa $_ALCES_SSHKEY
