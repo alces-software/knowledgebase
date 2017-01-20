@@ -22,14 +22,6 @@ skip_if_unavailable=1
 gpgcheck=0
 priority=10
 
-[custom]
-name=Custom
-baseurl=http://$_ALCES_BUILDSERVER/$_ALCES_CLUSTER/repos/custom
-enabled=1
-skip_if_unavailable=1
-gpgcheck=0
-priority=1
-
 [epel]
 name=Epel
 baseurl=http://anorien.csc.warwick.ac.uk/mirrors/epel/7/x86_64/
