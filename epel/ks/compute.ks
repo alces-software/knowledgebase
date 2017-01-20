@@ -92,7 +92,7 @@ export MASTERIP=10.50.50.1
 
 export SCRIPTURL=http://${MASTERIP}/epel/scripts/
 
-curl ${SCRIPTURL}/conf/config > /root/.alcesconf
+curl http://${MASTERIP}/epel/conf/config > /root/.alcesconf
 curl ${SCRIPTURL}/install/base.sh | bash -x
 curl ${SCRIPTURL}/install/infiniband.sh | bash -x
 

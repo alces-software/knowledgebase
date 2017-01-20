@@ -97,7 +97,7 @@ export MASTERIP=<MASTERIP>
 
 export SCRIPTURL=http://${MASTERIP}/epel/scripts/
 
-curl ${SCRIPTURL}/conf/config > /root/.alcesconf
+curl http://${MASTERIP}/epel/conf/config > /root/.alcesconf
 
 curl ${SCRIPTURL}/base.sh | bash -x
 curl ${SCRIPTURL}/lustreclient.sh | bash -x
