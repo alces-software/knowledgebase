@@ -4,7 +4,7 @@
 #Cluster: <CLUSTER>
 
 export _ALCES_BASE_HOSTNAME=headnode1
-export _ALCES_DOMAIN=cluster.alces.network
+export _ALCES_DOMAIN=cluster.local
 
 #infra,comppute
 export _ALCES_PROFILE=infra
