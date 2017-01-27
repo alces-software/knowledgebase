@@ -1,6 +1,6 @@
 [centos]
 name=CentOS Base
-baseurl=http://$_ALCES_BUILDSERVER/$_ALCES_CLUSTER/repos/centos/
+baseurl=http://$_ALCES_BUILDSERVER/$_ALCES_CLUSTER/repo/centos/
 enabled=1
 skip_if_unavailable=1
 gpgcheck=0
@@ -8,7 +8,7 @@ priority=10
 
 [centos-updates]
 name=CentOS Updates
-baseurl=http://$_ALCES_BUILDSERVER/$_ALCES_CLUSTER/repos/centos-updates/
+baseurl=http://$_ALCES_BUILDSERVER/$_ALCES_CLUSTER/repo/centos-updates/
 enabled=1
 skip_if_unavailable=1
 gpgcheck=0
@@ -16,31 +16,15 @@ priority=10
 
 [centos-extras]
 name=CentOS Extras
-baseurl=http://$_ALCES_BUILDSERVER/$_ALCES_CLUSTER/repos/centos-extras/
+baseurl=http://$_ALCES_BUILDSERVER/$_ALCES_CLUSTER/repo/centos-extras/
 enabled=1
 skip_if_unavailable=1
 gpgcheck=0
 priority=10
 
-[lustre-client]
-name=Lustre Client
-baseurl=http://$_ALCES_BUILDSERVER/$_ALCES_CLUSTER/repos/lustre-client/
-enabled=1
-skip_if_unavailable=1
-gpgcheck=0
-priority=5
-
-[lustre]
-name=Lustre Server
-baseurl=http://$_ALCES_BUILDSERVER/$_ALCES_CLUSTER/repos/lustre/
-enabled=0
-skip_if_unavailable=1
-gpgcheck=0
-priority=5
-
 [custom]
 name=Custom
-baseurl=http://$_ALCES_BUILDSERVER/$_ALCES_CLUSTER/repos/custom
+baseurl=http://$_ALCES_BUILDSERVER/$_ALCES_CLUSTER/repo/custom
 enabled=1
 skip_if_unavailable=1
 gpgcheck=0
@@ -48,7 +32,7 @@ priority=1
 
 [epel]
 name=Epel
-baseurl=http://anorien.csc.warwick.ac.uk/mirrors/epel/7/x86_64/
+baseurl=http://$_ALCES_BUILDSERVER/$_ALCES_CLUSTER/repo/epel
 enabled=0
 skip_if_unavailable=1
 gpgcheck=0

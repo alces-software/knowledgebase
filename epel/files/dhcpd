@@ -1,0 +1,39 @@
+# dhcpd.conf
+omapi-port 7911;
+
+default-lease-time 43200;
+max-lease-time 86400;
+ddns-update-style none;
+option domain-name "prv.${_ALCES_DOMAIN}";
+option domain-name-servers ${_ALCES_BUILDSERVER};
+option ntp-servers ${_ALCES_BUILDSERVER};
+
+allow booting;
+allow bootp;
+
+option fqdn.no-client-update    on;  # set the "O" and "S" flag bits
+option fqdn.rcode2            255;
+option pxegrub code 150 = text ;
+
+
+
+# PXE Handoff.
+next-server ${_ALCES_BUILDSERVER};
+filename "pxelinux.0";
+
+log-facility local7;
+group {
+  include "/etc/dhcp/dhcpd.hosts";
+}
+#################################
+# private network
+#################################
+subnet ${_ALCES_PRVNETWORK} netmask ${_ALCES_PRVNETMASK} {
+#  pool
+#  {
+#    range 10.10.200.100 10.10.200.200;
+#  }
+
+  option subnet-mask ${_ALCES_PRVNETMASK};
+  option routers ${_ALCES_BUILDSERVER};
+}
