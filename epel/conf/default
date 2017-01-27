@@ -11,6 +11,9 @@ export _ALCES_PROFILE=infra
 export _ALCES_BUILDSERVER=10.50.50.1
 
 export _ALCES_PRVINTERFACE=em1
+export _ALCES_PRVNETMASK=255.255.0.0
+export _ALCES_PRVNETWORK=10.10.0.0
+
 export _ALCES_MGTINTERFACE=em2
 export _ALCES_IBINTERFACE=ib0
 
@@ -38,3 +41,5 @@ for p in "${params_split[@]}"; do
     fi;
   fi
 done
+
+export _ALCES_KEYS=`compgen -v | grep _ALCES | while read n; do echo '$'$n; done | xargs`
