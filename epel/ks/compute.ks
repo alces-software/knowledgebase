@@ -16,7 +16,7 @@ selinux --disabled
 
 #AUTH
 auth  --useshadow  --enablemd5
-rootpw A1ce550ftware
+rootpw --iscrypted "${_ALCES_ROOTPASSWORDCRYPT}" 
 
 #LOCALIZATION
 keyboard uk
@@ -24,7 +24,7 @@ lang en_GB
 timezone  Europe/London
 
 #REPOS
-url --url=http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
+url --url=http://${_ALCES_BUILDSERVER}/${_ALCES_CLUSTER}/repo/centos/
 
 #DISK
 %include /tmp/disk.part
@@ -88,17 +88,13 @@ ntpdate 0.centos.pool.ntp.org
 set -x -v
 exec 1>/root/ks-post.log 2>&1
 
-export MASTERIP=10.50.50.1
+export MASTERIP=${_ALCES_BUILDSERVER}
 
 export SCRIPTURL=http://${MASTERIP}/epel/scripts/
 
 curl http://${MASTERIP}/epel/conf/config > /root/.alcesconf
 curl ${SCRIPTURL}/install/base.sh | bash -x
 curl ${SCRIPTURL}/install/infiniband.sh | bash -x
-
-curl ${SCRIPTURL}/lustreclient.sh | bash -x
-curl ${SCRIPTURL}/nfsclient.sh | bash -x
-curl ${SCRIPTURL}/nisclient.sh | bash -x
-curl ${SCRIPTURL}/sgeclient.sh | bash -x
-
+curl ${SCRIPTURL}/install/nisclient.sh | bash -x
+curl ${SCRIPTURL}/install/nfsclient.sh | bash -x
 %end

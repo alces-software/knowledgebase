@@ -16,7 +16,7 @@ selinux --disabled
 
 #AUTH
 auth  --useshadow  --enablemd5
-rootpw --iscrypted $6$sVWLjXgUfeZhT08d$3d/GlurC7Hcr5lHIuhUAPazCT/rIrbabLRwMCe3zUvaBTH/HZNU2RBHWuzQRVUNMCUybA8r1Z09/P/d5x9XU41
+rootpw --iscrypted "${_ALCES_ROOTPASSWORDCRYPT}" 
 
 #LOCALIZATION
 keyboard uk
@@ -24,7 +24,7 @@ lang en_GB
 timezone  Europe/London
 
 #REPOS
-url --url=http://<MASTERIP>/<CLUSTER>/repos/centos/
+url --url=http://${_ALCES_BUILDSERVER}/${_ALCES_CLUSTER}/repo/centos/
 
 #DISK
 %include /tmp/disk.part
@@ -43,20 +43,18 @@ bootloader --location=mbr --driveorder=$disk1 --append="$bootloaderappend"
 clearpart --all --initlabel
 
 #Disk partitioning information
-part /boot --fstype ext4 --size=1024 --asprimary --ondisk $disk1
+part /boot --fstype ext4 --size=4096 --asprimary --ondisk $disk1
 part pv.01 --size=1 --grow --asprimary --ondisk $disk1
-volgroup rootvg pv.01
-logvol  /  --fstype ext4 --vgname=rootvg  --size=8096 --name=root
-logvol  /var --fstype ext4 --vgname=rootvg --size=8096 --name=var
-logvol  /tmp --fstype ext4 --vgname=rootvg --size=2048 --name=tmp
-logvol  swap  --fstype swap --vgname=rootvg  --size=32768  --name=swap1
-logvol /scratch --fstype ext4 --vgname=rootvg --size=1 --grow --name=scratch
+volgroup system pv.01
+logvol  /  --fstype ext4 --vgname=system  --size=32786 --name=root
+logvol  /var --fstype ext4 --vgname=system --size=32768 --name=var
+logvol  /tmp --fstype ext4 --vgname=system --size=1 --grow --name=tmp
+logvol  swap  --fstype swap --vgname=system  --size=16384  --name=swap1
 EOF
 %end
 
 #PACKAGES
 %packages --ignoremissing
-
 
 vim
 emacs
@@ -90,19 +88,14 @@ ntpdate 0.centos.pool.ntp.org
 set -x -v
 exec 1>/root/ks-post.log 2>&1
 
-export BASE_HOSTNAME=`hostname -s | sed -e 's/e$//g'`
-export PROFILE=SLAVE
-
-export MASTERIP=<MASTERIP>
+export MASTERIP=${_ALCES_BUILDSERVER}
 
 export SCRIPTURL=http://${MASTERIP}/epel/scripts/
 
 curl http://${MASTERIP}/epel/conf/config > /root/.alcesconf
-
-curl ${SCRIPTURL}/base.sh | bash -x
-curl ${SCRIPTURL}/lustreclient.sh | bash -x
-curl ${SCRIPTURL}/nfsclient.sh | bash -x
-curl ${SCRIPTURL}/nisclient.sh | bash -x
-curl ${SCRIPTURL}/sgeclient.sh | bash -x
+curl ${SCRIPTURL}/install/base.sh | bash -x
+curl ${SCRIPTURL}/install/infiniband.sh | bash -x
+curl ${SCRIPTURL}/install/nisclient.sh | bash -x
+curl ${SCRIPTURL}/install/nfsclient.sh | bash -x
 
 %end
