@@ -3,13 +3,18 @@
 #Job ID: <JOB>
 #Cluster: <CLUSTER>
 
+. /root/.alcesconf
+
 HOST=$1
 MAC=$2
 
-TAIL="<CLUSTERDOMAIN>"
+TAIL=".prv.${_ALCES_DOMAIN}"
+
+echo "Resolving ${HOST}${TAIL}"
 
 IP=`gethostip -d ${HOST}${TAIL} 2>/dev/null`
 HEXIP=`gethostip -x ${HOST}${TAIL} 2>/dev/null`
+
 if [ -z "$IP" ]; then
   echo "Unable to determine IP for $HOST" >&2
   exit 1
@@ -23,8 +28,8 @@ fi
 cat << EOF >> /etc/dhcp/dhcpd.hosts
   host $HOST {
     hardware ethernet $MAC;
-    option host-name "$HOST.<CLUSTERDOMAIN>";
-    option routers 10.10.192.128;
+    option host-name "$HOST.prv.${_ALCES_DOMAIN}";
+    option routers ${_ALCES_BUILDSERVER};
     filename "/pxelinux.0";
     fixed-address $IP;
   }

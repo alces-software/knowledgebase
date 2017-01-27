@@ -5,7 +5,11 @@
 
 HOST=$1
 
-TAIL="<CLUSTERDOMAIN>"
+. /root/.alcesconf
+
+TAIL=".prv.${_ALCES_DOMAIN}"
+
+echo "Resolving ${HOST}${TAIL}"
 
 HEXIP=`gethostip -x ${HOST}${TAIL} 2>/dev/null`
 if [ -z "$HEXIP" ]; then

@@ -6,9 +6,17 @@
 HOST=$1
 PROFILE=$2
 
-TAIL="<CLUSTERDOMAIN>"
+. /root/.alcesconf
+
+_ALCES_BASE_HOSTNAME=$HOST
+
+TAIL=".prv.${_ALCES_DOMAIN}"
+
+echo -n "Resolving ${HOST}${TAIL}.."
 
 HEXIP=`gethostip -x ${HOST}${TAIL} 2>/dev/null`
+echo "$HEXIP"
+
 if [ -z "$HEXIP" ]; then
   echo "Unable to determine IP for $HOST" >&2
   exit 1
@@ -19,4 +27,4 @@ if [ -z "$PROFILE" ]; then
   exit 1
 fi
 
-(cd /var/lib/tftpboot/pxelinux.cfg/ && cp -v $PROFILE `gethostip -x ${HOST}${TAIL}`)
+(cd /var/lib/tftpboot/pxelinux.cfg/ && cat $PROFILE | envsubst "${_ALCES_KEYS}" > `gethostip -x ${HOST}${TAIL}`)
