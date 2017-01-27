@@ -3,11 +3,14 @@
 #Job ID: <JOB>
 #Cluster: <CLUSTER>
 
+if [ -f /root/.alcesconf ]; then
+  . /root/.alcesconf
+fi
+
 yum -y install ypbind
-NISDOMAIN='<CLUSTER>'
-NISMASTER='10.10.200.128'
-echo "domain $NISDOMAIN server $NISMASTER" >> /etc/yp.conf
-echo "domain $NISDOMAIN server 10.10.200.130" >> /etc/yp.conf
+NISDOMAIN="${_ALCES_CLUSTER}"
+NISMASTER="${_ALCES_BUILDSERVER}"
+echo "domain $NISDOMAIN server $NISMASTER" > /etc/yp.conf
 nisdomainname $NISDOMAIN
 echo "NISDOMAIN=$NISDOMAIN" >> /etc/sysconfig/network
 sed -i -e 's/^passwd:.*/passwd:     files nis/g' \
@@ -15,4 +18,3 @@ sed -i -e 's/^passwd:.*/passwd:     files nis/g' \
 -e 's/^group.*/group:      files nis/g' /etc/nsswitch.conf
 systemctl enable ypbind
 systemctl start ypbind
-

@@ -20,13 +20,13 @@ PRVINTERFACE=${_ALCES_PRVINTERFACE}
 MGTINTERFACE=${_ALCES_MGTINTERFACE}
 IBINTERFACE=${_ALCES_IBINTERFACE}
 
-PRVNETMASK=255.255.0.0
+PRVNETMASK=${_ALCES_PRVNETMASK}
 MGTNETMASK=255.255.0.0
 BMCNETMASK=255.255.0.0
 IBNETMASK=255.255.0.0
 
-PRVGATEWAY=10.10.0.1
-BMCGATEWAY=10.11.0.1
+PRVGATEWAY=10.10.0.11
+BMCGATEWAY=10.11.0.11
 
 PRVHOSTNAME=${_ALCES_BASE_HOSTNAME}.prv
 MGTHOSTNAME=${_ALCES_BASE_HOSTNAME}.mgt
@@ -41,9 +41,12 @@ service NetworkManager stop
 curl $FILES_URL/hosts | envsubst > /etc/hosts
 
 rm -rf /etc/yum.repos.d/*.repo
-curl $FILES_URL/yum | envsubst > /etc/yum.repos.d/cluster.repo
+curl $FILES_URL/yum.local | envsubst > /etc/yum.repos.d/cluster.repo
 
+yum -y install ntp
 curl $FILES_URL/ntp | envsubst > /etc/ntp.conf
+systemctl enable ntpd
+systemctl restart ntpd
 
 curl $FILES_URL/postfix | envsubst > /etc/postfix/main.cf
 
@@ -53,8 +56,8 @@ chmod 600 /root/.ssh/authorized_keys
 
 echo "StrictHostKeyChecking no" >> /root/.ssh/config
 
-echo "HOSTNAME=${_ALCES_BASE_HOSTNAME}.${DOMAIN}" >> /etc/sysconfig/network
-echo "${_ALCES_BASE_HOSTNAME}.${DOMAIN}" > /etc/hostname
+echo "HOSTNAME=${_ALCES_BASE_HOSTNAME}.prv.${DOMAIN}" >> /etc/sysconfig/network
+echo "${_ALCES_BASE_HOSTNAME}.prv.${DOMAIN}" > /etc/hostname
 
 yum -y install yum-plugin-priorities
 
