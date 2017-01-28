@@ -11,9 +11,7 @@ yum -y install nfs-utils
 cat << EOF >> /etc/fstab
 #NFS
 ${_ALCES_BUILDSERVER}:/users	/users  nfs     intr,rsize=32768,wsize=32768,_netdev 0 0
-${_ALCES_BUILDSERVER}:/opt/sge  /opt/sge nfs	intr,rsize=32768,wsize=32768,_netdev 0 0
 ${_ALCES_BUILDSERVER}:/data	/data	nfs	intr,rsize=32768,wsize=32768,_netdev 0 0
 EOF
 mkdir -p /data
 mkdir -p /users
-mkdir -p /opt/sge

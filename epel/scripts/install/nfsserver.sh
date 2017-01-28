@@ -14,11 +14,9 @@ yum -y install nfs-utils
 cat << EOF > /etc/exports
 /users     ${_ALCES_PRVNETWORK}/${_ALCES_PRVNETMASK}(rw,no_root_squash,sync)
 /data	   ${_ALCES_PRVNETWORK}/${_ALCES_PRVNETMASK}(rw,no_root_squash,sync)
-/opt/sge   ${_ALCES_PRVNETWORK}/${_ALCES_PRVNETMASK}(rw,no_root_squash,sync)
 EOF
 mkdir -p /data
 mkdir -p /users
-mkdir -p /opt/sge
 
 #Increase nfsd thread count
 sed -ie "s/^#\RPCNFSDCOUNT.*$/\RPCNFSDCOUNT=32/g" /etc/sysconfig/nfs

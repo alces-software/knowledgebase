@@ -54,4 +54,4 @@ createrepo centos-extras
 createrepo -g comps.xml epel
 createrepo custom
 
-curl $FILES_URL/yum.local | envsubst > /etc/yum.repos.d/cluster.repo
+curl $FILES_URL/yum.local | envsubst "$_ALCES_KEYS" > /etc/yum.repos.d/cluster.repo

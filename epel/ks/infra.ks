@@ -47,8 +47,8 @@ part /boot --fstype ext4 --size=4096 --asprimary --ondisk $disk1
 part pv.01 --size=1 --grow --asprimary --ondisk $disk1
 volgroup system pv.01
 logvol  /  --fstype ext4 --vgname=system  --size=32786 --name=root
-logvol  /var --fstype ext4 --vgname=system --size=32768 --name=var
-logvol  /tmp --fstype ext4 --vgname=system --size=1 --grow --name=tmp
+logvol  /var --fstype ext4 --vgname=system --size=32768 --name=var --grow
+logvol  /tmp --fstype ext4 --vgname=system --size=16384 --name=tmp
 logvol  swap  --fstype swap --vgname=system  --size=16384  --name=swap1
 EOF
 %end
@@ -99,5 +99,6 @@ curl ${SCRIPTURL}/install/nisclient.sh | bash -x
 curl ${SCRIPTURL}/install/nfsclient.sh | bash -x
 curl ${SCRIPTURL}/install/gangliaclient.sh | bash -x
 curl ${SCRIPTURL}/install/postfixclient.sh | bash -x
+
 
 %end

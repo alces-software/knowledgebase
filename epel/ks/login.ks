@@ -97,5 +97,8 @@ curl ${SCRIPTURL}/install/base.sh | bash -x
 curl ${SCRIPTURL}/install/infiniband.sh | bash -x
 curl ${SCRIPTURL}/install/nisclient.sh | bash -x
 curl ${SCRIPTURL}/install/nfsclient.sh | bash -x
+curl ${SCRIPTURL}/install/gangliaclient.sh | bash -x
+curl ${SCRIPTURL}/install/postfixclient.sh | bash -x
+
 
 %end

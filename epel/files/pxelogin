@@ -7,5 +7,5 @@ ONTIMEOUT INSTALL
 
 LABEL INSTALL
      KERNEL boot/centos7-kernel
-        APPEND initrd=boot/centos7-initrd.img ks=http://${_ALCES_BUILDSERVER}/${_ALCES_CLUSTER}/ks/login.ks network ks.sendmac _ALCES_BASE_HOSTNAME=${_ALCES_BASE_HOSTNAME}
+        APPEND initrd=boot/centos7-initrd.img ks=http://${_ALCES_BUILDSERVER}/${_ALCES_CLUSTER}/ks/login.ks network ks.sendmac _ALCES_BASE_HOSTNAME=${BASE_HOSTNAME}
         IPAPPEND 2

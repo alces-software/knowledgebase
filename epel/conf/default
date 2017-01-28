@@ -9,6 +9,8 @@ export _ALCES_DOMAIN=cluster.local
 #infra,comppute
 export _ALCES_PROFILE=infra
 export _ALCES_BUILDSERVER=10.50.50.1
+export _ALCES_BUILDSERVEREXTERNALDNS=mycluster.mydomain.com #Used when configuring external facing http services (This must be live in your site DNS)
+
 
 export _ALCES_PRVINTERFACE=em1
 export _ALCES_PRVNETMASK=255.255.0.0
@@ -21,7 +23,7 @@ export _ALCES_CLUSTER=cluster
 
 export _ALCES_BMC_PASSWORD=A1ce550ftware
 
-export _ALCES_RELAYHOST=mail.alces-software.com
+export _ALCES_RELAYHOST=smtp.alces-software.com
 
 export _ALCES_SSHKEY=tbc
 
