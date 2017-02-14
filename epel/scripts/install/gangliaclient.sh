@@ -3,16 +3,11 @@
 #Job ID: <JOB>
 #Cluster: <CLUSTER>
 
-if [ -f /root/.alcesconf ]; then
-  . /root/.alcesconf
-fi
-
-FILES_URL=http://${_ALCES_BUILDSERVER}/epel/files/${_ALCES_CLUSTER}/
+source /root/.deployment
 
 yum-config-manager --enable epel
 
 yum -y install ganglia-gmond
-
-curl $FILES_URL/gmond | envsubst "$_ALCES_KEYS" > /etc/ganglia/gmond.conf
+install_file gmond /etc/ganglia/gmond.conf
 systemctl enable gmond
 systemctl restart gmond

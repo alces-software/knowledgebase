@@ -3,9 +3,7 @@
 #Job ID: <JOB>
 #Cluster: <CLUSTER>
 
-if [ -f /root/.alcesconf ]; then
-  . /root/.alcesconf
-fi
+source /root/.deployment
 
 yum install -y ypserv yp-tools
 

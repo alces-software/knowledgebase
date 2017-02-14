@@ -7,10 +7,11 @@ export _ALCES_BASE_HOSTNAME=headnode1
 export _ALCES_DOMAIN=cluster.local
 
 #infra,comppute
-export _ALCES_PROFILE=infra
-export _ALCES_BUILDSERVER=10.50.50.1
+export _ALCES_PROFILE=MASTER
+export _ALCES_BUILDSERVER=10.10.0.11
 export _ALCES_BUILDSERVEREXTERNALDNS=mycluster.mydomain.com #Used when configuring external facing http services (This must be live in your site DNS)
 
+export _ALCES_EXTERNALDNS=10.101.0.1
 
 export _ALCES_PRVINTERFACE=em1
 export _ALCES_PRVNETMASK=255.255.0.0
@@ -26,6 +27,11 @@ export _ALCES_BMC_PASSWORD=A1ce550ftware
 export _ALCES_RELAYHOST=smtp.alces-software.com
 
 export _ALCES_SSHKEY=tbc
+
+export _ALCES_YUMTEMPLATE=yum.upstream
+
+#GENERATE with openssl passwd -1 $PASSWD
+export _ALCES_ROOTPASSWORDCRYPT=$1$4GLswpYN$9wsXWH9M4rRwgjGSCfCMt0
 
 #Get Kennel cmdline options
 params=`cat /proc/cmdline`
@@ -44,4 +50,29 @@ for p in "${params_split[@]}"; do
   fi
 done
 
+#Overwrite any _ALCES vars with any set ALCES vars
+eval `compgen -v | grep ^ALCES | while read n; do echo _$n=\`eval "echo \\\\$$n"\`; done`
+
+
 export _ALCES_KEYS=`compgen -v | grep _ALCES | while read n; do echo '$'$n; done | xargs`
+
+install_file() {
+  FILES_PATH=/opt/metalware/deployment/local/epel/files/
+  FILES_URL=http://${BUILDSERVER}/deployment/epel/files/
+  if [ -d $FILEPATH ]; then
+    cat $FILES_PATH/$1 | envsubst "$_ALCES_KEYS" > $2
+  else
+    curl $FILES_URL/$1 | envsubst "$_ALCES_KEYS" > $2
+  fi
+}
+
+run_script() {
+  SCRIPTS_PATH=/opt/metalware/deployment/local/epel/scripts/
+  SCRIPTS_URL=http://${BUILDSERVER}/deployment/epel/scripts/
+  if [ -d $FILEPATH ]; then
+    cat $SCRIPTS_PATH/$1 | bash -x
+  else
+    curl $SCRIPTS_URL/$1 | bash -x
+  fi
+
+}

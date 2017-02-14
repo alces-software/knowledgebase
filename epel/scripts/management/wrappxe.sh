@@ -5,10 +5,11 @@
 
 HOST=$1
 PROFILE=$2
+OTHERTAGS=$3
 
 . /root/.alcesconf
 
-export BASE_HOSTNAME=$HOST
+BASE_HOSTNAME=$HOST
 TAIL=".prv.${_ALCES_DOMAIN}"
 
 echo -n "Resolving ${HOST}${TAIL}.."
@@ -27,11 +28,13 @@ if [ -z "$PROFILE" ]; then
   exit 1
 fi
 
+export ALCESTAGS="_ALCES_BASE_HOSTNAME=$BASE_HOSTNAME $OTHERTAGS"
+
 echo "Installing PXE entry.."
-(cd /var/lib/tftpboot/pxelinux.cfg/ && cat $PROFILE | envsubst '$BASE_HOSTNAME' > `gethostip -x ${HOST}${TAIL}`)
+(cd /var/lib/tftpboot/pxelinux.cfg/ && cat $PROFILE | envsubst '$ALCESTAGS' > `gethostip -x ${HOST}${TAIL}`)
 
 echo "Waiting for machine to download kickstart.."
-tail -f -n 0 /var/log/httpd/access_log | sed -e "/^$IP.*GET \/triton\/ks\/$PROFILE.ks.*$/ q" &>/dev/null
+tail -f -n 0 /var/log/httpd/access_log | sed -e "/^$IP.*GET \/.*\/ks\/$PROFILE.ks.*$/ q" &>/dev/null
 
 echo "Removing PXE entry.."
 (cd /var/lib/tftpboot/pxelinux.cfg/ && rm -v `gethostip -x ${HOST}${TAIL}`)

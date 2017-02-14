@@ -677,3 +677,5 @@ sample_directory = /usr/share/doc/postfix-2.10.1/samples
 # readme_directory: The location of the Postfix README files.
 #
 readme_directory = /usr/share/doc/postfix-2.10.1/README_FILES
+sender_canonical_maps = regexp:/etc/postfix/master-rewrite-sender
+local_header_rewrite_clients = static:all

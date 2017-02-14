@@ -24,7 +24,8 @@ lang en_GB
 timezone  Europe/London
 
 #REPOS
-url --url=http://${_ALCES_BUILDSERVER}/${_ALCES_CLUSTER}/repo/centos/
+#url --url=http://${_ALCES_BUILDSERVER}/${_ALCES_CLUSTER}/repo/centos/
+url --url=http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
 
 #DISK
 %include /tmp/disk.part
@@ -47,8 +48,8 @@ part /boot --fstype ext4 --size=4096 --asprimary --ondisk $disk1
 part pv.01 --size=1 --grow --asprimary --ondisk $disk1
 volgroup system pv.01
 logvol  /  --fstype ext4 --vgname=system  --size=32786 --name=root
-logvol  /var --fstype ext4 --vgname=system --size=32768 --name=var
-logvol  /tmp --fstype ext4 --vgname=system --size=1 --grow --name=tmp
+logvol  /var --fstype ext4 --vgname=system --size=32768 --name=var --grow
+logvol  /tmp --fstype ext4 --vgname=system --size=16384 --name=tmp
 logvol  swap  --fstype swap --vgname=system  --size=16384  --name=swap1
 EOF
 %end

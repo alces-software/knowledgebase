@@ -5,10 +5,11 @@
 
 HOST=$1
 PROFILE=$2
+OTHERTAGS=$3
 
 . /root/.alcesconf
 
-export BASE_HOSTNAME=$HOST
+BASE_HOSTNAME=$HOST
 
 TAIL=".prv.${_ALCES_DOMAIN}"
 
@@ -27,4 +28,5 @@ if [ -z "$PROFILE" ]; then
   exit 1
 fi
 
-(cd /var/lib/tftpboot/pxelinux.cfg/ && cat $PROFILE | envsubst 'BASE_HOSTNAME' > `gethostip -x ${HOST}${TAIL}`)
+export ALCESTAGS="_ALCES_BASE_HOSTNAME=$BASE_HOSTNAME $OTHERTAGS"
+(cd /var/lib/tftpboot/pxelinux.cfg/ && cat $PROFILE | envsubst '$ALCESTAGS' > `gethostip -x ${HOST}${TAIL}`)

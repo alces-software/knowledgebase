@@ -3,9 +3,7 @@
 #Job ID: <JOB>
 #Cluster: <CLUSTER>
 
-if [ -f /root/.alcesconf ]; then
-  . /root/.alcesconf
-fi
+source /root/.deployment
 
 #Use /users for new users
 sed -i -e 's|^HOME=.*$|HOME=/users|g' /etc/default/useradd

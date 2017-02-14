@@ -3,13 +3,7 @@
 #Job ID: <JOB>
 #Cluster: <CLUSTER>
 
-if [ -f /root/.alcesconf ]; then
-  . /root/.alcesconf
-fi
-
-BUILDSERVER=$_ALCES_BUILDSERVER
-FILES_URL=http://${BUILDSERVER}/epel/files/${_ALCES_CLUSTER}/
-
+source /root/.deployment
 
 yum -y install createrepo yum-utils
 
@@ -36,7 +30,8 @@ bugtracker_url=http://bugs.centos.org/set_project.php?project_id=23&ref=http://b
 distroverpkg=centos-release
 reposdir=/dev/null
 EOF
-curl $FILES_URL/yum >> yum.conf
+install_file yum yum.repos
+cat yum.repos >> yum.conf
 
 reposync -nm --config yum.conf -r centos
 #distro special
@@ -54,4 +49,4 @@ createrepo centos-extras
 createrepo -g comps.xml epel
 createrepo custom
 
-curl $FILES_URL/yum.local | envsubst "$_ALCES_KEYS" > /etc/yum.repos.d/cluster.repo
+install_file yum.local /etc/yum.repos.d/cluster.repo

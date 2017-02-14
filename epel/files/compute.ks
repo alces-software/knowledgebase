@@ -24,7 +24,8 @@ lang en_GB
 timezone  Europe/London
 
 #REPOS
-url --url=http://${_ALCES_BUILDSERVER}/${_ALCES_CLUSTER}/repo/centos/
+#url --url=http://${_ALCES_BUILDSERVER}/${_ALCES_CLUSTER}/repo/centos/
+url --url=http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
 
 #DISK
 %include /tmp/disk.part

@@ -3,12 +3,9 @@
 #Job ID: <JOB>
 #Cluster: <CLUSTER>
 
-if [ -f /root/.alcesconf ]; then
-  . /root/.alcesconf
-fi
+. /root/.deployment
 
 yum -y install httpd
 service httpd start
 systemctl enable httpd
-
 
