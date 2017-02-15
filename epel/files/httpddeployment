@@ -1,0 +1,8 @@
+<Directory /opt/metalware/deployment/local/>
+    Options Indexes MultiViews FollowSymlinks
+    AllowOverride None
+    Require all granted
+    Order Allow,Deny
+    Allow from $_ALCES_PRVNETWORK/$_ALCES_PRVNETMASK
+</Directory>
+Alias /deployment /opt/metalware/deployment/local/

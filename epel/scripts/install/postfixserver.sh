@@ -6,8 +6,8 @@
 source /root/.deployment
 
 yum -y install postfix mailx
-installfile postfixmaster /etc/postfix/main.cf
-installfile postfixrewrite /etc/postfix/master-rewrite-sender
+install_file postfixmaster /etc/postfix/main.cf
+install_file postfixrewrite /etc/postfix/master-rewrite-sender
 
 systemctl enable postfix
 systemctl restart postfix

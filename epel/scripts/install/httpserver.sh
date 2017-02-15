@@ -6,6 +6,9 @@
 . /root/.deployment
 
 yum -y install httpd
+
+install_file httpddeployment /etc/httpd/conf.d/deployment.conf
+
 service httpd start
 systemctl enable httpd
 
