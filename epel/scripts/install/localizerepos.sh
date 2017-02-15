@@ -30,7 +30,7 @@ bugtracker_url=http://bugs.centos.org/set_project.php?project_id=23&ref=http://b
 distroverpkg=centos-release
 reposdir=/dev/null
 EOF
-install_file yum yum.repos
+install_file yum.upstream yum.repos
 cat yum.repos >> yum.conf
 
 reposync -nm --config yum.conf -r centos

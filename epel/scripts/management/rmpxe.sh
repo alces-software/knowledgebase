@@ -5,7 +5,7 @@
 
 HOST=$1
 
-. /root/.alcesconf
+. /root/.deployment
 
 TAIL=".prv.${_ALCES_DOMAIN}"
 

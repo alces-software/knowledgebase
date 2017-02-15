@@ -89,16 +89,11 @@ ntpdate 0.centos.pool.ntp.org
 set -x -v
 exec 1>/root/ks-post.log 2>&1
 
-export MASTERIP=${_ALCES_BUILDSERVER}
+export MASTERIP=10.10.0.11
 
-export SCRIPTURL=http://${MASTERIP}/epel/scripts/
-
-curl http://${MASTERIP}/epel/conf/config > /root/.alcesconf
-curl ${SCRIPTURL}/install/base.sh | bash -x
-curl ${SCRIPTURL}/install/infiniband.sh | bash -x
-curl ${SCRIPTURL}/install/nisclient.sh | bash -x
-curl ${SCRIPTURL}/install/nfsclient.sh | bash -x
-curl ${SCRIPTURL}/install/gangliaclient.sh | bash -x
-curl ${SCRIPTURL}/install/postfixclient.sh | bash -x
+curl http://${MASTERIP}/deployment/epel/conf/config > /root/.deployment
+export ALCES_PROFILE=compute
+source /root/.deployment
+run_profile
 
 %end

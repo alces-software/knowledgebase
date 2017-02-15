@@ -7,7 +7,7 @@ HOST=$1
 PROFILE=$2
 OTHERTAGS=$3
 
-. /root/.alcesconf
+. /root/.deployment
 
 BASE_HOSTNAME=$HOST
 

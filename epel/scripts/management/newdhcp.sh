@@ -3,7 +3,7 @@
 #Job ID: <JOB>
 #Cluster: <CLUSTER>
 
-. /root/.alcesconf
+. /root/.deployment
 
 HOST=$1
 MAC=$2
