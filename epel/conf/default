@@ -58,8 +58,8 @@ export _ALCES_KEYS=`compgen -v | grep _ALCES | while read n; do echo '$'$n; done
 
 install_file() {
   FILES_PATH=/opt/metalware/deployment/local/epel/files/
-  FILES_URL=http://${BUILDSERVER}/deployment/epel/files/
-  if [ -d $FILEPATH ]; then
+  FILES_URL=http://${_ALCES_BUILDSERVER}/deployment/epel/files/
+  if [ -d $FILES_PATH ]; then
     cat $FILES_PATH/$1 | envsubst "$_ALCES_KEYS" > $2
   else
     curl $FILES_URL/$1 | envsubst "$_ALCES_KEYS" > $2
@@ -68,11 +68,15 @@ install_file() {
 
 run_script() {
   SCRIPTS_PATH=/opt/metalware/deployment/local/epel/scripts/
-  SCRIPTS_URL=http://${BUILDSERVER}/deployment/epel/scripts/
-  if [ -d $FILEPATH ]; then
+  SCRIPTS_URL=http://${_ALCES_BUILDSERVER}/deployment/epel/scripts/
+  if [ -d $SCRIPTS_PATH ]; then
     cat $SCRIPTS_PATH/$1 | bash -x
   else
     curl $SCRIPTS_URL/$1 | bash -x
   fi
 
+}
+
+run_profile() {
+  run_script profile/`echo $_ALCES_PROFILE | tr '[:upper:]' '[:lower:]'`.sh
 }
