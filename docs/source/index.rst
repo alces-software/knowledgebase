@@ -5,10 +5,7 @@ This site documents the considerations and guidelines for designing and developi
 
 License
 -------
-This documentation is released under the `Creative-Commons: Attribution-ShareAlike 4.0 International http://creativecommons.org/licenses/by-sa/4.0/>`_ license.
-
-Contents
---------
+This documentation is released under the `Creative-Commons: Attribution-ShareAlike 4.0 International <http://creativecommons.org/licenses/by-sa/4.0/>`_ license.
 
 .. Navigation/TOC
 
@@ -27,10 +24,3 @@ Contents
    :name: infrastructure
    
    infrastructure/*
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
