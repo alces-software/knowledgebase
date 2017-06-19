@@ -52,3 +52,9 @@ The above design contains the minimum recommended internal networks. A primary n
 
 Example 2
 ^^^^^^^^^
+
+.. image:: NetworkDesign2.png
+    :alt: Network Design Example 2
+    :target: ../_images/NetworkDesign2.png
+
+The above network design has a few additions to the first example. The main change is the inclusion of VLANs for the primary, management and build networks (with the build network being a new addition to this design). The build network allows for systems to be toggled over to a DHCP system that uses PXE booting to kickstart an OS installation.
