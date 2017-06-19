@@ -3,7 +3,7 @@
 Recommendations for Network and Hardware Design
 ===============================================
 
-At Alces software, the recommended network
+At Alces software, the recommended network design differs slightly depending on the number of users and quantity of systems within the HPC platform. 
 
 Network Designs
 ---------------
@@ -16,7 +16,7 @@ Example 1
 .. image:: NodeTypes1.png
     :alt: Node Types Example 1
 
-The above network consists of master, login and compute nodes. The services provided by the master & login nodes can be seen labelled next to one another. This network only separates the services for users and admins.
+The above network consists of master, login and compute nodes. The services provided by the master & login nodes can be seen to the right of each node type. This network only separates the services for users and admins.
 
 Example 2
 ^^^^^^^^^
