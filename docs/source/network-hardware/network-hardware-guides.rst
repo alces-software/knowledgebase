@@ -58,3 +58,23 @@ Example 2
     :target: ../_images/NetworkDesign2.png
 
 The above network design has a few additions to the first example. The main change is the inclusion of VLANs for the primary, management and build networks (with the build network being a new addition to this design). The build network allows for systems to be toggled over to a DHCP system that uses PXE booting to kickstart an OS installation.
+
+Other Recommendations
+---------------------
+
+BIOS Settings
+^^^^^^^^^^^^^
+
+When it comes to optimising the BIOS settings on a system in the network, the following changes are recommended:
+
+  - Setting the power management to maximum performance  
+  - Disabling CPU CStates
+  - Disabling Hyperthreading
+  - Enabling turbo mode
+  - Disabling quiet boot
+  - Setting BMC to use the dedicated port for BMC traffic
+  - Setting the node to stay off when power is restored after AC power loss
+
+.. note:: The wordings for settings above may differ depending on the hardware that is being used. Look for similar settings that can be configured to achieve the same result.
+
+For hardware-specific BIOS configuration settings see https://github.com/alces-software/knowledgebase/wiki#servers
