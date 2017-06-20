@@ -24,3 +24,51 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
    :name: infrastructure
    
    infrastructure/*
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
+   :caption: Deployment
+   :name: deployment
+   
+   deployment/*
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
+   :caption: Storage
+   :name: storage
+   
+   storage/*
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
+   :caption: User Management
+   :name: user-management
+   
+   user-management/*
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
+   :caption: Monitoring
+   :name: monitoring
+   
+   monitoring/*
+   
+.. toctree::
+   :maxdepth: 1
+   :glob:
+   :caption: HPC Environment
+   :name: hpc-environment
+   
+   hpc-environment/*
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
+   :caption: Verification
+   :name: verification
+   
+   verification/*
