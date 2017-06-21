@@ -5,6 +5,8 @@ Recommendations for Network and Hardware Design
 
 At Alces software, the recommended network design differs slightly depending on the number of users and quantity of systems within the HPC platform. 
 
+.. _cluster-architectures:
+
 Cluster Architectures
 ---------------------
 
@@ -64,6 +66,8 @@ Other Recommendations
 
 BIOS Settings
 ^^^^^^^^^^^^^
+
+It's recommended to ensure that the BIOS settings are reset to default and the latest BIOS version is installed before optimising the settings. This can ensure that any issues that may be present in the configuration before proceeding have been removed.
 
 When it comes to optimising the BIOS settings on a system in the network, the following changes are recommended:
 
