@@ -56,7 +56,7 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
    :name: monitoring
    
    monitoring/*
-   
+
 .. toctree::
    :maxdepth: 1
    :glob:
