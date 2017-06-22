@@ -101,3 +101,7 @@ Master Node Setup
 
     virt-viewer master
 
+Summary
+-------
+
+Further VMs can be deployed on the master server and have services installed onto them. Other VMs can use the ``master.xml`` file as a template with minor changes to hostname and configured network interfaces.
