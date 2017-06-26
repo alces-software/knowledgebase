@@ -29,6 +29,8 @@ A few things to consider when designing/implementing an application deployment s
   - What parts of the application need to be seen by the nodes? (application data? program files? libraries?)
   - How will dependencies be managed? (more on this below)
 
+An application deployment system can be created yourself or `Alces Gridware <http://docs.alces-flight.com/en/release-2017.1/apps/apps.html#gridware-shared-cluster-applications>`_ provides tools and an index of HPC applications for HPC platform installations.
+
 Dependencies
 ^^^^^^^^^^^^
 
