@@ -27,6 +27,8 @@ When it comes to performing many operating installations across nodes in the net
 
 It is worth considering manual, cloning and kickstart solutions for your OS deployment, any one of them could be the ideal solution depending on the number of machines that are being deployed.
 
+.. _repo-management:
+
 Repository Management
 ^^^^^^^^^^^^^^^^^^^^^
 
