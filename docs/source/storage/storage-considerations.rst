@@ -44,3 +44,8 @@ Additional Considerations and Questions
     
   - Is scratch space needed?
   - What level of redundancy/stability is required for the data?
+  - How will the data be backed up?
+  
+    - Will there be off-site backups?
+    - Should a separate storage medium be used?
+    - Does all the data need backing up or only certain files?
