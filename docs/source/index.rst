@@ -12,6 +12,14 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
 .. toctree::
    :maxdepth: 1
    :glob:
+   :caption: Introduction
+   :name: introduction
+   
+   introduction.rst
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
    :caption: Network and Hardware
    :name: network-hardware
    
