@@ -1,7 +1,0 @@
-#Enter rewrite rules, for example:
-#Rewrite all mail from domain to noreply@domain
-#/^(.*@)(.*)$/     noreply@${2}
-#Rewrite all mail from user to user@newdomain.com
-#/^(.*@)(.*)$/     ${1}alces-software.com
-#Rewrite all mail to newuser@newdomain.com
-/^.*$/  test@alces-software.com
