@@ -84,24 +84,148 @@ Master Node Setup
     virsh pool-start local
     virsh pool-autostart local
 
-- Create ``/opt/vm/master.xml`` for provisioning a VM called master (:download:`Available here <master.xml>`)
+Deployment VM Setup
+-------------------
+
+OS Configuration
+^^^^^^^^^^^^^^^^
+
+- Create ``/opt/vm/deploy.xml`` for provisioning a VM called deploy (:download:`Available here <deploy.xml>`)
 
   - This template creates 3 interfaces on the VM (on the primary, management and external networks)
 
-- Create base qcow2 image ``master.qcow2``
+- Create base qcow2 image ``deploy.qcow2``::
+
+    qemu-img create -f qcow2 deploy.qcow2 80G
+
 - Create the VM::
 
-    virsh define master.xml
+    virsh define deploy.xml
 
 - Start the VM::
 
-    virsh start master
+    virsh start deploy
 
 - Connect a VNC-like window to the VM to watch it booting and interact with the terminal::
 
-    virt-viewer master
+    virt-viewer deploy
+
+.. note:: Much like the host system, a minimal installation of CentOS 7 is recommended (as is ensuring that the system is up-to-date with ``yum -y update``)
+
+- Set the hostname of the system (the fully-qualified domain name for this system has additionally added the cluster name)::
+
+    echo 'deploy.testcluster.cluster.local' > /etc/hostname
+
+- Setup the network interfaces
+
+  - Eth0 is bridged onto the primary network - set a static IP for that network in ``/etc/sysconfig/network-scripts/ifcfg-eth0`` 
+  - Eth1 is bridged onto the management network - set a static IP for that network in ``/etc/sysconfig/network-scripts/ifcfg-eth1`` 
+  - Eth2 is bridged onto the external network - this will most likely use DHCP to obtain an IP address ``/etc/sysconfig/network-scripts/ifcfg-eth2`` 
+  
+  .. note:: Add ``ZONE=trusted`` to eth0 & eth1, ``ZONE=external`` to eth2 to ensure the correct firewall zones are used by the interfaces.
+
+- Enable and start firewalld::
+
+    systemctl enable firewalld
+    systemctl start firewalld
+
+- Add the interfaces to the relevant firewall zones::
+
+    firewall-cmd --add-interface eth0 --zone trusted --permanent
+    firewall-cmd --add-interface eth1 --zone trusted --permanent
+    firewall-cmd --add-interface eth2 --zone external --permanent
+  
+- Disable network manager::
+
+    systemctl disable NetworkManager
+    
+- Reboot the VM
+
+- Once the VM is back up it should be able to ping both the primary and management interfaces on the master node. If the ping returns properly then metalware can be configured to enable deployment capabilities on the VM.
+
+Metalware Install
+^^^^^^^^^^^^^^^^^
+
+- Run metalware installer::
+
+    curl -sL http://git.io/metalware-installer | sudo alces_OS=el7 alces_SOURCE_BRANCH=release/2.0.0 /bin/bash
+
+- Install dependencies for TFTP and DHCP:: 
+
+    yum -y install dhcp fence-agents tftp xinetd tftp-server syslinux syslinux-tftpboot httpd php
+
+- Enable the TFTP server::
+
+    sed -ie "s/^.*disable.*$/\    disable = no/g" /etc/xinetd.d/tftp
+    systemctl enable xinetd
+    systemctl enable dnsmasq
+    systemctl enable dhcpd
+
+- Setup TFTP directory with boot files and default PXE file::
+
+    PXE_BOOT=/var/lib/tftpboot/boot
+    mkdir -p "$PXE_BOOT"
+    curl http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/images/pxeboot/initrd.img > "$PXE_BOOT/centos7-initrd.img"
+    curl http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/images/pxeboot/vmlinuz > "$PXE_BOOT/centos7-kernel"
+    mkdir -p /var/lib/tftpboot/pxelinux.cfg/
+    cat << EOF > /var/lib/tftpboot/pxelinux.cfg/default
+    DEFAULT menu
+    PROMPT 0
+    MENU TITLE PXE Menu
+    TIMEOUT 100
+    TOTALTIMEOUT 1000
+    ONTIMEOUT local
+
+    LABEL local
+         MENU LABEL (local)
+         MENU DEFAULT
+         LOCALBOOT 0
+    EOF
+ 
+- Reboot the VM
+
+- Set metalware to use default repository::
+
+    metal repo use https://github.com/alces-software/metalware-default.git
+
+- Populate hostfile with slave nodes (the nodelist can be viewed with ``nodeattr -g nodes``)::
+
+    metal hosts -g nodes
+
+- Create an SSH RSA key that will be used for passwordless SSH to any clients configured by this deployment server::
+
+    ssh-keygen
+
+- Copy the content of ``/root/.ssh/id_rsa.pub`` to ``/var/lib/metalware/repo/config/domain.yml`` after the ``ssh_key`` key
+
+Client Deployment Example
+-------------------------
+
+- Start the deployment VM listening for PXE requests::
+
+    metal hunter -i eth0
+
+- Boot up the client node
+
+- The deployment VM will print a line when the node has connected, when this happens enter the hostname for the system (this should be a hostname that exists in the nodelist mentioned earlier)
+
+- Once the hostname has been added the previous metal command can be cancelled (with ctrl-c)
+
+- Generate DHCP entry for the node::
+
+    metal dhcp -t default
+
+- Start the deployment VM serving installation files to the node (replace slave01 with the hostname of the client node)::
+
+    metal build slave01
+
+- The client node can be rebooted and it will begin an automatic installation of CentOS 7
+
+- The ``metal build`` will automatically exit when the client installation has completed
+
+- Passwordless SSH should now work to the client node
 
 Summary
 -------
 
-Further VMs can be deployed on the master server and have services installed onto them. Other VMs can use the ``master.xml`` file as a template with minor changes to hostname and configured network interfaces.
+The master node is now configured and hosting a deployment VM which will be able to install other nodes in the HPC environment over the network.
