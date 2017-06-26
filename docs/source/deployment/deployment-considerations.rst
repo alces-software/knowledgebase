@@ -36,6 +36,8 @@ Further to managing packages on the local system, the entire network may require
 
   - **Server Management Tools** - Management tools such as puppet, chef or pdsh can execute commands across multiple systems in parallel. This saves time having to individually login and run commands on each node in the system.
   - **Network Package Managers** - Software such as `Alces Gridware <https://gridware.alces-flight.com>`_ can install an application in a centralised storage location such that changes to ``PATH`` and ``LD_LIBRARY_PATH`` on a node is all that is required for it to start using the application.
+  
+For more information regarding network package managers and application deployment, see :ref:`application-deployment`
 
 Additional Considerations and Questions
 ---------------------------------------
