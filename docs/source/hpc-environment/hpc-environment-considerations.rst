@@ -21,10 +21,18 @@ All job schedulers provide a similar level of functionality and customisations s
 Application Deployment
 ----------------------
 
+General management of applications and libraries is mentioned :ref:`repo-management` however this section focuses on installing applications into the entire HPC environment instead of individually to each node system.
 
+A few things to consider when designing/implementing an application deployment system are:
+
+  - How will applications be stored? (central network storage location?)
+  - What parts of the application need to be seen by the nodes? (application data? program files? libraries?)
+  - How will dependencies be managed? (more on this below)
+
+An application deployment system can be created yourself or `Alces Gridware <http://docs.alces-flight.com/en/release-2017.1/apps/apps.html#gridware-shared-cluster-applications>`_ provides tools and an index of HPC applications for HPC platform installations.
 
 Dependencies
 ^^^^^^^^^^^^
 
-
+When it comes to managing dependencies for applications it can either be done with local installations of libraries/packages or by storing these in a centralised location (as suggested with the applications themselves). Dependency control is one of the main reasons that using the same OS for all systems is recommended as it eliminates the risk of applications only working on some systems within the HPC environment.
 

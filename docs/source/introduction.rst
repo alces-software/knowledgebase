@@ -14,3 +14,5 @@ Ensuring that a suitable hardware and network architecture is designed before th
 Performing the hardware build before doing any software configuration guarantees that the network and hardware is properly setup. A partially built network during software setup can lead to unforeseen issues with communication and configuration.
 
 Once the infrastructure has been physically built the software build can proceed. Usually the central servers will be configured first before client and compute nodes are configured.
+
+.. note:: It is recommended to read through all of the documentation before starting to design the HPC platform to understand the scope and considerations.

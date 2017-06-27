@@ -5,6 +5,11 @@ Recommendations for Network and Hardware Design
 
 At Alces software, the recommended network design differs slightly depending on the number of users and quantity of systems within the HPC platform. 
 
+Hardware Recommendations
+------------------------
+
+Recommendations for blades, network switches and storage technologies can be found here - https://github.com/alces-software/knowledgebase/wiki
+
 .. _cluster-architectures:
 
 Cluster Architectures
