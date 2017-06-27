@@ -141,10 +141,12 @@ EOF
 }
 
 install_local() {
+  find /etc/yum.repos.d/*.repo -exec mv -fv {} {}.bak \;
   echo "$LOCALCONF" > /etc/yum.repos.d/cluster.repo
 }
 
 install_upstream() {
+  find /etc/yum.repos.d/*.repo -exec mv -fv {} {}.bak \;
   echo "$UPSTREAMCONF" > /etc/yum.repos.d/cluster.repo
 }
 
@@ -153,12 +155,15 @@ ACTION=$1
 case $ACTION in
 'local')
   echo 'Installing Local conf'
+  install_local
   ;;
 'upstream')
   echo 'Installing upstream conf'
+  install_upstream
   ;;
 'install')
   echo 'Mirroring repos'
+  install_repos
   ;;
 *)
   echo 'Invalid action' >&2 
