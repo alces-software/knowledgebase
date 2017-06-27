@@ -83,7 +83,8 @@ priority=11
 EOF`
 
 install_repos() {
-  yum -y install createrepo yum-utils yum-plugin-priorities
+  yum -y install createrepo yum-utils yum-plugin-priorities httpd
+  systemctl enable httpd.service
 
   mkdir -p /opt/alces
   cd /opt/alces
@@ -121,6 +122,8 @@ cat << EOF > /etc/httpd/comf.d/repo.conf
 Alias /repo /opt/alces/repo
 EOF
 
+  systemctl restart httpd.service
+  
   echo "$UPSTREAMCONF" >> yum.conf
 
   reposync -nm --config yum.conf -r centos
