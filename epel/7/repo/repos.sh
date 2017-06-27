@@ -143,11 +143,13 @@ EOF
 install_local() {
   find /etc/yum.repos.d/*.repo -exec mv -fv {} {}.bak \;
   echo "$LOCALCONF" > /etc/yum.repos.d/cluster.repo
+  yum clean all
 }
 
 install_upstream() {
   find /etc/yum.repos.d/*.repo -exec mv -fv {} {}.bak \;
   echo "$UPSTREAMCONF" > /etc/yum.repos.d/cluster.repo
+  yum clean all
 }
 
 ACTION=$1
