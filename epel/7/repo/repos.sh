@@ -1,103 +1,43 @@
-#!/bin/bash
-#(c)2017 Alces Software Ltd. HPC Consulting Build Suite
-#Job ID: <JOB>
-#Cluster: <CLUSTER>
+<% if localmirror then repotype = localrepos else repotype = upstreamrepos end -%>
+REPOS=`cat << EOF
+<% repotype.each do | name, repo | -%>
+[<%= name %>]
+name=<%= name %>
+baseurl=<%= repo.baseurl %>
+description=<%= if defined?(repo.description) then repo.description else 'No description specified' end %>
+enabled=<%= if defined?(repo.enabled) then repo.enabled else 1 end %>
+skip_if_unavailable=<%= if defined?(repo.skip_if_unavailable) then repo.skip_if_unavailable else 1 end %>
+gpgcheck=<%= if defined?(repo.gpgcheck) then repo.gpgcheck else 0 end %>
+priority=<%= if defined?(repo.priority) then repo.priority else 10 end %>
 
-REPOSERVER=10.10.0.1
-REPOPATH=repo
-
-UPSTREAMCONF=`cat << EOF
-[centos]
-name=CentOS Base
-baseurl=http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
-enabled=1
-skip_if_unavailable=1
-gpgcheck=0
-priority=10
-
-[centos-updates]
-name=CentOS Updates
-baseurl=http://mirror.ox.ac.uk/sites/mirror.centos.org/7/updates/x86_64/
-enabled=1
-skip_if_unavailable=1
-gpgcheck=0
-priority=10
-
-[centos-extras]
-name=CentOS Extras
-baseurl=http://mirror.ox.ac.uk/sites/mirror.centos.org/7/extras/x86_64/
-enabled=1
-skip_if_unavailable=1
-gpgcheck=0
-priority=10
-
-[epel]
-name=Epel
-baseurl=http://anorien.csc.warwick.ac.uk/mirrors/epel/7/x86_64/
-enabled=0
-skip_if_unavailable=1
-gpgcheck=0
-priority=11
+<% end -%>
 EOF`
 
-LOCALCONF=`cat << EOF
-[centos]
-name=CentOS Base
-baseurl=http://$REPOSERVER/$REPOPATH/centos/
-enabled=1
-skip_if_unavailable=1
-gpgcheck=0
-priority=10
+REPOSERVER=<%= repoconfig.reposerver %>
+REPOPATH=<%= repoconfig.repopath %>
 
-[centos-updates]
-name=CentOS Updates
-baseurl=http://$REPOSERVER/$REPOPATH/centos-updates/
-enabled=1
-skip_if_unavailable=1
-gpgcheck=0
-priority=10
+<% if networks.pri.ip == repoconfig.reposerver then -%>
+# Install necessary packages and enable service
+yum -y install createrepo yum-utils yum-plugin-priorities httpd
+systemctl enable httpd.service
 
-[centos-extras]
-name=CentOS Extras
-baseurl=http://$REPOSERVER/$REPOPATH/centos-extras/
-enabled=1
-skip_if_unavailable=1
-gpgcheck=0
-priority=10
+# Setup directories
+if [ ! -d /opt/alces ]; then 
+    mkdir -p /opt/alces
+fi
 
-[custom]
-name=Custom
-baseurl=http://$REPOSERVER/$REPOPATH/custom
-enabled=1
-skip_if_unavailable=1
-gpgcheck=0
-priority=1
+cd /opt/alces
 
-[epel]
-name=Epel
-baseurl=http://$REPOSERVER/$REPOPATH/epel
-enabled=0
-skip_if_unavailable=1
-gpgcheck=0
-priority=11
-EOF`
+if [ ! -d $REPOPATH ] ; then
+    mkdir -p $REPOPATH
+fi
 
-install_repos() {
-  yum -y install createrepo yum-utils yum-plugin-priorities httpd
-  systemctl enable httpd.service
+cd $REPOPATH
 
-  mkdir -p /opt/alces
-  cd /opt/alces
-
-  if [ -d repo ]; then
-    mv -v repo repo-`date +%F_%T`
-  fi
-  mkdir -p repo
-  cd repo
-
-  cat << EOF > yum.conf
+# Yum config settings
+cat << EOF > yum.conf
 [main]
-cachedir=/var/cache/yum/$basearch/$releasever
+cachedir=/var/cache/yum/\$basearch/\$releasever
 keepcache=0
 debuglevel=2
 logfile=/var/log/yum.log
@@ -111,67 +51,54 @@ distroverpkg=centos-release
 reposdir=/dev/null
 EOF
 
-cat << EOF > /etc/httpd/comf.d/repo.conf
-<Directory /opt/alces/repo/>
+# Add upstream repos to yum.conf
+cat << EOF >> yum.conf
+<% upstreamrepos.each do | name, repo | -%>
+[<%= name %>]
+name=<%= name %>
+baseurl=<%= repo.baseurl %>
+description=<%= if defined?(repo.description) then repo.description else 'No description specified' end %>
+enabled=<%= if defined?(repo.enabled) then repo.enabled else 1 end %>
+skip_if_unavailable=<%= if defined?(repo.skip_if_unavailable) then repo.skip_if_unavailable else 1 end %>
+gpgcheck=<%= if defined?(repo.gpgcheck) then repo.gpgcheck else 0 end %>
+priority=<%= if defined?(repo.priority) then repo.priority else 10 end %>
+
+<% end -%>
+EOF
+
+# Setup HTTPD server config file
+cat << EOF > /etc/httpd/conf.d/repo.conf
+<Directory /opt/alces/$REPOPATH/>
     Options Indexes MultiViews FollowSymlinks
     AllowOverride None
     Require all granted
     Order Allow,Deny
-    Allow from 10.10.0.0/255.255.0.0
+    Allow from <%= networks.pri.network %>/255.255.0.0
 </Directory>
-Alias /repo /opt/alces/repo
+Alias /repo /opt/alces/$REPOPATH
 EOF
 
-  systemctl restart httpd.service
-  
-  echo "$UPSTREAMCONF" >> yum.conf
+systemctl restart httpd.service
 
-  reposync -nm --config yum.conf -r centos
-  #distro special
-  mkdir -p centos/LiveOS
-  curl http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/LiveOS/squashfs.img > centos/LiveOS/squashfs.img
+# Build repository
+reposync -nm --config yum.conf -r centos
+mkdir -p centos/LiveOS
+## NOTE: Could this URL be ERBified?? ##
+curl http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/LiveOS/squashfs.img > centos/LiveOS/squashfs.img
 
-  reposync -nm --config yum.conf -r centos-updates
-  reposync -nm --config yum.conf -r centos-extras
-  reposync -nm --config yum.conf -r epel
+reposync -nm --config yum.conf -r centos-updates
+reposync -nm --config yum.conf -r centos-extras
+reposync -nm --config yum.conf -r epel
 
-  mkdir custom
-  createrepo -g comps.xml centos
-  createrepo centos-updates
-  createrepo centos-extras
-  createrepo -g comps.xml epel
-  createrepo custom
-}
+mkdir custom
+createrepo -g comps.xml centos
+createrepo centos-updates
+createrepo centos-extras
+createrepo -g comps.xml epel
+createrepo custom
 
-install_local() {
-  find /etc/yum.repos.d/*.repo -exec mv -fv {} {}.bak \;
-  echo "$LOCALCONF" > /etc/yum.repos.d/cluster.repo
-  yum clean all
-}
-
-install_upstream() {
-  find /etc/yum.repos.d/*.repo -exec mv -fv {} {}.bak \;
-  echo "$UPSTREAMCONF" > /etc/yum.repos.d/cluster.repo
-  yum clean all
-}
-
-ACTION=$1
-
-case $ACTION in
-'local')
-  echo 'Installing Local conf'
-  install_local
-  ;;
-'upstream')
-  echo 'Installing upstream conf'
-  install_upstream
-  ;;
-'install')
-  echo 'Mirroring repos'
-  install_repos
-  ;;
-*)
-  echo 'Invalid action' >&2 
-  exit 1
-  ;;
-esac
+<% else -%>
+find /etc/yum.repos.d/*.repo -exec mv -fv {} {}.bak \;
+echo $REPOS > /etc/yum.repos.d/cluster.repo
+yum clean all
+<% end -%>
