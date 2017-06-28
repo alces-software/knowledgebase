@@ -117,7 +117,7 @@ cat << EOF > /etc/httpd/comf.d/repo.conf
     AllowOverride None
     Require all granted
     Order Allow,Deny
-    Allow from 10.110.0.0/255.255.0.0
+    Allow from 10.10.0.0/255.255.0.0
 </Directory>
 Alias /repo /opt/alces/repo
 EOF
