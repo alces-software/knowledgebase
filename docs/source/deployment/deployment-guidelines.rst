@@ -198,6 +198,81 @@ Metalware Install
 
 - Copy the content of ``/root/.ssh/id_rsa.pub`` to ``/var/lib/metalware/repo/config/domain.yml`` after the ``ssh_key`` key
 
+Repository Mirror Server
+------------------------
+
+On Master Node
+^^^^^^^^^^^^^^
+
+- Create ``/opt/vm/repo.xml`` for deploying the repo VM (:download:`Available here <repo.xml>`)
+
+- Create disk image for the repo VM::
+
+    qemu-img create -f qcow2 repo.qcow2 150G
+
+- Define the VM::
+
+    virsh define repo.xml
+
+On Deploy VM
+^^^^^^^^^^^^
+
+- Add the repo server to ``/opt/metalware/etc/genders``, an example entry is below::
+
+    # SERVICES
+    repo1 repo,services,cluster,domain
+
+- Create a deployment file specifically for ``repo1`` at ``/var/lib/metalware/repo/config/repo1.yaml`` with the following content::
+
+    Networks:
+      pri:
+        ip: 10.10.0.2
+
+      mgt:
+        defined: false
+
+- Add the server to the hosts file::
+
+    metal hosts repo1
+
+.. note:: Currently the other interfaces will be setup despite ``defined: false`` in the configuration file
+
+- Start PXE server listening for client requests::
+
+    metal hunter -i eth0
+
+- The deployment VM will print a line when the node has connected, when this happens enter the hostname for the system (this should be a hostname that exists in the nodelist mentioned earlier)
+
+- Once the hostname has been added the previous metal command can be cancelled (with ctrl-c)
+
+- Add dhcp host entry for repo1::
+
+    metal dhcp -t default
+
+- Start the build server::
+
+    metal build repo1
+
+- Boot the repo VM up and the PXE boot will automatically start the install
+
+- The ``metal build`` will automatically exit when the client installation has completed
+
+- The repo VM will now be up and can be logged in with passwordless SSH from the deployment VM
+
+On Repo VM
+^^^^^^^^^^
+
+- Run the repos.sh script (this is performed within a screen session as the cloning of the repo takes quite a while)::
+
+    screen -dmSL install ./repos.sh install
+
+Using Local Yum Mirror Repo
+---------------------------
+
+- Update kickstart files
+
+- What needs to be changed on client for yum installs to use local repo during installation?
+
 Client Deployment Example
 -------------------------
 
