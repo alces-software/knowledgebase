@@ -16,9 +16,11 @@ EOF`
 REPOSERVER=<%= repoconfig.reposerver %>
 REPOPATH=<%= repoconfig.repopath %>
 
+yum install yum-plugin-priorities
+
 <% if networks.pri.ip == repoconfig.reposerver && localmirror then -%>
 # Install necessary packages and enable service
-yum -y install createrepo yum-utils yum-plugin-priorities httpd
+yum -y install createrepo yum-utils httpd
 systemctl enable httpd.service
 
 # Setup directories
