@@ -16,7 +16,7 @@ EOF`
 REPOSERVER=<%= repoconfig.reposerver %>
 REPOPATH=<%= repoconfig.repopath %>
 
-<% if networks.pri.ip == repoconfig.reposerver then -%>
+<% if networks.pri.ip == repoconfig.reposerver && localmirror then -%>
 # Install necessary packages and enable service
 yum -y install createrepo yum-utils yum-plugin-priorities httpd
 systemctl enable httpd.service
@@ -99,6 +99,6 @@ createrepo custom
 
 <% else -%>
 find /etc/yum.repos.d/*.repo -exec mv -fv {} {}.bak \;
-echo $REPOS > /etc/yum.repos.d/cluster.repo
+echo "$REPOS" > /etc/yum.repos.d/cluster.repo
 yum clean all
 <% end -%>
