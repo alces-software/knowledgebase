@@ -231,6 +231,75 @@ On Deploy VM
       mgt:
         defined: false
 
+- Add the following to ``/var/lib/metalware/repo/config/domain.yaml`` (the reposerver IP should match the one specified in ``repo1.yaml``)::
+
+    localmirror: true
+    repoconfig:
+      reposerver: 10.10.0.2
+      repopath: repo
+      repourl: http://<%= repoconfig.reposerver %>/<%= repoconfig.repopath %>
+    upstreamrepos:
+      centos:
+        name: centos
+        baseurl: http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
+      centos-updates:
+        name: centos-updates
+        baseurl: http://mirror.ox.ac.uk/sites/mirror.centos.org/7/updates/x86_64/
+      centos-extras:
+        name: centos-extras
+        baseurl: http://mirror.ox.ac.uk/sites/mirror.centos.org/7/extras/x86_64/
+      epel:
+        name: epel
+        baseurl: http://anorien.csc.warwick.ac.uk/mirrors/epel/7/x86_64/
+        enabled: 0
+        priority: 11
+    localrepos:
+      centos:
+        name: centos
+        baseurl: <%= repoconfig.repourl %>/centos/
+      centos-updates:
+        name: centos-updates
+        baseurl: <%= repoconfig.repourl %>/centos-updates/
+      centos-extras:
+        name: centos-extras
+        baseurl: <%= repoconfig.repourl %>/centos-extras/
+      custom:
+        name: custom
+        baseurl: <%= repoconfig.repourl %>/custom/
+        priority: 1
+      epel:
+        name: epel
+        baseurl: <%= repoconfig.repourl %>/epel/
+        enabled: 0
+        priority: 11
+
+.. note:: Any repos added to ``domain.yaml`` must include a ``name`` and a ``baseurl`` element. Optionally the repo definitions can include ``description``, ``enabled``, ``skip_if_unavailable``, ``gpgcheck`` and ``priority`` to override the default values that are set when generating the repos.
+
+- Additionally, add the following to the ``scripts:`` key list in ``/var/lib/metalware/repo/config/domain.yaml``::
+
+    - /opt/alces/install/scripts/repos.sh
+
+- Modify ``/var/lib/metalware/repo/kickstart/default``
+
+  - Old line::
+  
+      #url --url=http://${_ALCES_BUILDSERVER}/${_ALCES_CLUSTER}/repo/centos/
+      url --url=http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
+  
+  - New line::
+  
+      <% if localmirror -%>
+      url --url=<%= repoconfig.repourl %>/centos/
+      <% else -%>
+      curl --url=http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
+      <% end -%>
+
+- Download the repos.sh script to the above location::
+
+    mkdir -p /opt/alces/install/scripts/
+    cd /opt/alces/install/scripts/
+    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/repo/repos.sh
+
 - Add the server to the hosts file::
 
     metal hosts repo1
@@ -257,21 +326,7 @@ On Deploy VM
 
 - The ``metal build`` will automatically exit when the client installation has completed
 
-- The repo VM will now be up and can be logged in with passwordless SSH from the deployment VM
-
-On Repo VM
-^^^^^^^^^^
-
-- Run the repos.sh script (this is performed within a screen session as the cloning of the repo takes quite a while)::
-
-    screen -dmSL install ./repos.sh install
-
-Using Local Yum Mirror Repo
----------------------------
-
-- Update kickstart files
-
-- What needs to be changed on client for yum installs to use local repo during installation?
+- The repo VM will now be up and can be logged in with passwordless SSH from the deployment VM and will have a clone of the CentOS upstream repositories locally.
 
 Client Deployment Example
 -------------------------
