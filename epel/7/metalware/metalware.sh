@@ -27,3 +27,5 @@ LABEL local
 EOF
 
 systemctl restart xinetd
+
+mkdir -p /root/.ssh; echo 'StrictHostKeyChecking no' >> /root/.ssh/config
