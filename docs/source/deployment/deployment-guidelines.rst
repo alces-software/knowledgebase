@@ -243,7 +243,7 @@ On Deploy VM
 
 .. note:: Any repos added to ``domain.yaml`` must include a ``name`` and a ``baseurl`` element. Optionally the repo definitions can include ``description``, ``enabled``, ``skip_if_unavailable``, ``gpgcheck`` and ``priority`` to override the default values that are set when generating the repos.
 
-- Additionally, add the following to the ``scripts:`` key list in ``/var/lib/metalware/repo/config/domain.yaml``::
+- Additionally, add the following to the ``setup:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``::
 
     - /opt/alces/install/scripts/repos.sh
 
@@ -268,33 +268,35 @@ On Deploy VM
     cd /opt/alces/install/scripts/
     wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/repo/repos.sh
 
-- Add the server to the hosts file::
-
-    metal hosts repo1
-
-.. note:: Currently the other interfaces will be setup despite ``defined: false`` in the configuration file
-
-- Start PXE server listening for client requests::
-
-    metal hunter -i eth0
-
-- The deployment VM will print a line when the node has connected, when this happens enter the hostname for the system (this should be a hostname that exists in the nodelist mentioned earlier)
-
-- Once the hostname has been added the previous metal command can be cancelled (with ctrl-c)
-
-- Add dhcp host entry for repo1::
-
-    metal dhcp -t default
-
-- Start the build server::
-
-    metal build repo1
-
-- Boot the repo VM up and the PXE boot will automatically start the install
-
-- The ``metal build`` will automatically exit when the client installation has completed
+- Follow :ref:`client-deployment` to setup the compute nodes
 
 - The repo VM will now be up and can be logged in with passwordless SSH from the deployment VM and will have a clone of the CentOS upstream repositories locally.
+
+Compute Node Infiniband Setup
+-----------------------------
+
+- Create a configuration file specifically for the nodes group ``/var/lib/metalware/repo/config/nodes.yaml`` with the ib network setup::
+
+    ib:
+      defined: true
+      ib_use_installer: false
+      mellanoxinstaller: http://route/to/MLNX_OFED_LINUX-x86_64.tgz
+
+.. note:: If you want to install the Mellanox driver (and not use the IB drivers from the CentOS repositories), set ``ib_use_installer`` to ``true`` and set ``mellanoxinstaller`` to the location of the mellanox OFED installer.
+
+- Download the ``infiniband.sh`` script from the knowledgebase::
+
+    mkdir -p /opt/alces/install/scripts/
+    cd /opt/alces/install/scripts/
+    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/infiniband/infiniband.sh
+
+- Add the script to the ``setup:`` namespace list::
+
+    - /opt/alces/install/scripts/infiniband.sh
+
+- Follow :ref:`client-deployment` to setup the compute nodes
+
+.. _client-deployment:
 
 Client Deployment Example
 -------------------------
@@ -316,6 +318,8 @@ Client Deployment Example
 - Start the deployment VM serving installation files to the node (replace slave01 with the hostname of the client node)::
 
     metal build slave01
+
+.. note:: If building multiple systems the genders group can be specified instead of the node hostname. For example, all compute nodes can be built with ``metal build -g nodes``.
 
 - The client node can be rebooted and it will begin an automatic installation of CentOS 7
 
