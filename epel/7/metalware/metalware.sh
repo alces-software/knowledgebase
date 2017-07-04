@@ -80,7 +80,7 @@ subnet ${PRVNETWORK} netmask ${PRVNETMASK} {
 EOF
 
 cat << EOF > /etc/httpd/conf.d/deployment.conf
-<Directory /var/lib/metalware/repos/>
+<Directory /var/lib/metalware/rendered/>
     Options Indexes MultiViews FollowSymlinks
     AllowOverride None
     Require all granted
@@ -88,7 +88,7 @@ cat << EOF > /etc/httpd/conf.d/deployment.conf
     Allow from $PRVNETWORK/$PRVNETMASK
     Allow from 127.0.0.1/8
 </Directory>
-Alias /repos /var/lib/metalware/repos/
+Alias /metalware /var/lib/metalware/rendered/
 EOF
 
 mkdir -p /var/lib/metalware/rendered/exec/
