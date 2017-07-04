@@ -156,7 +156,7 @@ Metalware Install
 
     metal repo use https://github.com/alces-software/metalware-default.git
 
-- Populate hostfile with slave nodes (the nodelist can be viewed with ``nodeattr -g nodes``)::
+- Populate hostfile with slave nodes (the nodelist can be viewed with ``nodeattr -n nodes``)::
 
     metal hosts -g nodes
 
@@ -290,7 +290,7 @@ Compute Node Infiniband Setup
     cd /opt/alces/install/scripts/
     wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/infiniband/infiniband.sh
 
-- Add the script to the ``setup:`` namespace list::
+- Add the script to the ``scripts:`` namespace list::
 
     - /opt/alces/install/scripts/infiniband.sh
 
