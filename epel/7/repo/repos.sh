@@ -34,6 +34,10 @@ if [ ! -d $REPOPATH ] ; then
     mkdir -p $REPOPATH
 fi
 
+if [ ! -d installers ] ; then
+    mkdir -p installers
+fi
+
 cd $REPOPATH
 
 # Yum config settings
@@ -78,6 +82,15 @@ cat << EOF > /etc/httpd/conf.d/repo.conf
     Allow from <%= networks.pri.network %>/255.255.0.0
 </Directory>
 Alias /repo /opt/alces/$REPOPATH
+
+<Directory /opt/alces/installers/>
+    Options Indexes MultiViews FollowSymlinks
+    AllowOverride None
+    Require all granted
+    Order Allow,Deny
+    Allow from <%= networks.pri.network %>/255.255.0.0
+</Directory>
+Alias /installers /opt/alces/installers
 EOF
 
 systemctl restart httpd.service
