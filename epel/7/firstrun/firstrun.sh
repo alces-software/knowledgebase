@@ -1,4 +1,4 @@
-mkdir -p /var/lib/firstrun/
+mkdir -p /var/lib/firstrun/{bin,scripts}
 mkdir -p /var/log/firstrun/
 
 cat << EOF > /var/lib/firstrun/bin/firstrun
