@@ -166,6 +166,12 @@ Metalware Install
 
 - Copy the content of ``/root/.ssh/id_rsa.pub`` to ``/var/lib/metalware/repo/config/domain.yml`` after the ``ssh_key`` key
 
+- Set the IPMI/BMC admin password in ``/var/lib/metalware/repo/config/domain.yaml`` in the ``bmc:`` namespace::
+
+    bmcpassword: 'Pa55Word'
+
+- Uncomment the ``PASSWORD=`` line in ``/opt/metalware/etc/ipmi.conf`` and replace ``password`` with the IPMI password above
+
 Repository Mirror Server
 ------------------------
 
@@ -281,6 +287,7 @@ Compute Node Infiniband Setup
       defined: true
       ib_use_installer: false
       mellanoxinstaller: http://route/to/MLNX_OFED_LINUX-x86_64.tgz
+      ip: 
 
 .. note:: If you want to install the Mellanox driver (and not use the IB drivers from the CentOS repositories), set ``ib_use_installer`` to ``true`` and set ``mellanoxinstaller`` to the location of the mellanox OFED installer.
 
