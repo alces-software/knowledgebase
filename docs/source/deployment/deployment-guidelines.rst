@@ -268,7 +268,7 @@ On Deploy VM
       curl --url=http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
       <% end -%>
 
-- Download the repos.sh script to the above location::
+- Download the ``repos.sh`` script to the above location::
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
@@ -277,6 +277,21 @@ On Deploy VM
 - Follow :ref:`client-deployment` to setup the compute nodes
 
 - The repo VM will now be up and can be logged in with passwordless SSH from the deployment VM and will have a clone of the CentOS upstream repositories locally.
+
+First Boot Script Environment Setup
+-----------------------------------
+
+- Setting up the first boot script environment allows for things like Nvidia drivers and other installers to execute at boot time on a node in the correct environment
+
+- Download the first run script from the knowledgebase::
+
+    mkdir -p /opt/alces/install/scripts/
+    cd /opt/alces/install/scripts/
+    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/firstrun/firstrun.sh
+
+- Add the script to the beginning of the ``scripts:`` namespace in ``/var/lib/metalware/repo/config/domain.yaml``::
+
+    - /opt/alces/install/scripts/firstrun.sh
 
 Compute Node Infiniband Setup
 -----------------------------
@@ -297,11 +312,30 @@ Compute Node Infiniband Setup
     cd /opt/alces/install/scripts/
     wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/infiniband/infiniband.sh
 
-- Add the script to the ``scripts:`` namespace list::
+- Add the script to the ``scripts:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``::
 
     - /opt/alces/install/scripts/infiniband.sh
 
 - Follow :ref:`client-deployment` to setup the compute nodes
+
+Compute Node Nvidia Driver Setup
+--------------------------------
+
+- If the repo VM was configured then download the Nvidia installer to ``/opt/alces/installers/`` on the repo VM as ``nvidia.run``
+
+.. note:: If no repo VM has been setup then a server definition on the deployment system will need to be setup.
+
+- Download the ``nvidia.sh`` script from the knowledgebase::
+
+    mkdir -p /opt/alces/install/scripts/
+    cd /opt/alces/install/scripts/
+    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nvidia/nvidia.sh
+
+.. note:: If the HTTP server has been setup elsewhere then replace ``URL=`` with the path to the directory containing the ``nvidia.run`` script.
+
+- Add the script to the ``scripts:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``::
+
+    - /opt/alces/install/scripts/infiniband.sh
 
 .. _client-deployment:
 
