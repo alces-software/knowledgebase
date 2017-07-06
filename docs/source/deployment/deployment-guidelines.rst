@@ -278,6 +278,8 @@ On Deploy VM
 
 - The repo VM will now be up and can be logged in with passwordless SSH from the deployment VM and will have a clone of the CentOS upstream repositories locally.
 
+.. _first-boot:
+
 First Boot Script Environment Setup
 -----------------------------------
 
@@ -321,6 +323,8 @@ Compute Node Infiniband Setup
 Compute Node Nvidia Driver Setup
 --------------------------------
 
+- This requires the :ref:`First Boot Script Environment <first-boot>` to be setup
+
 - If the repo VM was configured then download the Nvidia installer to ``/opt/alces/installers/`` on the repo VM as ``nvidia.run``
 
 .. note:: If no repo VM has been setup then a server definition on the deployment system will need to be setup.
@@ -335,7 +339,7 @@ Compute Node Nvidia Driver Setup
 
 - Add the script to the ``scripts:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``::
 
-    - /opt/alces/install/scripts/infiniband.sh
+    - /opt/alces/install/scripts/nvidia.sh
 
 .. _client-deployment:
 
