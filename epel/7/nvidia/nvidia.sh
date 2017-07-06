@@ -6,10 +6,11 @@ echo "blacklist nouveau" >> /etc/modprobe.d/blacklist.conf
 
 rmmod -v nouveau
 
-URL="http://<%=repoconfig.reposerver%>/installers"
-
-curl $URL/nvidia.run > /tmp/nvidia.run
-
 yum -y groupinstall "Development Tools"
-sh /tmp/nvidia.run -a -q -s
+
+cat << EOF > /var/lib/firstrun/scripts/nvidia.bash
+URL=http://<%=repoconfig.reposerver%>/installers/
+curl \$URL/nvidia.run > /tmp/nvidia.run
+sh /tmp/nvidia.run -a -q -s --kernel-source-path /usr/src/kernels/*
+EOF
 <% end -%>
