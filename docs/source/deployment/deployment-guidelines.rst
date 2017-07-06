@@ -265,7 +265,7 @@ On Deploy VM
       <% if localmirror -%>
       url --url=<%= repoconfig.repourl %>/centos/
       <% else -%>
-      curl --url=http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
+      url --url=http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
       <% end -%>
 
 - Download the ``repos.sh`` script to the above location::
