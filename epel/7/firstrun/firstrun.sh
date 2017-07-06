@@ -10,8 +10,8 @@ function fr {
   echo "Running Firstrun scripts.."
   if [ -f /var/lib/firstrun/RUN ]; then
     for script in \`find /var/lib/firstrun/scripts -type f -iname *.bash\`; do 
-      echo "Running \\$script.." >> /root/symphony-firstrun.log 2>&1
-      /bin/bash \\$script >> /root/symphony-firstrun.log 2>&1
+      echo "Running \$script.." >> /root/firstrun.log 2>&1
+      /bin/bash \$script >> /root/firstrun.log 2>&1
     done
     rm -f /var/lib/firstrun/RUN
   fi
@@ -34,7 +34,7 @@ EOF
 cat << EOF >> /etc/systemd/system/firstrun.service
 [Unit]
 Description=FirstRun service
-After=network.target remote-fs.target
+After=network-online.target remote-fs.target
 Before=display-manager.service getty@tty1.service
 
 [Service]
@@ -52,3 +52,4 @@ EOF
 chmod 664 /etc/systemd/system/firstrun.service
 systemctl daemon-reload
 systemctl enable firstrun.service
+touch /var/lib/firstrun/RUN
