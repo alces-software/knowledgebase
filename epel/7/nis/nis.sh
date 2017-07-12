@@ -1,7 +1,7 @@
 <% if networks.pri.ip == netconfig.nisserver -%>
 
 yum install -y ypserv yp-tools
-<% if defined?(nfsmounts.users) -%>
+<% if !nfsmounts.users.nil? -%>
 # Modify default user home directory
 sed -i -e 's|^HOME=.*$|HOME=<%= nfsmounts.users %>|g' /etc/default/useradd
 <% end -%>
