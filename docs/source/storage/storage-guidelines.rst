@@ -17,12 +17,12 @@ Default disk configuration::
 
     disksetup: |
       zerombr
-      bootloader --location=mbr --driveorder=<%= disk %> --append="$bootloaderappend"
+      bootloader --location=mbr --driveorder=sda --append="$bootloaderappend"
       clearpart --all --initlabel
 
       #Disk partitioning information
-      part /boot --fstype ext4 --size=4096 --asprimary --ondisk <%= disk %>
-      part pv.01 --size=1 --grow --asprimary --ondisk <%= disk %>
+      part /boot --fstype ext4 --size=4096 --asprimary --ondisk sda
+      part pv.01 --size=1 --grow --asprimary --ondisk sda
       volgroup system pv.01
       logvol  /  --fstype ext4 --vgname=system  --size=16384 --name=root
       logvol  /var --fstype ext4 --vgname=system --size=16384 --name=var
