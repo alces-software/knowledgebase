@@ -55,13 +55,15 @@ Software RAID configuration::
 
       raid /tmp --fstype ext4 --fstype=ext4 --device=md1 --level=0 raid.03 raid.04
 
-NFS & NIS Server Setup
-----------------------
+To override the default disk configuration, create a config file with the node/group name in ``/var/lib/metalware/repo/config/`` and add the new ``disksetup:`` key to it.
+
+NFS Server Setup
+----------------
 
 On Master Node
 ^^^^^^^^^^^^^^
 
-- Create ``/opt/vm/storage.xml`` for deploying the repo VM (:download:`Available here <storage.xml>`)
+- Create ``/opt/vm/storage.xml`` for deploying the storage VM (:download:`Available here <storage.xml>`)
 
 - Create disk image for the storage VM::
 
@@ -87,29 +89,41 @@ On Deploy VM
     
       mgt:
         defined: disabled
+    
+    nfsconfig:
+      is_server: true
+    
+    nfsexports:
+      /export/users:
+      /export/data:
+        # Modify the export options [optional]
+        #options: <%= networks.pri.network %>/<%= networks.pri.netmask %>(ro,no_root_squash,async)
 
-- Add the following to ``/var/lib/metalware/repo/config/domain.yaml`` (the nfsserver IP should match the one specified in ``storage1.yaml``):
+.. note:: The ``options:`` namespace is optional, if not specified then the default export options will be used (``<%= networks.pri.network %>/<%= networks.pri.netmask %>(rw,no_root_squash,sync)``)
 
-    netconfig:
-      nfsserver: 10.10.0.3
-      nisserver: 10.10.0.3
-      nisdomain: nis.<%= domain %>
+- Add the following to ``/var/lib/metalware/repo/config/domain.yaml``::
+
+    nfsconfig:
+      is_server: false
     nfsmounts:
-      users: /users
-      data: /data
+      /users:
+        server: 10.10.0.3
+        export: /export/users
+      /data:
+        server: 10.10.0.3
+        export: /export/data
+        options: intr,sync,rsize=32768,wsize=32768,_netdev
 
-.. note:: Add any NFS exports to be created as keys underneath ``nfsmounts:``
+.. note:: Add any NFS exports to be created as keys underneath ``nfsmounts:``. The ``options:`` namespace is only needed if wanting to override the default mount options (``intr,rsize=32768,wsize=32768,_netdev``)
 
-- Additionally, add the following to the ``setup:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``:::
+- Additionally, add the following to the ``setup:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``::
 
     - /opt/alces/install/scripts/nfs.sh
-    - /opt/alces/install/scripts/nis.sh
 
-- Download the ``nfs.sh`` and ``nis.sh`` scripts to the above location::
+- Download the ``nfs.sh`` script to the above location::
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
     wget htps://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nfs/nfs.sh
-    wget htps://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nis/nis.sh
 
 - Follow :ref:`client-deployment` to setup the compute nodes
