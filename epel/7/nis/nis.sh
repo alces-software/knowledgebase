@@ -1,14 +1,14 @@
-<% if networks.pri.ip == netconfig.nisserver -%>
+<% if nisconfig.is_server -%>
 
 yum install -y ypserv yp-tools
-<% if !nfsmounts.users.nil? -%>
+<% if !nisconfig.users_dir.nil? -%>
 # Modify default user home directory
-sed -i -e 's|^HOME=.*$|HOME=<%= nfsmounts.users %>|g' /etc/default/useradd
+sed -i -e 's|^HOME=.*$|HOME=<%= nisconfig.users_dir %>|g' /etc/default/useradd
 <% end -%>
 
-echo "domain <%= netconfig.nisdomain %> server 127.0.0.1" > /etc/yp.conf
-nisdomainname <%= netconfig.nisdomain %>
-echo "NISDOMAIN=<%= netconfig.nisdomain %>" > /etc/sysconfig/network
+echo "domain <%= nisconfig.nisdomain %> server 127.0.0.1" > /etc/yp.conf
+nisdomainname <%= nisconfig.nisdomain %>
+echo "NISDOMAIN=<%= nisconfig.nisdomain %>" > /etc/sysconfig/network
 
 cat << EOF > /var/yp/sercurenets
 host 127.0.0.1
@@ -27,9 +27,9 @@ make -C /var/yp
 <% else -%>
 
 yum -y install ypbind
-echo "domain <%= netconfig.nisdomain %> server <%= netconfig.nisserver %>" > /etc/yp.conf
-nisdomainname <%= netconfig.nisdomain %>
-echo "NISDOMAIN=<%= netconfig.nisdomain %>" > /etc/sysconfig/network
+echo "domain <%= nisconfig.nisdomain %> server <%= nisconfig.nisserver %>" > /etc/yp.conf
+nisdomainname <%= nisconfig.nisdomain %>
+echo "NISDOMAIN=<%= nisconfig.nisdomain %>" > /etc/sysconfig/network
 
 sed -i -e 's/^passwd:.*/passwd:     files nis/g' \
 -e 's/^shadow:.*/shadow:     files nis/g' \
