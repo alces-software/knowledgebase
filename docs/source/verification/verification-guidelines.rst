@@ -40,5 +40,8 @@ Checking Hardware and Software Configuration
 
     pdsh -g groupname 'nvidia-smi'
 
+- Grab serial numbers::
+
+    pdsh -g groupname 'dmidecode -t baseboard |grep -i serial'
 
 
