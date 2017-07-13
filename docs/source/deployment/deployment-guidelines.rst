@@ -198,12 +198,15 @@ On Deploy VM
 
 - Create a deployment file specifically for ``repo1`` at ``/var/lib/metalware/repo/config/repo1.yaml`` with the following content::
 
-    Networks:
+    networks:
       pri:
         ip: 10.10.0.2
 
       mgt:
         defined: false
+    
+    repoconfig:
+      is_server: true
 
 - Add the following to ``/var/lib/metalware/repo/config/domain.yaml`` (the reposerver IP should match the one specified in ``repo1.yaml``)::
 
@@ -212,21 +215,30 @@ On Deploy VM
       reposerver: 10.10.0.2
       repopath: repo
       repourl: http://<%= repoconfig.reposerver %>/<%= repoconfig.repopath %>
+      is_server: false
     upstreamrepos:
       centos:
         name: centos
         baseurl: http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
+        # description to be used for yum repo [optional] 
+        #description: The base CentOS repository
       centos-updates:
         name: centos-updates
         baseurl: http://mirror.ox.ac.uk/sites/mirror.centos.org/7/updates/x86_64/
+        # check GPG signatures of packages [optional]
+        #gpgcheck: 1
       centos-extras:
         name: centos-extras
         baseurl: http://mirror.ox.ac.uk/sites/mirror.centos.org/7/extras/x86_64/
       epel:
         name: epel
         baseurl: http://anorien.csc.warwick.ac.uk/mirrors/epel/7/x86_64/
+        # disable the repository [optional]
         enabled: 0
+        # lower the repo priority [optional]
         priority: 11
+        # don't skip repo if it isn't available [optional]
+        #skip_if_unavailable: 0
     localrepos:
       centos:
         name: centos
@@ -240,6 +252,7 @@ On Deploy VM
       custom:
         name: custom
         baseurl: <%= repoconfig.repourl %>/custom/
+        # increase the repo priority [optional]
         priority: 1
       epel:
         name: epel
@@ -247,7 +260,7 @@ On Deploy VM
         enabled: 0
         priority: 11
 
-.. note:: Any repos added to ``domain.yaml`` must include a ``name`` and a ``baseurl`` element. Optionally the repo definitions can include ``description``, ``enabled``, ``skip_if_unavailable``, ``gpgcheck`` and ``priority`` to override the default values that are set when generating the repos.
+.. note:: Any repos added to ``domain.yaml`` must include a ``name`` and a ``baseurl`` element. Optionally the repo definitions can include ``description``, ``enabled`` (default: 1), ``skip_if_unavailable`` (default: 1), ``gpgcheck`` (default: 0) and ``priority`` (default: 10) to override the default values that are set when generating the repos.
 
 - Additionally, add the following to the ``setup:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``::
 
@@ -355,6 +368,10 @@ Client Deployment Example
 - The deployment VM will print a line when the node has connected, when this happens enter the hostname for the system (this should be a hostname that exists in the nodelist mentioned earlier)
 
 - Once the hostname has been added the previous metal command can be cancelled (with ctrl-c)
+
+- Add the host entry for the node::
+
+    metal hosts node_name
 
 - Generate DHCP entry for the node::
 
