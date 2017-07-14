@@ -302,3 +302,5 @@ echo "$GMOND" > /etc/ganglia/gmond.conf
 
 systemctl enable gmond
 systemctl restart gmond
+
+yum-config-manager --disable epel
