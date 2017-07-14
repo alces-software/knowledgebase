@@ -250,6 +250,7 @@ On Deploy VM
         name: centos-extras
         baseurl: <%= repoconfig.repourl %>/centos-extras/
       custom:
+        # custom repo at /opt/alces/repo/custom for storing any additional RPMs
         name: custom
         baseurl: <%= repoconfig.repourl %>/custom/
         # increase the repo priority [optional]
