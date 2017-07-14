@@ -3,8 +3,8 @@
 Recommendations for Monitoring the HPC Platform
 ===============================================
 
-Setting Up Ganglia Server
--------------------------
+Setting Up Monitor Server (Ganglia & Nagios)
+--------------------------------------------
 
 On Master Node
 ^^^^^^^^^^^^^^
@@ -38,23 +38,30 @@ On Deploy VM
     
     ganglia:
       is_server: true
+      
+    nagios:
+      is_server: true
 
 - Add the following to ``/var/lib/metalware/repo/config/domain.yaml``::
 
     ganglia:
       server: 10.10.0.5
       is_server: false
+    nagios:
+      is_server: false
 
 - Additionally, add the following to the ``setup:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``:::
 
     - /opt/alces/install/scripts/ganglia.sh
+    - /opt/alces/install/scripts/nagios.sh
 
-- Download the ``ganglia.sh`` script to the above location::
+- Download the ``ganglia.sh`` and ``nagios.sh`` scripts to the above location::
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
     wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/ganglia/ganglia.sh
+    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nagios/nagios.sh
 
 - Follow :ref:`client-deployment` to setup the compute nodes
 
-
+This will setup minimal installations of both Ganglia and Nagios. All nodes within the domain will be built to connect to these services such that they can be monitored. It is possible to expand upon the metrics monitored and notification preferences.
