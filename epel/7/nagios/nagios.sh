@@ -12,7 +12,6 @@ sed -i -e 's/bare_update_check.*/bare_update_check=1/g' \
 
 # setup hosts
 HOSTS=`cat << EOF
-
 <% alces.genders.domain.each do |node| %>
 define host{
     use                     linux-server
@@ -83,8 +82,6 @@ echo "$HOSTS" > /etc/nagios/conf.d/domain.cfg
 systemctl enable nagios
 systemctl restart httpd nagios
 <% end %>
-
-git clone https://github.com/alces-software/symphony-nagiosplugins.git /usr/lib64/nagios/plugins/alces
 
 systemctl enable nrpe
 systemctl restart nrpe
