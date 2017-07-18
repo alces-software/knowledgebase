@@ -39,7 +39,8 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
    :caption: Deployment
    :name: deployment
    
-   deployment/*
+   deployment/deployment-considerations
+   deployment/deployment-guidelines
 
 .. toctree::
    :maxdepth: 1
