@@ -5,6 +5,8 @@ Recommendations for Software and Application Deployment
 
 In this section the recommended CentOS 7 configuration for the master node system (as a virtualisation host for other services) is described. 
 
+.. note:: If you wish to setup the HPC platform in the cloud then follow these :ref:`AWS Environment Setup <deployment-aws>` instructions.
+
 Master Node Setup
 -----------------
 
