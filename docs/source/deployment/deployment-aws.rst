@@ -20,9 +20,51 @@ AWS has a command line tool that can be used to create and manage resources. The
 
     aws ec2 create-security-group --description my-sg1 --group-name my-sg1 --vpc-id my_vpc_id
 
+- Create a file ``sg-permissions.json`` in the current directory with the following content::
+
+    [
+      {
+        "IpProtocol": "-1",
+        "IpRanges": [
+          {
+            "CidrIp": "10.75.0.0/16"
+          }
+        ]
+      },
+      {
+        "IpProtocol": "tcp",
+        "FromPort": 22,
+        "ToPort": 22,
+        "IpRanges": [
+          {
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      },
+      {
+        "IpProtocol": "tcp",
+        "FromPort": 443,
+        "ToPort": 443,
+        "IpRanges": [
+          {
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      },
+      {
+        "IpProtocol": "tcp",
+        "FromPort": 80,
+        "ToPort": 80,
+        "IpRanges": [
+          {
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      }
+    ]
+
 - Add rules to security group (replacing ``my_group_id`` with the GroupId from the above command output)::
 
-    wget https://gist.githubusercontent.com/mjtko/2725a200fabf6395713005fce54063fa/raw/sg-permissions.json
     aws ec2 authorize-security-group-ingress --group-id my_group_id --ip-permissions file://sg-permissions.json
 
 - Define subnet for the VPC (replacing ``my_vpc_id`` with the VpcId from earlier)::
@@ -45,14 +87,46 @@ AWS has a command line tool that can be used to create and manage resources. The
 
     aws ec2 create-route --route-table-id my_rtb_id --destination-cidr-block 0.0.0.0/0 --gateway-id my_igw_id
 
+- Create a file ``ec2-role-trust-policy.json`` in the current directory with the following content::
+
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": { "Service": "ec2.amazonaws.com"},
+          "Action": "sts:AssumeRole"
+        }
+      ]
+    }
+
 - Create autoscaling role::
 
-    wget https://gist.githubusercontent.com/mjtko/2725a200fabf6395713005fce54063fa/raw/ec2-role-trust-policy.json
     aws iam create-role --role-name autoscaling --assume-role-policy-document file://ec2-role-trust-policy.json
+
+- Create a file ``ec2-role-access-policy.json`` in the current directory with the following content::
+
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "autoscaling:DescribeAutoScalingGroups",
+            "autoscaling:SetDesiredCapacity",
+            "autoscaling:UpdateAutoScalingGroup",
+            "autoscaling:TerminateInstanceInAutoScalingGroup",
+            "ec2:DescribeTags"
+          ],
+          "Resource": [
+            "*"
+          ]
+        }
+      ]
+    }
 
 - Set role policy for above role::
 
-    wget https://gist.githubusercontent.com/mjtko/2725a200fabf6395713005fce54063fa/raw/ec2-role-access-policy.json
     aws iam put-role-policy --role-name my-autoscaling-role --policy-name My-Autoscaling-Permissions --policy-document file://ec2-role-access-policy.json
 
 - Create instance profile for autoscaling::
@@ -63,17 +137,79 @@ AWS has a command line tool that can be used to create and manage resources. The
 
     aws iam add-role-to-instance-profile --instance-profile-name autoscaling --role-name autoscaling
 
+- Create a file ``mapping.json`` in the current directory with the following content::
+
+    [
+      {
+        "DeviceName": "/dev/sda1",
+        "Ebs": {
+          "DeleteOnTermination": true,
+          "SnapshotId": "snap-00f18f3f6413c7879",
+          "VolumeSize": 20,
+          "VolumeType": "gp2"
+        }
+      }
+    ]
+
 - Create login node (``ami-061b1560`` is the ID for the Official CentOS 7 minimal installation, ```replace my_key_pair``, ``my_sg_id`` and ``my_subnet_id`` with the related values from earlier commands)::
 
-    wget https://gist.githubusercontent.com/mjtko/2725a200fabf6395713005fce54063fa/raw/mapping.json
     aws ec2 run-instances --image-id ami-061b1560 --key-name my_key_pair --instance-type r4.2xlarge --associate-public-ip-address --security-group-ids my_sg_id --block-device-mappings file://mapping.json --subnet-id my_subnet_id --iam-instance-profile Name=my-autoscaling-profile
 
 From the Login Node (as root)
 -----------------------------
 
-- Install clusterware master::
+- Install clusterware::
 
-    curl https://gist.githubusercontent.com/mjtko/2725a200fabf6395713005fce54063fa/raw/master.sh | /bin/bash -x
+    export cw_DIST=el7
+    export cw_BUILD_source_branch=develop
+    curl -sL http://git.io/clusterware-installer | /bin/bash
+
+- Enable required clusterware services::
+
+    PATH=/opt/clusterware/bin:$PATH
+    alces handler enable clusterable
+    alces handler enable autoscaling
+    alces service install modules
+    alces handler enable cluster-slurm
+
+- Disable SELinux::
+
+    sed -e 's/^SELINUX=.*/SELINUX=disabled/g' -i /etc/selinux/config
+
+- Scramble the root password::
+
+    dd if=/dev/urandom count=50|md5sum|passwd --stdin root
+    passwd -l root
+
+- Setup clusterware config file::
+
+    cat <<EOF > /opt/clusterware/etc/config.yml
+    ---
+    cluster:
+      scheduler:
+        allocation: autodetect
+      name: cluster1
+      hostname: login1
+      role: master
+      ephemeral_swap: always
+      ephemeral_swap_size_kib: '0'
+      ephemeral_swap_max_kib: '8192'
+      ephemeral_scratch: ext4
+      tags:
+        scheduler_roles: ":master:"
+      autoscaling: autodetect
+      uuid: $(uuidgen)
+      token: $(dd if=/dev/urandom bs=32 count=1 2>/dev/null | base64 | cut -c1-20)
+    EOF
+
+- Setup NFS::
+
+    systemctl enable nfs
+    cat <<EOF > /etc/exports
+    /home 10.75.0.0/16(rw,no_root_squash,no_subtree_check,sync)
+    EOF
+    systemctl start nfs
+    exportfs -a
 
 - Start the clusterware service::
 
@@ -101,9 +237,54 @@ From Compute Node (as root)
     export CLUSTER_TOKEN=cluster-token
     export CLUSTER_UUID=cluster-uuid
 
-- Run the clusterware slave installation::
+- Install clusterware::
 
-    curl https://gist.githubusercontent.com/mjtko/2725a200fabf6395713005fce54063fa/raw/slave.sh | /bin/bash -x
+    export cw_DIST=el7
+    export cw_BUILD_source_branch=develop
+    curl -sL http://git.io/clusterware-installer | /bin/bash
+
+- Enable required clusterware services::
+
+    PATH=/opt/clusterware/bin:$PATH
+    alces handler enable clusterable
+    alces handler enable autoscaling
+    alces service install modules
+    alces handler enable cluster-slurm
+
+- Disable SELinux::
+
+    sed -e 's/^SELINUX=.*/SELINUX=disabled/g' -i /etc/selinux/config
+
+- Scramble the root password::
+
+    dd if=/dev/urandom count=50|md5sum|passwd --stdin root
+    passwd -l root
+
+- Setup clusterware config file::
+
+    cat <<EOF > /opt/clusterware/etc/config.yml
+    ---
+    cluster:
+      scheduler:
+        allocation: autodetect
+      name: cluster1
+      role: slave
+      master: ${MASTER_IP}
+      ephemeral_swap: enabled
+      ephemeral_swap_size_kib: '0'
+      ephemeral_swap_max_kib: '16384'
+      ephemeral_scratch: xfs
+      tags:
+        scheduler_roles: ":compute:"
+      uuid: ${CLUSTER_UUID}
+      token: ${CLUSTER_TOKEN}
+    EOF
+
+- Setup NFS mounts::
+
+    cat <<EOF >> /etc/fstab
+    ${MASTER_IP}:/home /home nfs defaults 0 0
+    EOF
 
 - Shutdown the node::
 
