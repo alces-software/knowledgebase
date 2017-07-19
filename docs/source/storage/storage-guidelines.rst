@@ -124,6 +124,6 @@ On Deploy VM
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget htps://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nfs/nfs.sh
+    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nfs/nfs.sh
 
 - Follow :ref:`client-deployment` to setup the compute nodes
