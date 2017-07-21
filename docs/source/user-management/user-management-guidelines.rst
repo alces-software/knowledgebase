@@ -50,13 +50,13 @@ On Deploy VM
 
 - Additionally, add the following to the ``setup:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``::
 
-    - /opt/alces/install/scripts/nis.sh
+    - /opt/alces/install/scripts/02-nis.sh
 
 - Download the ``nis.sh`` script to the above location::
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nis/nis.sh
+    wget -O 02-nis.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nis/nis.sh
 
 - Follow :ref:`client-deployment` to setup the compute nodes
 

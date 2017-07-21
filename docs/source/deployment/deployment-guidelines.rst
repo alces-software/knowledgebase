@@ -269,7 +269,7 @@ On Deploy VM
 
 - Additionally, add the following to the ``setup:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``::
 
-    - /opt/alces/install/scripts/repos.sh
+    - /opt/alces/install/scripts/00-repos.sh
 
 - Modify ``/var/lib/metalware/repo/kickstart/default``
 
@@ -290,7 +290,9 @@ On Deploy VM
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/repo/repos.sh
+    wget  -O 00-repos.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/repo/repos.sh
+
+.. note:: The script is renamed to ``00-repos.sh`` to guarantee that it is run before any other setup scripts.
 
 - Follow :ref:`client-deployment` to setup the repo node
 
@@ -307,11 +309,11 @@ First Boot Script Environment Setup
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/firstrun/firstrun.sh
+    wget -O 05-firstrun.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/firstrun/firstrun.sh
 
 - Add the script to the beginning of the ``scripts:`` namespace in ``/var/lib/metalware/repo/config/domain.yaml``::
 
-    - /opt/alces/install/scripts/firstrun.sh
+    - /opt/alces/install/scripts/05-firstrun.sh
 
 Compute Node Infiniband Setup
 -----------------------------
@@ -330,11 +332,11 @@ Compute Node Infiniband Setup
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/infiniband/infiniband.sh
+    wget -O 06-infiniband.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/infiniband/infiniband.sh
 
 - Add the script to the ``scripts:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``::
 
-    - /opt/alces/install/scripts/infiniband.sh
+    - /opt/alces/install/scripts/06-infiniband.sh
 
 - Follow :ref:`client-deployment` to setup the compute nodes
 
@@ -351,13 +353,13 @@ Compute Node Nvidia Driver Setup
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nvidia/nvidia.sh
+    wget -O 07-nvidia.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nvidia/nvidia.sh
 
 .. note:: If the HTTP server has been setup elsewhere then replace ``URL=`` with the path to the directory containing the ``nvidia.run`` script.
 
 - Add the script to the ``scripts:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``::
 
-    - /opt/alces/install/scripts/nvidia.sh
+    - /opt/alces/install/scripts/07-nvidia.sh
 
 .. _client-deployment:
 

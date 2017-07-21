@@ -118,12 +118,12 @@ On Deploy VM
 
 - Additionally, add the following to the ``setup:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``::
 
-    - /opt/alces/install/scripts/nfs.sh
+    - /opt/alces/install/scripts/01-nfs.sh
 
 - Download the ``nfs.sh`` script to the above location::
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nfs/nfs.sh
+    wget -O 01-nfs.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nfs/nfs.sh
 
 - Follow :ref:`client-deployment` to setup the compute nodes

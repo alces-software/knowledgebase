@@ -52,15 +52,15 @@ On Deploy VM
 
 - Additionally, add the following to the ``setup:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``:::
 
-    - /opt/alces/install/scripts/ganglia.sh
-    - /opt/alces/install/scripts/nagios.sh
+    - /opt/alces/install/scripts/03-ganglia.sh
+    - /opt/alces/install/scripts/04-nagios.sh
 
 - Download the ``ganglia.sh`` and ``nagios.sh`` scripts to the above location::
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/ganglia/ganglia.sh
-    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nagios/nagios.sh
+    wget -O 03-ganglia.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/ganglia/ganglia.sh
+    wget -O 04-nagios.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nagios/nagios.sh
 
 - Follow :ref:`client-deployment` to setup the compute nodes
 
