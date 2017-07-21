@@ -17,7 +17,7 @@ On Master Node
 
 - Define the VM::
 
-    virsh define storage.xml
+    virsh define nis.xml
 
 On Deploy VM
 ^^^^^^^^^^^^
@@ -39,7 +39,7 @@ On Deploy VM
     nisconfig:
       is_server: true
 
-- Add the following to ``/var/lib/metalware/repo/config/domain.yaml`` (the nisserver IP should match the one specified in ``storage1.yaml``): ::
+- Add the following to ``/var/lib/metalware/repo/config/domain.yaml`` (the nisserver IP should match the one specified in ``nis1.yaml``): ::
 
     nisconfig:
       nisserver: 10.10.0.4
@@ -48,7 +48,7 @@ On Deploy VM
       # specify non-standard user directory [optional]
       users_dir: /users
 
-- Additionally, add the following to the ``setup:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``:::
+- Additionally, add the following to the ``setup:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``::
 
     - /opt/alces/install/scripts/nis.sh
 
