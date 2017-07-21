@@ -16,7 +16,7 @@ EOF`
 REPOSERVER=<%= repoconfig.reposerver %>
 REPOPATH=<%= repoconfig.repopath %>
 
-yum install yum-plugin-priorities yum-utils
+yum install -y yum-plugin-priorities yum-utils
 
 <% if repoconfig.is_server && localmirror then -%>
 # Install necessary packages and enable service
