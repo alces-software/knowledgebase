@@ -42,6 +42,8 @@ Master Node Setup
 
 - Create bridge interfaces for all other networks (e.g. management [``mgt``] and external [``ext``])
 
+.. note:: The external interface may require getting it's network settings over DHCP, if it does then set ``BOOTPROTO`` to ``dhcp`` instead of static and remove the ``IPADDR`` lines.
+
 - Setup config file for network interfaces (do this for all interfaces sitting on the bridges configured above)::
 
     TYPE=Ethernet
@@ -71,7 +73,7 @@ Master Node Setup
 - Install components for VM service::
 
     yum groupinstall -y virtualization-platform virtualization-tools 
-    yum install -y python-virtinst virt-viewer
+    yum install -y virt-viewer
 
 - Enable and start the virtualisation service::
 
@@ -118,7 +120,7 @@ OS Configuration
 
     echo 'deploy.testcluster.cluster.local' > /etc/hostname
 
-- Setup the network interfaces
+- Setup the network interfaces (if setting a static IP then ensure to set ``IPADDR``, ``NETMASK`` and ``NETWORK`` for the interface)
 
   - Eth0 is bridged onto the primary network - set a static IP for that network in ``/etc/sysconfig/network-scripts/ifcfg-eth0`` 
   - Eth1 is bridged onto the management network - set a static IP for that network in ``/etc/sysconfig/network-scripts/ifcfg-eth1`` 
@@ -290,7 +292,7 @@ On Deploy VM
     cd /opt/alces/install/scripts/
     wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/repo/repos.sh
 
-- Follow :ref:`client-deployment` to setup the compute nodes
+- Follow :ref:`client-deployment` to setup the repo node
 
 - The repo VM will now be up and can be logged in with passwordless SSH from the deployment VM and will have a clone of the CentOS upstream repositories locally.
 
