@@ -5,6 +5,9 @@ Setting Up AWS Environment for HPC Platform
 
 HPC platforms can be deployed in the cloud instead of on local hardware. While there are many cloud providers out there, this guide focusses on setting up login and compute nodes in the cloud on the AWS platform.
 
+.. image:: AWSEnvironment.png
+    :alt: AWS Environment Diagram 1
+
 From Local Machine
 ------------------
 
@@ -63,9 +66,9 @@ AWS has a command line tool that can be used to create and manage resources. The
       }
     ]
 
-- Add rules to security group (replacing ``my_group_id`` with the GroupId from the above command output)::
+- Add rules to security group (replacing ``my_sg_id`` with the GroupId from the above command output)::
 
-    aws ec2 authorize-security-group-ingress --group-id my_group_id --ip-permissions file://sg-permissions.json
+    aws ec2 authorize-security-group-ingress --group-id my_sg_id --ip-permissions file://sg-permissions.json
 
 - Define subnet for the VPC (replacing ``my_vpc_id`` with the VpcId from earlier)::
 
