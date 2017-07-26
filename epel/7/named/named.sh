@@ -1,38 +1,7 @@
 <% if networks.pri.ip == alces.hostip -%>
 
-# Install named
-yum -y install bind bind-utils
-
 # Setup named config file
-cat << EOF > /etc/named.conf
-options {
-          listen-on port 53 { any; };
-          directory       "/var/named";
-          dump-file       "/var/named/data/cache_dump.db";
-          statistics-file "/var/named/data/named_stats.txt";
-          memstatistics-file "/var/named/data/named_mem_stats.txt";
-          allow-query     { any; };
-          recursion yes;
-
-
-          dnssec-enable no;
-          dnssec-validation no;
-          dnssec-lookaside auto;
-
-          forward first;
-          forwarders {
-              <%= externaldns %>;
-          };
-
-};
-
-logging {
-        channel default_debug {
-                file "data/named.run";
-                severity dynamic;
-        };
-};
-
+cat << EOF > /etc/named/metalware.conf
 <% networks.each do |zone, net| -%>
 zone "<%= zone %>.<%= domain %>." {
     type master;
@@ -65,7 +34,7 @@ cat << EOF > /var/named/<%= zone %>.<%= domain %>
                                         )
 
                         IN      NS      <%= alces.hostip %>.
-@       IN MX   <%= networks[zone].network.split(/\./).first %>  <%= networks[zone].hostname %>
+@       IN MX   <%= networks[zone].network.split(/\./).first %>  <%= networks[zone].hostname %>.
 
 IN NS <%= alces.hostip %>.
 
@@ -116,11 +85,6 @@ cat << EOF > /var/named/<%= split_net[1] %>.<%= split_net[0] %>
 
 EOF
 
-systemctl disable dnsmasq
-systemctl stop dnsmasq
-systemctl enable named
-systemctl restart named
-
 <% end -%>
 
 <% end -%>
@@ -130,6 +94,8 @@ mv -f /etc/hosts /etc/hosts.bup
 cat << EOF > /etc/hosts
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
 ::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+<%= alces.hostip %>  deploy.pri.<%= domain %> deploy.<%= domain %> deploy
 EOF
 
 # Backup /etc/resolv.conf (overwrite in future once testing works)
