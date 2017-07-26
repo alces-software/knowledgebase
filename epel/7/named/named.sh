@@ -21,6 +21,8 @@ zone "<%= split_net[1] %>.<%= split_net[0] %>.in-addr.arpa." {
 <% end -%>
 EOF
 
+chmod 644 /etc/named/metalware.conf
+
 # Setup zone forward files
 <% networks.each do |zone, net| -%>
 cat << EOF > /var/named/<%= zone %>.<%= domain %>
