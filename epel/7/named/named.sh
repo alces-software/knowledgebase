@@ -1,6 +1,11 @@
 FORWARD_DOMAINS="<% networks.each do |zone, net| -%><%= zone %> <% end %>"
 REVERSE_DOMAINS="<% networks.each do |zone, net| -%><% split_net = net.network.split(/\./) -%><%= split_net[1] %>.<%= split_net[0] %> <% end %>"
 
+<% if networks.pri.ip == alces.hostip -%>
+
+# Install named
+yum -y install bind bind-utils
+
 # Setup named config file
 cat << EOF > /etc/named.conf
 options {
@@ -116,4 +121,19 @@ EOF
 
 <% end -%>
 
+<% end -%>
+
+# Backup /etc/hosts (overwrite in future once testing works)
+mv -f /etc/hosts /etc/hosts.bup
+cat << EOF > /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+EOF
+
+# Backup /etc/resolv.conf (overwrite in future once testing works)
+mv -f /etc/resolv.conf /etc/resolv.conf
+cat << EOF > /etc/resolv.conf
+search <% networks.each do |zone, net| -%><%= zone %>.<%=domain %> <% end %>
+nameserver <%= alces.hostip %>
+EOF
 
