@@ -34,6 +34,7 @@ BUILDSERVER=10.10.0.1
 PRVNETWORK=10.10.0.0
 PRVNETMASK=255.255.0.0
 ROUTER=10.10.0.1
+EXTERNALDNS=10.101.0.1
 
 echo "$BUILDSERVER `hostname -f` `hostname -s`" >> /etc/hosts
 
@@ -102,5 +103,44 @@ systemctl restart httpd
 systemctl restart xinetd
 
 mkdir -p /root/.ssh; echo 'StrictHostKeyChecking no' >> /root/.ssh/config
+
+yum -y install bind bind-utils
+
+cat << EOF > /etc/named.conf
+options {
+          listen-on port 53 { any; };
+          directory       "/var/named";
+          dump-file       "/var/named/data/cache_dump.db";
+          statistics-file "/var/named/data/named_stats.txt";
+          memstatistics-file "/var/named/data/named_mem_stats.txt";
+          allow-query     { any; };
+          recursion yes;
+
+
+          dnssec-enable no;
+          dnssec-validation no;
+          dnssec-lookaside auto;
+
+          forward first;
+          forwarders {
+              ${EXTERNALDNS};
+          };
+
+};
+
+logging {
+        channel default_debug {
+                file "data/named.run";
+                severity dynamic;
+        };
+};
+
+include "/etc/named/metalware.conf";
+EOF
+
+systemctl disable dnsmasq
+systemctl stop dnsmasq
+systemctl enable named
+systemctl restart named
 
 echo "You need to reboot"
