@@ -1,6 +1,3 @@
-FORWARD_DOMAINS="<% networks.each do |zone, net| -%><%= zone %> <% end %>"
-REVERSE_DOMAINS="<% networks.each do |zone, net| -%><% split_net = net.network.split(/\./) -%><%= split_net[1] %>.<%= split_net[0] %> <% end %>"
-
 <% if networks.pri.ip == alces.hostip -%>
 
 # Install named
@@ -58,7 +55,7 @@ EOF
 # Setup zone forward files
 <% networks.each do |zone, net| -%>
 cat << EOF > /var/named/<%= zone %>.<%= domain %>
-$TTL 300
+\$TTL 300
 @                       IN      SOA     <%=alces.hostip%>. nobody.example.com. (
                                         <%= Time.now.to_i %>   ; Serial
                                         600         ; Refresh
@@ -93,7 +90,7 @@ EOF
 <% next if zone.to_s == 'bmc' -%>
 <% split_net = net.network.split(/\./) -%>
 cat << EOF > /var/named/<%= split_net[1] %>.<%= split_net[0] %>
-$TTL 300
+\$TTL 300
 @                       IN      SOA     <%=alces.hostip%>. nobody.example.com. (
                                         <%= Time.now.to_i %>   ; Serial
                                         600         ; Refresh
@@ -118,6 +115,11 @@ $TTL 300
 <% end -%>
 
 EOF
+
+systemctl disable dnsmasq
+systemctl stop dnsmasq
+systemctl enable named
+systemctl restart named
 
 <% end -%>
 
