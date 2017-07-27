@@ -176,6 +176,8 @@ Metalware Install
 
 - Uncomment the ``PASSWORD=`` line in ``/opt/metalware/etc/ipmi.conf`` and replace ``password`` with the IPMI password above
 
+.. note:: If you wish to install an OS other than CentOS 7 then see the :ref:`Configure Alternative Kickstart Profile <deployment-kickstart>` instructions.
+
 Repository Mirror Server
 ------------------------
 
