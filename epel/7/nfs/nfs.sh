@@ -19,7 +19,7 @@ EOF`
 
 echo "$EXPORTS" > /etc/exports
 
-<% else -%>
+<% elsif !nisconfig.is_server -%>
 
 MOUNTS=`cat << EOF
 <% nfsmounts.each do | mount, path | -%>
