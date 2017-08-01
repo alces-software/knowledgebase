@@ -255,17 +255,18 @@ On Deploy VM
       centos-extras:
         name: centos-extras
         baseurl: <%= repoconfig.repourl %>/centos-extras/
-      custom:
-        # custom repo at /opt/alces/repo/custom for storing any additional RPMs
-        name: custom
-        baseurl: <%= repoconfig.repourl %>/custom/
-        # increase the repo priority [optional]
-        priority: 1
       epel:
         name: epel
         baseurl: <%= repoconfig.repourl %>/epel/
         enabled: 0
         priority: 11
+    customrepo:
+      custom:
+      # custom repo at /opt/alces/repo/custom for storing any additional RPMs
+        name: custom
+        baseurl: http://<%= alces.hostip %>/<%= repoconfig.repopath %>/custom/
+        # increase the repo priority [optional]
+        priority: 1
 
 .. note:: Any repos added to ``domain.yaml`` must include a ``name`` and a ``baseurl`` element. Optionally the repo definitions can include ``description``, ``enabled`` (default: 1), ``skip_if_unavailable`` (default: 1), ``gpgcheck`` (default: 0) and ``priority`` (default: 10) to override the default values that are set when generating the repos.
 
