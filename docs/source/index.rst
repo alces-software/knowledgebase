@@ -40,7 +40,22 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
    :name: deployment
    
    deployment/deployment-considerations
-   deployment/deployment-guidelines
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
+   :caption: Deployment on Metal
+   :name: deployment-on-metal
+   
+   deployment/0*
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
+   :caption: Deployment on AWS
+   :name: deployment-on-aws
+   
+   deployment/deployment-aws
 
 .. toctree::
    :maxdepth: 1
