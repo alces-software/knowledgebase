@@ -154,157 +154,10 @@ AWS has a command line tool that can be used to create and manage resources. The
       }
     ]
 
-- Create login node (``ami-061b1560`` is the ID for the Official CentOS 7 minimal installation, ```replace my_key_pair``, ``my_sg_id`` and ``my_subnet_id`` with the related values from earlier commands)::
+Autoscaling Group Configuration
+-------------------------------
 
-    aws ec2 run-instances --image-id ami-061b1560 --key-name my_key_pair --instance-type r4.2xlarge --associate-public-ip-address --security-group-ids my_sg_id --block-device-mappings file://mapping.json --subnet-id my_subnet_id --iam-instance-profile Name=my-autoscaling-profile
-
-From the Login Node (as root)
------------------------------
-
-- Install clusterware::
-
-    export cw_DIST=el7
-    export cw_BUILD_source_branch=develop
-    curl -sL http://git.io/clusterware-installer | /bin/bash
-
-- Enable required clusterware services::
-
-    PATH=/opt/clusterware/bin:$PATH
-    alces handler enable clusterable
-    alces handler enable autoscaling
-    alces service install modules
-    alces handler enable cluster-slurm
-
-- Disable SELinux::
-
-    sed -e 's/^SELINUX=.*/SELINUX=disabled/g' -i /etc/selinux/config
-
-- Scramble the root password::
-
-    dd if=/dev/urandom count=50|md5sum|passwd --stdin root
-    passwd -l root
-
-- Setup clusterware config file::
-
-    cat <<EOF > /opt/clusterware/etc/config.yml
-    ---
-    cluster:
-      scheduler:
-        allocation: autodetect
-      name: cluster1
-      hostname: login1
-      role: master
-      ephemeral_swap: always
-      ephemeral_swap_size_kib: '0'
-      ephemeral_swap_max_kib: '8192'
-      ephemeral_scratch: ext4
-      tags:
-        scheduler_roles: ":master:"
-      autoscaling: autodetect
-      uuid: $(uuidgen)
-      token: $(dd if=/dev/urandom bs=32 count=1 2>/dev/null | base64 | cut -c1-20)
-    EOF
-
-- Setup NFS::
-
-    systemctl enable nfs
-    cat <<EOF > /etc/exports
-    /home 10.75.0.0/16(rw,no_root_squash,no_subtree_check,sync)
-    EOF
-    systemctl start nfs
-    exportfs -a
-
-- Start the clusterware service::
-
-    systemctl start clusterware-configurator
-
-- Log out and back into the node
-
-- Check the alces command utility is functioning::
-
-    alces about identity
-
-From Local Machine
-------------------
-
-- Create compute node (``ami-061b1560`` is the ID for the Official CentOS 7 minimal installation, replace ``my_key_pair``, ``my_sg_id`` and ``my_subnet_id`` with the related values from earlier commands)::
-
-    aws ec2 run-instances --image-id ami-061b1560 --key-name my_key_pair --instance-type c4.large --associate-public-ip-address --security-group-ids my_sg_id --block-device-mappings file://mapping.json --subnet-id my_subnet_id
-
-From Compute Node (as root)
----------------------------
-
-- Export installation variables (replace ``node-master-ip`` with the private IP address for the login node. ``cluster-token`` and ``cluster-uuid`` can be found in ``/opt/clusterware/etc/config.yml`` on the login node)::
-
-    export MASTER_IP=node-master-ip
-    export CLUSTER_TOKEN=cluster-token
-    export CLUSTER_UUID=cluster-uuid
-
-- Install clusterware::
-
-    export cw_DIST=el7
-    export cw_BUILD_source_branch=develop
-    curl -sL http://git.io/clusterware-installer | /bin/bash
-
-- Enable required clusterware services::
-
-    PATH=/opt/clusterware/bin:$PATH
-    alces handler enable clusterable
-    alces handler enable autoscaling
-    alces service install modules
-    alces handler enable cluster-slurm
-
-- Disable SELinux::
-
-    sed -e 's/^SELINUX=.*/SELINUX=disabled/g' -i /etc/selinux/config
-
-- Scramble the root password::
-
-    dd if=/dev/urandom count=50|md5sum|passwd --stdin root
-    passwd -l root
-
-- Setup clusterware config file::
-
-    cat <<EOF > /opt/clusterware/etc/config.yml
-    ---
-    cluster:
-      scheduler:
-        allocation: autodetect
-      name: cluster1
-      role: slave
-      master: ${MASTER_IP}
-      ephemeral_swap: enabled
-      ephemeral_swap_size_kib: '0'
-      ephemeral_swap_max_kib: '16384'
-      ephemeral_scratch: xfs
-      tags:
-        scheduler_roles: ":compute:"
-      uuid: ${CLUSTER_UUID}
-      token: ${CLUSTER_TOKEN}
-    EOF
-
-- Setup NFS mounts::
-
-    cat <<EOF >> /etc/fstab
-    ${MASTER_IP}:/home /home nfs defaults 0 0
-    EOF
-
-- Shutdown the node::
-
-    shutdown -h now
-
-From Local Machine
-------------------
-
-- Create a template image from the compute node (``compute_node_id`` will be in the output from the instance creation command)::
-
-    aws ec2 create-image --instance-id compute_node_id --name my-compute-node --no-reboot
-
-- Wait for the image to be available (replacing ``my_ami_id`` with the id from the above command)::
-
-    aws ec2 describe-images --image-id my_ami_id |jq '.Images[0].State'
-
-- Setup autoscaling launch configuration (replacing ``compute_node_template_ami_id`` with the output from the first command)::
+- Setup autoscaling launch configuration (``ami-061b1560`` is the ID for the Official CentOS 7 minimal installation)::
 
     aws autoscaling create-launch-configuration --launch-configuration-name my-compute-group1 --image-id compute_node_template_ami_id --key-name my_key_pair --security-groups my_sg_id --associate-public-ip-address --iam-instance-profile my-autoscaling-profile --instance-type c4.large --spot-price 0.113
 
@@ -312,9 +165,54 @@ From Local Machine
 
     aws autoscaling create-auto-scaling-group --auto-scaling-group-name my-compute-group1 --launch-configuration-name my-compute-group1 --vpc-zone-identifier my_subnet_id --min-size 0 --max-size 8 --desired-capacity 1
 
-Modify Nodes in Autoscale Group
--------------------------------
+.. _deploy-aws-node:
 
-- To change the number of nodes currently running inside the autoscale group, set the capacity as follows (this example sets it to 2 nodes)::
+Node Creation Example
+---------------------
 
-    aws autoscaling set-desired-capacity --auto-scaling-group-name my-compute-group1 --desired-capacity 2
+- Create node (``ami-061b1560`` is the ID for the Official CentOS 7 minimal installation, ```replace my_key_pair``, ``my_sg_id`` and ``my_subnet_id`` with the related values from earlier commands)::
+
+    aws ec2 run-instances --image-id ami-061b1560 --key-name my_key_pair --instance-type r4.2xlarge --associate-public-ip-address --security-group-ids my_sg_id --block-device-mappings file://mapping.json --subnet-id my_subnet_id --iam-instance-profile Name=my-autoscaling-profile
+
+- Wait for node to launch (``instance_id`` being the ID from the above command)::
+
+    aws ec2 describe-instances --instance-id instance_id | jq '.Reservations[0].Instances[0].State.Name'
+
+- Identify public IP for the node to login to (``instance_id`` being the ID from the above command)::
+
+    aws ec2 describe-instances --instance-id instance_id |jq '.Reservations[0].Instances[0].PublicIpAddress'
+
+Deployment Node Setup
+---------------------
+
+- Follow :ref:`deploy-aws-node`
+
+- Follow :ref:`deploy-metalware`
+
+Repository Node Setup
+---------------------
+
+- Follow :ref:`deploy-aws-node`
+
+- Follow :ref:`deploy-repo`
+
+Storage Node Setup
+------------------
+
+- Follow :ref:`deploy-aws-node`
+
+- Follow :ref:`deploy-storage`
+
+User Management Setup
+---------------------
+
+- Follow :ref:`deploy-aws-node`
+
+- Follow :ref:`deploy-user`
+
+Monitor Node Setup
+------------------
+
+- Follow :ref:`deploy-aws-node`
+
+- Follow :ref:`deploy-monitor`
