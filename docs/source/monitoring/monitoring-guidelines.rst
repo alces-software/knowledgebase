@@ -19,6 +19,8 @@ On Master Node
 
     virsh define monitor.xml
 
+.. _deploy-monitor:
+
 On Deploy VM
 ^^^^^^^^^^^^
 

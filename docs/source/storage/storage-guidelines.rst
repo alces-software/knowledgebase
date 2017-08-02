@@ -73,6 +73,8 @@ On Master Node
 
     virsh define storage.xml
 
+.. _deploy-storage:
+
 On Deploy VM
 ^^^^^^^^^^^^
 

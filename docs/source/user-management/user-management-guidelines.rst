@@ -19,6 +19,8 @@ On Master Node
 
     virsh define nis.xml
 
+.. _deploy-user:
+
 On Deploy VM
 ^^^^^^^^^^^^
 
