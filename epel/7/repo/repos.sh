@@ -11,6 +11,14 @@ gpgcheck=<%= if defined?(repo.gpgcheck) then repo.gpgcheck else 0 end %>
 priority=<%= if defined?(repo.priority) then repo.priority else 10 end %>
 
 <% end -%>
+[<%= customrepo.custom.name %>]
+name=<%= customrepo.custom.name %>
+baseurl=<%= customrepo.custom.baseurl %>
+description=<%= if defined?(customrepo.custom.description) then customrepo.custom.description else 'No description specified' end %>
+enabled=<%= if defined?(customrepo.custom.enabled) then customrepo.custom.enabled else 1 end %>
+skip_if_unavailable=<%= if defined?(customrepo.custom.skip_if_unavailable) then customrepo.custom.skip_if_unavailable else 1 end %>
+gpgcheck=<%= if defined?(customrepo.custom.gpgcheck) then customrepo.custom.gpgcheck else 0 end %>
+priority=<%= if defined?(customrepo.custom.priority) then customrepo.custom.priority else 10 end %>
 EOF`
 
 REPOSERVER=<%= repoconfig.reposerver %>
@@ -82,15 +90,6 @@ cat << EOF > /etc/httpd/conf.d/repo.conf
     Allow from <%= networks.pri.network %>/255.255.0.0
 </Directory>
 Alias /repo /opt/alces/$REPOPATH
-
-<Directory /opt/alces/installers/>
-    Options Indexes MultiViews FollowSymlinks
-    AllowOverride None
-    Require all granted
-    Order Allow,Deny
-    Allow from <%= networks.pri.network %>/255.255.0.0
-</Directory>
-Alias /installers /opt/alces/installers
 EOF
 
 systemctl restart httpd.service
@@ -105,12 +104,59 @@ reposync -nm --config yum.conf -r centos-updates
 reposync -nm --config yum.conf -r centos-extras
 reposync -nm --config yum.conf -r epel
 
-mkdir custom
 createrepo -g comps.xml centos
 createrepo centos-updates
 createrepo centos-extras
 createrepo -g comps.xml epel
+
+<% elsif networks.pri.ip == alces.hostip -%>
+# Install necessary packages and enable service
+yum -y install createrepo httpd
+systemctl enable httpd.service
+
+cat << EOF > /etc/httpd/conf.d/installer.conf
+<Directory /opt/alces/$REPOPATH/>
+    Options Indexes MultiViews FollowSymlinks
+    AllowOverride None
+    Require all granted
+    Order Allow,Deny
+    Allow from <%= networks.pri.network %>/255.255.0.0
+</Directory>
+Alias /repo /opt/alces/$REPOPATH
+
+<Directory /opt/alces/installers/>
+    Options Indexes MultiViews FollowSymlinks
+    AllowOverride None
+    Require all granted
+    Order Allow,Deny
+    Allow from <%= networks.pri.network %>/255.255.0.0
+</Directory>
+Alias /installers /opt/alces/installers
+EOF
+
+
+# Setup directories
+if [ ! -d /opt/alces ]; then
+    mkdir -p /opt/alces
+fi
+
+cd /opt/alces
+
+if [ ! -d installers ] ; then
+    mkdir -p installers
+fi
+
+if [ ! -d $REPOPATH ] ; then
+    mkdir -p $REPOPATH
+fi
+
+cd $REPOPATH
+
+mkdir custom
+
 createrepo custom
+
+systemctl restart httpd.service
 
 <% else -%>
 find /etc/yum.repos.d/*.repo -exec mv -fv {} {}.bak \;
