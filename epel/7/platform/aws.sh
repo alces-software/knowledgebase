@@ -9,3 +9,6 @@ systemctl disable cloud-init
 
 # Allow creation of NIS home directory
 authconfig --enablemkhomedir --update
+
+# Preserve hostname
+echo 'preserve_hostname: true' > /etc/cloud/cloud.cfg.d/hostname.cfg
