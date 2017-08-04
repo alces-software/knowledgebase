@@ -1,6 +1,7 @@
-<% if localmirror then repotype = localrepos else repotype = upstreamrepos end -%>
+<% repotype = eval(localmirror.to_s) %>
 REPOS=`cat << EOF
 <% repotype.each do | name, repo | -%>
+<% next if name.to_s == 'repourl' -%>
 [<%= name %>]
 name=<%= name %>
 baseurl=<%= repo.baseurl %>
@@ -21,12 +22,11 @@ gpgcheck=<%= if defined?(customrepo.custom.gpgcheck) then customrepo.custom.gpgc
 priority=<%= if defined?(customrepo.custom.priority) then customrepo.custom.priority else 10 end %>
 EOF`
 
-REPOSERVER=<%= repoconfig.reposerver %>
 REPOPATH=<%= repoconfig.repopath %>
 
 yum install -y yum-plugin-priorities yum-utils
 
-<% if repoconfig.is_server && localmirror then -%>
+<% if repoconfig.is_server && localmirror == 'localrepos' then -%>
 # Install necessary packages and enable service
 yum -y install createrepo httpd
 systemctl enable httpd.service
@@ -67,7 +67,9 @@ EOF
 
 # Add upstream repos to yum.conf
 cat << EOF >> yum.conf
-<% upstreamrepos.each do | name, repo | -%>
+<% mirrorrepos = eval(repoconfig.mirrorfrom.to_s) %>
+<% mirrorrepos.each do | name, repo | -%>
+<% next if name.to_s == 'repourl' -%>
 [<%= name %>]
 name=<%= name %>
 baseurl=<%= repo.baseurl %>
@@ -98,7 +100,7 @@ systemctl restart httpd.service
 reposync -nm --config yum.conf -r centos
 mkdir -p centos/LiveOS
 ## NOTE: Could this URL be ERBified?? ##
-curl http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/LiveOS/squashfs.img > centos/LiveOS/squashfs.img
+curl <%= eval(repoconfig.mirrorfrom.to_s).centos.baseurl %>/LiveOS/squashfs.img > centos/LiveOS/squashfs.img
 
 reposync -nm --config yum.conf -r centos-updates
 reposync -nm --config yum.conf -r centos-extras
