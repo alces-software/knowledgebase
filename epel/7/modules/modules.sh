@@ -1,4 +1,4 @@
-yum install environment-modules
+yum install -y environment-modules
 
 <% if modules.is_server -%>
 mkdir <%= modules.directory %>
