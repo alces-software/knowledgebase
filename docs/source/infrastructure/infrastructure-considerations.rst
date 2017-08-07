@@ -14,6 +14,8 @@ There are typically 3 possible service availability options to choose from, thes
   - VM Platform
   - High Availability VM Platform
 
+.. note:: If using a Cloud Platform then the service availability will be handled by the cloud provider. The only additional considerations are how services will be provided in terms of native running services or containerised.
+
 These are covered in more detail below.
 
 All-in-one

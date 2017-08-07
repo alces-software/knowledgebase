@@ -5,6 +5,7 @@ Considerations for Network and Hardware Design
 
 In general, the things to consider when designing the hardware and network solution for a HPC platform are:
 
+  - The hardware environment
   - The types of nodes required in the network
   - The different networks to be used by the network
   - The level of resilience desired
@@ -12,6 +13,19 @@ In general, the things to consider when designing the hardware and network solut
   
 These are covered in more detail below...
 
+.. _hardware-env:
+
+Hardware Environment
+--------------------
+
+The hardware environment will generally be one of two setups, metal or cloud.
+
+  - **Metal** - Metal environments are those which are compromised of on-site systems in a datacenter which are usually running 24/7.
+  - **Cloud** - Cloud environments are systems hosted in a third-party datacenter and are usually ephemeral systems that are being created and destroyed on demand. 
+  - **Metal/Cloud Hybrid** - A hybrid environment usually consists of a core metal configuration that uses cloud as an overflow for additional capacity at times of high utilisation.
+
+A hardware environment is mainly focussed on the location, capacity and permanence of the HPC platform and does not directly determine the hardware that will be used in the various systems. 
+  
 .. _node-types:
 
 Node Types
@@ -42,6 +56,8 @@ The network in the system will most likely be broken up (physically or virtually
 
 The above networks could be physically or virtually separated from one another. In a physical separation scenario there will be a separate network switch for each one, preventing any sort of cross-communication. In a virtually separated network there will be multiple bridged switches that separate traffic by dedicating ports (or tagging traffic) to different VLANs. The benefit of the VLAN solution is that the bridged switches (along with bonded network interfaces) provides additional network redundancy.
 
+.. note:: If a cloud environment is being used then it is most likely that all systems will reside on the primary network and no others. This is due to the network configuration from the cloud providers.
+
 Resilience
 ----------
 
@@ -52,6 +68,8 @@ How well a system can cope with failures is crucial when delivering a HPC platfo
   - **Failover Hardware** - For many types of hardware there is the possibility of setting up failover devices. For example, in the event of a power failure (either on the circuit or in a power supply itself) a redundant power supply will continue to provide power to the server without any downtime occurring. 
 
 There are many more options than the examples above for improving the resilience of the HPC platform, it is worth exploring and considering available solutions during design.
+
+.. note:: Cloud providers are most likely to implement all of the above resilience procedures and more to ensure that their service is available 99.99% of the time. 
 
 Hostname and Domain Names
 -------------------------
@@ -77,7 +95,7 @@ Network security is key for both the internal and external connections of the HP
   - Limit areas that users have access to. In general, there are certain systems that users would never (and should never) have access to so preventing them from reaching these places will circumvent any potential user error risks.
   - Implement firewalls to limit the types of traffic allowed in/out of systems.
 
-It is also worth considering the performance and usability impacts of security measures.
+It is also worth considering the performance and usability impacts of security measures. Much like with resilience, a Cloud provider will most likely implement the above security features - it is worth knowing what security features and limitations are in place when selecting a cloud environment.
 
 .. note:: Non-Ethernet networks usually cannot be properly secured to the same level so be aware of what the security drawbacks are for the chosen network technology.
 
