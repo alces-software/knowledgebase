@@ -37,4 +37,6 @@ sed -i -e 's/^passwd:.*/passwd:     files nis/g' \
 systemctl enable ypbind
 systemctl start ypbind
 
+authconfig --enablemkhomedir --update
+
 <% end -%>
