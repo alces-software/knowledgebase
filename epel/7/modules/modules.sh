@@ -7,4 +7,6 @@ exportfs -a
 <% end -%>
 
 echo '<%= modules.directory %>' >> /usr/share/Modules/init/.modulespath
+<% if ! modules.is_server -%>
 echo '<%= modules.server %>:<%= modules.directory %>  <%= modules.directory %>  nfs  defaults  0 0' >> /etc/fstab
+<% end -%>
