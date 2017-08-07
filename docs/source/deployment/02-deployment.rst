@@ -1,6 +1,6 @@
 .. _02-deployment:
 
-Deploymeny VM Setup
+Deployment VM Setup
 ===================
 
 On Master Node
