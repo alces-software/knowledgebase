@@ -44,6 +44,8 @@ SLURM Setup (From Deployment VM)
 
 - Follow :ref:`client-deployment` to setup the SLURM node
 
+.. note:: All systems that are built will have SLURM installed and the SLURM daemon running which will allow that node to submit and run jobs. Should this not be desired then the service can be permanently stopped and disabled with ``systemctl disable slurmd && systemctl stop slurmd`` on the node which is no longer to run SLURM.
+
 Modules Setup (From Deployment VM)
 ----------------------------------
 
