@@ -91,11 +91,13 @@ Security
 
 Network security is key for both the internal and external connections of the HPC environment. Without proper security control the system configuration and data is at risk to attack or destruction from user error. Some tips for improving network security are below:
 
-  - Restrict external access points where possible. This will reduce the quantity of points of entry, minimising the attack surface from external sources
+  - Restrict external access points where possible. This will reduce the quantity of points of entry, minimising the attack surface from external sources.
   - Limit areas that users have access to. In general, there are certain systems that users would never (and should never) have access to so preventing them from reaching these places will circumvent any potential user error risks.
   - Implement firewalls to limit the types of traffic allowed in/out of systems.
 
-It is also worth considering the performance and usability impacts of security measures. Much like with resilience, a Cloud provider will most likely implement the above security features - it is worth knowing what security features and limitations are in place when selecting a cloud environment.
+It is also worth considering the performance and usability impacts of security measures.
+
+Much like with resilience, a Cloud provider will most likely implement the above security features - it is worth knowing what security features and limitations are in place when selecting a cloud environment.
 
 .. note:: Non-Ethernet networks usually cannot be properly secured to the same level so be aware of what the security drawbacks are for the chosen network technology.
 

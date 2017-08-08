@@ -42,6 +42,8 @@ It is worth considering what metrics for the system will be monitored, a few com
     - Packets in
     - Packets out
 
+.. note:: Cloud service providers usually have both passive and active monitoring services available through their cloud management front-end.
+
 Additional Considerations and Questions
 ---------------------------------------
 
