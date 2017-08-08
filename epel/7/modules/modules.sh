@@ -4,7 +4,7 @@ MODULESDIR="<%= modules.directory %>/modulefiles"
 
 <% if modules.is_server -%>
 mkdir $MODULESDIR
-echo '<%= modules.directory %>    <%= networks.pri.network %>/<%= networks.pri.netmask %>(rw,no_root_squash,sync)'
+echo '<%= modules.directory %>    <%= networks.pri.network %>/<%= networks.pri.netmask %>(rw,no_root_squash,sync)' >> /etc/exports
 exportfs -a
 <% end -%>
 
