@@ -9,7 +9,7 @@ rmmod -v nouveau
 yum -y groupinstall "Development Tools"
 
 cat << EOF > /var/lib/firstrun/scripts/nvidia.bash
-URL=http://<%= alces.hostip %>/<%=repoconfig.repopath%>/installers/
+URL=http://<%= alces.hostip %>/installers/
 curl \$URL/nvidia.run > /tmp/nvidia.run
 sh /tmp/nvidia.run -a -q -s --kernel-source-path /usr/src/kernels/*
 EOF
