@@ -8,7 +8,7 @@ Master Node Setup
 
     yum -y update
 
-.. note:: If kickstarting OS installs on many nodes it is worth considering a local mirror repository for the OS image and packages so that all nodes aren't trying to connect to the internet at the same time.
+.. note:: If kickstarting OS installs on many nodes it is worth considering a :ref:`local mirror repository <deploy-repo>` for the OS image and packages so that all nodes aren't trying to connect to the internet at the same time.
 
 - Disable and stop NetworkManager::
 

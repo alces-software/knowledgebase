@@ -40,7 +40,7 @@ On Deploy VM
 
 - Add the following to ``/var/lib/metalware/repo/config/domain.yaml`` (the reposerver IP in ``localrepo`` should match the one specified in ``repo1.yaml``, ``localmirror`` should match the name of one of the repo sections [``upstreamrepos``, ``awsrepos``, ``alcesrepos`` or ``localrepo``], ``mirrorfrom`` should be set to the set of repositories to use when mirroring to create a local repo)::
 
-    localmirror: upstreamrepos
+    localmirror: localrepo
     repoconfig:
       mirrorfrom: upstreamrepos
       repopath: repo
