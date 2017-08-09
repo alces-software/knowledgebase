@@ -35,4 +35,4 @@ VLAN Infrastructure
 .. image:: InfrastructureDesign4.png
     :alt: Infrastructure Design Example 4
 
-The above solution implements the channel bonded infrastructure in a network with VLANs configured. The VLANs have bond and bridge interfaces created for them. This allows some additional flexibility for VM bridging as interfaces can have interfaces bridged onto specific VLANs. This adds additional security to the network as the master node can be left without an IP on certain VLAN bond interfaces which prevents that network from accessing the master node whilst VMs on the master node are able to reach that VLAN.
+The above solution implements the channel bonded infrastructure in a network with VLANs. The VLANs have bond and bridge interfaces created for them. This allows some additional flexibility for VM bridging as virtual interfaces can be bridged onto specific VLANs whilst maintaining the redundancy provided by the bond. This adds additional security to the network as the master node can be left without an IP on certain VLAN bond interfaces which prevents that network from accessing the master node whilst VMs on the master node are able to reach that VLAN.

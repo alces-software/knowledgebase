@@ -52,7 +52,7 @@ On Deploy VM
     nagios:
       is_server: false
 
-- Additionally, add the following to the ``setup:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``:::
+- Additionally, add the following to the ``setup:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``::
 
     - /opt/alces/install/scripts/03-ganglia.sh
     - /opt/alces/install/scripts/04-nagios.sh
