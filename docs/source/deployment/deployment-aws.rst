@@ -8,8 +8,8 @@ HPC platforms can be deployed in the cloud instead of on local hardware. While t
 .. image:: AWSEnvironment.png
     :alt: AWS Environment Diagram 1
 
-From Local Machine
-------------------
+General Network Setup
+---------------------
 
 AWS has a command line tool that can be used to create and manage resources. These will need to be run from a Linux/Mac machine.
 
@@ -170,7 +170,7 @@ Autoscaling Group Configuration
 Node Creation Example
 ---------------------
 
-- Create node (``ami-061b1560`` is the ID for the Official CentOS 7 minimal installation, ```replace my_key_pair``, ``my_sg_id`` and ``my_subnet_id`` with the related values from earlier commands)::
+- Create node (``ami-061b1560`` is the ID for the Official CentOS 7 minimal installation, replace ``my_key_pair``, ``my_sg_id`` and ``my_subnet_id`` with the related values from earlier commands)::
 
     aws ec2 run-instances --image-id ami-061b1560 --key-name my_key_pair --instance-type r4.2xlarge --associate-public-ip-address --security-group-ids my_sg_id --block-device-mappings file://mapping.json --subnet-id my_subnet_id --iam-instance-profile Name=my-autoscaling-profile
 
@@ -194,25 +194,25 @@ Repository Node Setup
 
 - Follow :ref:`deploy-aws-node`
 
-- Follow :ref:`deploy-repo`
+- Follow :ref:`Repo Configuration <deploy-repo>`
 
 Storage Node Setup
 ------------------
 
 - Follow :ref:`deploy-aws-node`
 
-- Follow :ref:`deploy-storage`
+- Follow :ref:`Storage Configuration <deploy-storage>`
 
 User Management Setup
 ---------------------
 
 - Follow :ref:`deploy-aws-node`
 
-- Follow :ref:`deploy-user`
+- Follow :ref:`User Management Setup <deploy-user>`
 
 Monitor Node Setup
 ------------------
 
 - Follow :ref:`deploy-aws-node`
 
-- Follow :ref:`deploy-monitor`
+- Follow :ref:`Monitor System Setup <deploy-monitor>`
