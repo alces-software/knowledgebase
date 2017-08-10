@@ -39,6 +39,7 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
    :caption: 01. Base System Deployment
    :name: base-system
    
+   base/deployment-overview
    base/deployment-considerations
    base/0*
 
