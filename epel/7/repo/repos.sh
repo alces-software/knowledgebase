@@ -111,55 +111,6 @@ createrepo centos-updates
 createrepo centos-extras
 createrepo -g comps.xml epel
 
-<% elsif networks.pri.ip == alces.hostip -%>
-# Install necessary packages and enable service
-yum -y install createrepo httpd
-systemctl enable httpd.service
-
-cat << EOF > /etc/httpd/conf.d/installer.conf
-<Directory /opt/alces/$REPOPATH/>
-    Options Indexes MultiViews FollowSymlinks
-    AllowOverride None
-    Require all granted
-    Order Allow,Deny
-    Allow from <%= networks.pri.network %>/255.255.0.0
-</Directory>
-Alias /repo /opt/alces/$REPOPATH
-
-<Directory /opt/alces/installers/>
-    Options Indexes MultiViews FollowSymlinks
-    AllowOverride None
-    Require all granted
-    Order Allow,Deny
-    Allow from <%= networks.pri.network %>/255.255.0.0
-</Directory>
-Alias /installers /opt/alces/installers
-EOF
-
-
-# Setup directories
-if [ ! -d /opt/alces ]; then
-    mkdir -p /opt/alces
-fi
-
-cd /opt/alces
-
-if [ ! -d installers ] ; then
-    mkdir -p installers
-fi
-
-if [ ! -d $REPOPATH ] ; then
-    mkdir -p $REPOPATH
-fi
-
-cd $REPOPATH
-
-mkdir custom
-
-createrepo custom
-
-systemctl restart httpd.service
-
 <% else -%>
 find /etc/yum.repos.d/*.repo -exec mv -fv {} {}.bak \;
 echo "$REPOS" > /etc/yum.repos.d/cluster.repo

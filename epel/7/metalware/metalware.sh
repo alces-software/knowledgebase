@@ -35,6 +35,7 @@ PRVNETWORK=10.10.0.0
 PRVNETMASK=255.255.0.0
 ROUTER=10.10.0.1
 EXTERNALDNS=10.101.0.1
+REPOPATH=repo
 
 echo "$BUILDSERVER `hostname -f` `hostname -s`" >> /etc/hosts
 
@@ -103,6 +104,53 @@ systemctl restart httpd
 systemctl restart xinetd
 
 mkdir -p /root/.ssh; echo 'StrictHostKeyChecking no' >> /root/.ssh/config
+
+yum -y install createrepo httpd yum-plugin-priorities yum-utils
+systemctl enable httpd.service
+
+cat << EOF > /etc/httpd/conf.d/installer.conf
+<Directory /opt/alces/$REPOPATH/>
+    Options Indexes MultiViews FollowSymlinks
+    AllowOverride None
+    Require all granted
+    Order Allow,Deny
+    Allow from <%= networks.pri.network %>/255.255.0.0
+</Directory>
+Alias /repo /opt/alces/$REPOPATH
+
+<Directory /opt/alces/installers/>
+    Options Indexes MultiViews FollowSymlinks
+    AllowOverride None
+    Require all granted
+    Order Allow,Deny
+    Allow from <%= networks.pri.network %>/255.255.0.0
+</Directory>
+Alias /installers /opt/alces/installers
+EOF
+
+
+# Setup directories
+if [ ! -d /opt/alces ]; then
+    mkdir -p /opt/alces
+fi
+
+cd /opt/alces
+
+if [ ! -d installers ] ; then
+    mkdir -p installers
+fi
+
+if [ ! -d $REPOPATH ] ; then
+    mkdir -p $REPOPATH
+fi
+
+cd $REPOPATH
+
+mkdir custom
+
+createrepo custom
+
+systemctl restart httpd.service
 
 yum -y install bind bind-utils
 
