@@ -36,39 +36,24 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
 .. toctree::
    :maxdepth: 1
    :glob:
-   :caption: Deployment
-   :name: deployment
+   :caption: 01. Base System Deployment
+   :name: base-system
    
-   deployment/deployment-considerations
+   base/deployment-considerations
+   base/0*
 
 .. toctree::
    :maxdepth: 1
    :glob:
-   :caption: Deployment on Metal
-   :name: deployment-on-metal
-   
-   deployment/0*
+   :caption: 02. Repository Management
+   :name: repository-management
+
+   repo/*
 
 .. toctree::
    :maxdepth: 1
    :glob:
-   :caption: Deployment on AWS
-   :name: deployment-on-aws
-   
-   deployment/deployment-aws
-
-.. toctree::
-   :maxdepth: 1
-   :glob:
-   :caption: Storage
-   :name: storage
-   
-   storage/*
-
-.. toctree::
-   :maxdepth: 1
-   :glob:
-   :caption: User Management
+   :caption: 03. User Management
    :name: user-management
    
    user-management/*
@@ -76,7 +61,15 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
 .. toctree::
    :maxdepth: 1
    :glob:
-   :caption: Monitoring
+   :caption: 04. Storage
+   :name: storage
+   
+   storage/*
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
+   :caption: 05. Monitoring
    :name: monitoring
    
    monitoring/*
@@ -84,7 +77,15 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
 .. toctree::
    :maxdepth: 1
    :glob:
-   :caption: HPC Environment
+   :caption: 06. Hardware Drivers
+   :name: hardware-drivers
+
+   hardware-drivers/*
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
+   :caption: 07. HPC Environment
    :name: hpc-environment
    
    hpc-environment/*
@@ -96,3 +97,11 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
    :name: verification
    
    verification/*
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
+   :caption: Deployment on AWS
+   :name: deployment-on-aws
+   
+   base/deployment-aws
