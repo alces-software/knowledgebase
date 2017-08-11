@@ -49,7 +49,8 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
    :caption: 02. Repository Management
    :name: repository-management
 
-   repo/*
+   repo/repository-overview
+   repo/repository-guidelines
 
 .. toctree::
    :maxdepth: 1
@@ -57,6 +58,7 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
    :caption: 03. User Management
    :name: user-management
    
+   user-management/user-management-overview
    user-management/*
 
 .. toctree::
@@ -65,6 +67,7 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
    :caption: 04. Storage
    :name: storage
    
+   storage/storage-overview
    storage/*
 
 .. toctree::
@@ -73,6 +76,7 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
    :caption: 05. Monitoring
    :name: monitoring
    
+   monitoring/monitoring-overview
    monitoring/*
 
 .. toctree::
@@ -81,6 +85,7 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
    :caption: 06. Hardware Drivers
    :name: hardware-drivers
 
+   hardware-drivers/hardware-drivers-overview
    hardware-drivers/*
 
 .. toctree::
@@ -89,6 +94,7 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
    :caption: 07. HPC Environment
    :name: hpc-environment
    
+   hpc-environment/hpc-environment-overview
    hpc-environment/*
 
 .. toctree::
