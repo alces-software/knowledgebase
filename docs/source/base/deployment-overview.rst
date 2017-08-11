@@ -3,10 +3,18 @@
 Base System Overview
 ====================
 
-Description
------------
+About
+-----
 
-The base system is comprised of the integral services required for a deployment environment. 
+The base system is comprised of the integral services required for a deployment environment.
+
+It is recommended that periodic updates are run in the future with the source tree for the minor OS version. The systems would require careful testing after any updates have been applied to ensure system functionality has persisted. 
+
+.. note:: If a :ref:`local repository <repository-overview>` has been setup then the local repo mirrors will need to be resynced before deploying updates.
+
+The deployment node also provides IP Masquerading on its external interface. All slave nodes are configured to default route out via the deployment node's external interface.
+
+A tftp service, dhcpd service and webserver are installed on the deployment node, these enable slave systems to be booted and pickup a series of automated deployment scripts that will result in a blank system being deployed and joining the environment.
 
 Components
 ----------
@@ -26,6 +34,8 @@ This package will set up and configure:
     - DNSmasq using ``/etc/hosts``
     - *or*
     - Named from bind packages
+    
+  - Management tools built around ipmitool, pdsh and libgenders
 
 Key Files
 ---------
