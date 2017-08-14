@@ -1,4 +1,13 @@
-curl -sL http://git.io/metalware-installer | sudo alces_OS=el7 /bin/bash
+DOMAIN=pri.testcluster.cluster.local
+DNSSERVERS=10.10.0.1
+NTPSERVERS=10.10.0.1
+BUILDSERVER=10.10.0.1
+PRVNETWORK=10.10.0.0
+PRVNETMASK=255.255.0.0
+ROUTER=10.10.0.1
+EXTERNALDNS=10.101.0.1
+REPOPATH=repo
+PXE_BOOT=/var/lib/tftpboot/boot
 
 yum -y install dhcp fence-agents tftp xinetd tftp-server syslinux syslinux-tftpboot httpd php
 
@@ -8,7 +17,6 @@ systemctl enable dnsmasq
 systemctl enable dhcpd
 systemctl enable httpd
 
-PXE_BOOT=/var/lib/tftpboot/boot
 mkdir -p "$PXE_BOOT"
 curl http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/images/pxeboot/initrd.img > "$PXE_BOOT/centos7-initrd.img"
 curl http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/images/pxeboot/vmlinuz > "$PXE_BOOT/centos7-kernel"
@@ -26,16 +34,6 @@ LABEL local
      MENU DEFAULT
      LOCALBOOT 0
 EOF
-
-DOMAIN=pri.testcluster.cluster.local
-DNSSERVERS=10.10.0.1
-NTPSERVERS=10.10.0.1
-BUILDSERVER=10.10.0.1
-PRVNETWORK=10.10.0.0
-PRVNETMASK=255.255.0.0
-ROUTER=10.10.0.1
-EXTERNALDNS=10.101.0.1
-REPOPATH=repo
 
 echo "$BUILDSERVER `hostname -f` `hostname -s`" >> /etc/hosts
 

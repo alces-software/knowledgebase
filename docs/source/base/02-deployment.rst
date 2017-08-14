@@ -70,7 +70,11 @@ OS Setup
 Metalware Install
 ^^^^^^^^^^^^^^^^^
 
-- Run the metalware install and TFTP server setup script::
+- Install metalware (to install a different branch, append ``alces_SOURCE_BRANCH=develop`` before ``/bin/bash`` in order to install the ``develop`` branch)::
+
+    curl -sL http://git.io/metalware-installer | sudo alces_OS=el7 /bin/bash
+
+- Run the metalware setup script (there are variables within this script that may need updating if your network setup differs from the examples used in this documentation - it is recommended to download this script before running it to check the variables are correct)::
 
     curl -sL https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/metalware/metalware.sh | sudo /bin/bash
  
