@@ -8,19 +8,19 @@ Deployment Example
 Client Deployment Example
 -------------------------
 
+- Configure a node group (this example creates a ``nodes`` group for compute nodes)::
+
+    metal configure group nodes
+ 
 - Start the controller VM listening for PXE requests::
 
     metal hunter -i eth0
 
 - Boot up the client node
 
-- The controller VM will print a line when the node has connected, when this happens enter the hostname for the system (this should be a hostname that exists in the nodelist mentioned earlier)
+- The controller VM will print a line when the node has connected, when this happens enter the hostname for the system (this should be a hostname that exists in the group configured earlier)
 
 - Once the hostname has been added the previous metal command can be cancelled (with ctrl-c)
-
-- Add the host entry for the node::
-
-    metal hosts node_name
 
 - Generate DHCP entry for the node::
 

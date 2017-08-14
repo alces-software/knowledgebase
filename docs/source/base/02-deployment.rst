@@ -80,15 +80,9 @@ Metalware Install
 
     metal repo use https://github.com/alces-software/metalware-default.git
 
-- Populate hostfile with slave nodes (the nodelist can be viewed with ``nodeattr -n nodes``)::
+- Configure the domain settings (this will prompt for various details regarding the domain setup, such as, root password, SSH RSA key [which can be created with ``ssh-keygen``] and default network parameters)::
 
-    metal hosts -g nodes
-
-- Create an SSH RSA key that will be used for passwordless SSH to any clients configured by this deployment server::
-
-    ssh-keygen
-
-- Copy the content of ``/root/.ssh/id_rsa.pub`` to ``/var/lib/metalware/repo/config/domain.yml`` after the ``ssh_key`` key
+    metal configure domain
 
 - Set the IPMI/BMC admin password in ``/var/lib/metalware/repo/config/domain.yaml`` in the ``bmc:`` namespace::
 
