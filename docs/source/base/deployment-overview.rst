@@ -12,9 +12,9 @@ It is recommended that periodic updates are run in the future with the source tr
 
 .. note:: If a :ref:`local repository <repository-overview>` has been setup then the local repo mirrors will need to be resynced before deploying updates.
 
-The deployment node also provides IP Masquerading on its external interface. All slave nodes are configured to default route out via the deployment node's external interface.
+The controller node also provides IP Masquerading on its external interface. All slave nodes are configured to default route out via the controller node's external interface.
 
-A tftp service, dhcpd service and webserver are installed on the deployment node, these enable slave systems to be booted and pickup a series of automated deployment scripts that will result in a blank system being deployed and joining the environment.
+A tftp service, dhcpd service and webserver are installed on the controller node, these enable slave systems to be booted and pickup a series of automated deployment scripts that will result in a blank system being deployed and joining the environment.
 
 Components
 ----------

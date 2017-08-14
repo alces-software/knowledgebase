@@ -21,8 +21,8 @@ On Master Node
 
 .. _deploy-monitor:
 
-On Deploy VM
-^^^^^^^^^^^^
+On Controller VM
+^^^^^^^^^^^^^^^^
 
 - Add the monitor server to ``/opt/metalware/etc/genders``, an example entry is below::
 

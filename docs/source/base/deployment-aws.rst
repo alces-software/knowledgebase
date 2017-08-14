@@ -182,7 +182,7 @@ Node Creation Example
 
     aws ec2 describe-instances --instance-id instance_id |jq '.Reservations[0].Instances[0].PublicIpAddress'
 
-Deployment Node Setup
+Controller Node Setup
 ---------------------
 
 - Follow :ref:`deploy-aws-node`

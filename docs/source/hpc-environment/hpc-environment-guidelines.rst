@@ -3,7 +3,7 @@
 Recommendations for HPC Environment Design
 ==========================================
 
-SLURM Setup (From Deployment VM)
+SLURM Setup (From Controller VM)
 --------------------------------
 
 - Add the slurm server to ``/opt/metalware/etc/genders``, an example entry is below::

@@ -8,13 +8,13 @@ Deployment Example
 Client Deployment Example
 -------------------------
 
-- Start the deployment VM listening for PXE requests::
+- Start the controller VM listening for PXE requests::
 
     metal hunter -i eth0
 
 - Boot up the client node
 
-- The deployment VM will print a line when the node has connected, when this happens enter the hostname for the system (this should be a hostname that exists in the nodelist mentioned earlier)
+- The controller VM will print a line when the node has connected, when this happens enter the hostname for the system (this should be a hostname that exists in the nodelist mentioned earlier)
 
 - Once the hostname has been added the previous metal command can be cancelled (with ctrl-c)
 
@@ -26,7 +26,7 @@ Client Deployment Example
 
     metal dhcp -t default
 
-- Start the deployment VM serving installation files to the node (replace slave01 with the hostname of the client node)::
+- Start the controller VM serving installation files to the node (replace slave01 with the hostname of the client node)::
 
     metal build slave01
 

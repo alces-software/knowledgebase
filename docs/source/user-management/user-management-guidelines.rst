@@ -21,8 +21,8 @@ On Master Node
 
 .. _deploy-user:
 
-On Deploy VM
-^^^^^^^^^^^^
+On Controller VM
+^^^^^^^^^^^^^^^^
 
 - Add the storage server to ``/opt/metalware/etc/genders``, an example entry is below::
 

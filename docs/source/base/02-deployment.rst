@@ -1,42 +1,42 @@
 .. _02-deployment:
 
-Deployment VM Setup
+Controller VM Setup
 ===================
 
 On Master Node
 --------------
 
-- Create ``/opt/vm/deploy.xml`` for provisioning a VM called deploy (:download:`Available here <deploy.xml>`)
+- Create ``/opt/vm/controller.xml`` for provisioning a VM called controller (:download:`Available here <controller.xml>`)
 
   - This template creates 3 interfaces on the VM (on the primary, management and external networks)
 
-- Create base qcow2 image ``deploy.qcow2``::
+- Create base qcow2 image ``controller.qcow2``::
 
-    qemu-img create -f qcow2 deploy.qcow2 80G
+    qemu-img create -f qcow2 controller.qcow2 80G
 
 - Create the VM::
 
-    virsh define deploy.xml
+    virsh define controller.xml
 
 - Start the VM::
 
-    virsh start deploy
+    virsh start controller
 
 - Connect a VNC-like window to the VM to watch it booting and interact with the terminal::
 
-    virt-viewer deploy
+    virt-viewer controller
 
 .. note:: Much like the host system, a minimal installation of CentOS 7 is recommended (as is ensuring that the system is up-to-date with ``yum -y update``)
 
-On Deploy VM
-------------
+On Controller VM
+----------------
 
 OS Setup
 ^^^^^^^^
 
 - Set the hostname of the system (the fully-qualified domain name for this system has additionally added the cluster name)::
 
-    echo 'deploy.testcluster.cluster.local' > /etc/hostname
+    echo 'controller.testcluster.cluster.local' > /etc/hostname
 
 - Setup the network interfaces (if setting a static IP then ensure to set ``IPADDR``, ``NETMASK`` and ``NETWORK`` for the interface)
 

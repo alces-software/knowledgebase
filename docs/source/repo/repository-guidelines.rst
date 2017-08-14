@@ -18,8 +18,8 @@ On Master Node
 
 .. _deploy-repo:
 
-On Deploy VM
-------------
+On Controller VM
+----------------
 
 - Add the repo server to ``/opt/metalware/etc/genders``, an example entry is below::
 
@@ -152,12 +152,12 @@ On Deploy VM
 
 - Follow :ref:`client-deployment` to setup the repo node
 
-- The repo VM will now be up and can be logged in with passwordless SSH from the deployment VM and will have a clone of the CentOS upstream repositories locally.
+- The repo VM will now be up and can be logged in with passwordless SSH from the controller VM and will have a clone of the CentOS upstream repositories locally.
 
 Custom Repository Setup
 -----------------------
 
-The above configuration will allow the deployment VM to be configured as a local custom repository (even if local upstream mirrors are not being created). The purpose of this repository is to provide packages to the network that aren't available in upstream repositories or require higher installation priority than other available packages (e.g. a newer kernel package).
+The above configuration will allow the controller VM to be configured as a local custom repository (even if local upstream mirrors are not being created). The purpose of this repository is to provide packages to the network that aren't available in upstream repositories or require higher installation priority than other available packages (e.g. a newer kernel package).
 
 To setup the custom repo, run the following command from the deployment VM::
 
