@@ -114,7 +114,7 @@ cat << EOF > /etc/httpd/conf.d/installer.conf
     AllowOverride None
     Require all granted
     Order Allow,Deny
-    Allow from <%= networks.pri.network %>/255.255.0.0
+    Allow from $BUILDSERVER/255.255.0.0
 </Directory>
 Alias /repo /opt/alces/$REPOPATH
 
@@ -123,7 +123,7 @@ Alias /repo /opt/alces/$REPOPATH
     AllowOverride None
     Require all granted
     Order Allow,Deny
-    Allow from <%= networks.pri.network %>/255.255.0.0
+    Allow from $BUILDSERVER/255.255.0.0
 </Directory>
 Alias /installers /opt/alces/installers
 EOF
