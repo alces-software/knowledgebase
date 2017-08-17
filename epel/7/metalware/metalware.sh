@@ -1,14 +1,60 @@
-DOMAIN=pri.testcluster.cluster.local
-DNSSERVERS=10.10.0.1
-NTPSERVERS=10.10.0.1
-BUILDSERVER=10.10.0.1
-PRVNETWORK=10.10.0.0
-PRVNETMASK=255.255.0.0
-ROUTER=10.10.0.1
-EXTERNALDNS=10.101.0.1
-REPOPATH=repo
-PXE_BOOT=/var/lib/tftpboot/boot
+DOMAIN=<%= networks.pri.hostname %>
+DNSSERVERS=<%= build.build_pri_ip %>
+NTPSERVERS=<%= build.build_pri_ip %>
+BUILDSERVER=<%= build.build_pri_ip %>
+PRVNETWORK=<%= networks.pri.network %>
+PRVNETMASK=<%= networks.pri.netmask %>
+ROUTER=<%= build.build_pri_ip %>
+EXTERNALDNS=<%= externaldns %>
+REPOPATH=<%= build.repo_path %>
+PXE_BOOT=<%= build.pxeboot_path %>
 
+
+# Network and hostname
+echo "<%= build.controller_hostname %>.<%= domain %>" > /etc/hostname
+
+cat << EOF > /etc/sysconfig/network-scripts/ifcfg-eth0
+TYPE=Ethernet
+DEVICE=eth0
+ONBOOT=yes
+BOOTPROTO=static
+DEFROUTE=yes
+IPADDR=<%= build.build_pri_ip%>
+NETWORK=<%= networks.pri.network %>
+NETMASK=<%= networks.pri.netmask %>
+ZONE=trusted
+EOF
+
+cat << EOF > /etc/sysconfig/network-scripts/ifcfg-eth1
+TYPE=Ethernet
+DEVICE=eth1
+ONBOOT=yes
+BOOTPROTO=static
+IPADDR=<%= build.build_mgt_ip%>
+NETWORK=<%= networks.mgt.network %>
+NETMASK=<%= networks.mgt.netmask %>
+ZONE=trusted
+EOF
+
+cat << EOF > /etc/sysconfig/network-scripts/ifcfg-eth2
+TYPE=Ethernet
+DEVICE=eth2
+ONBOOT=yes
+BOOTPROTO=dhcp
+ZONE=external
+EOF
+
+systemctl enable firewalld
+systemctl start firewalld
+
+firewall-cmd --add-interface eth0 --zone trusted --permanent
+firewall-cmd --add-interface eth1 --zone trusted --permanent
+firewall-cmd --add-interface eth2 --zone external --permanent
+
+systemctl disable NetworkManager
+
+
+# Network services
 yum -y install dhcp fence-agents tftp xinetd tftp-server syslinux syslinux-tftpboot httpd php
 
 sed -ie "s/^.*disable.*$/\    disable = no/g" /etc/xinetd.d/tftp
