@@ -20,7 +20,7 @@
 # For more information on the Alces Metalware, please visit:
 # https://github.com/alces-software/metalware
 #==============================================================================
-TAG=-sfn
+TAG=-stuts2
 
 BASEPATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 NAME=controller$TAG
@@ -37,7 +37,7 @@ virt-install \
 --network bridge=ext \
 --graphics vnc,password='sqrt(s*w)',listen=0.0.0.0,port='-1' --noautoconsole \
 --console pty,target_type=serial \
---location 'http://repo.alces-software.com/repo/centos/' \
+--location 'http://repo.alces-software.com/repo/centos/7/base' \
 --initrd-inject $BASEPATH/controller.ks \
 --extra-args 'console=tty0 console=ttyS0,115200n8 ip=eth2:dhcp bootdev=eth2 ks=file:/controller.ks'
 
