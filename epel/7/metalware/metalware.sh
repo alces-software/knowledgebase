@@ -13,46 +13,65 @@ PXE_BOOT=<%= build.pxeboot_path %>
 # Network and hostname
 echo "<%= build.controller_hostname %>.<%= domain %>" > /etc/hostname
 
-cat << EOF > /etc/sysconfig/network-scripts/ifcfg-eth0
+cat << EOF > /etc/sysconfig/network-scripts/<%= networks.pri.interface %>
 TYPE=Ethernet
-DEVICE=eth0
+DEVICE=<%= networks.pri.interface %>
 ONBOOT=yes
 BOOTPROTO=static
 DEFROUTE=yes
 IPADDR=<%= build.build_pri_ip%>
 NETWORK=<%= networks.pri.network %>
 NETMASK=<%= networks.pri.netmask %>
-ZONE=trusted
+ZONE=<%= networks.pri.firewallpolicy %>
 EOF
 
-cat << EOF > /etc/sysconfig/network-scripts/ifcfg-eth1
+cat << EOF > /etc/sysconfig/network-scripts/ifcfg-<%= networks.mgt.interface %>
 TYPE=Ethernet
-DEVICE=eth1
+DEVICE=<%= networks.mgt.interface %>
 ONBOOT=yes
 BOOTPROTO=static
 IPADDR=<%= build.build_mgt_ip%>
 NETWORK=<%= networks.mgt.network %>
 NETMASK=<%= networks.mgt.netmask %>
-ZONE=trusted
+ZONE=<%= networks.mgt.firewallpolicy %>
 EOF
 
-cat << EOF > /etc/sysconfig/network-scripts/ifcfg-eth2
+cat << EOF > /etc/sysconfig/network-scripts/ifcfg-<%= firewall.external.interface %>
 TYPE=Ethernet
-DEVICE=eth2
+DEVICE=<%= firewall.external.interface %>
 ONBOOT=yes
 BOOTPROTO=dhcp
+DNS1=127.0.0.1
+DOMAIN="<%= search_domains %>"
 ZONE=external
 EOF
 
 systemctl enable firewalld
 systemctl start firewalld
 
-firewall-cmd --add-interface eth0 --zone trusted --permanent
-firewall-cmd --add-interface eth1 --zone trusted --permanent
-firewall-cmd --add-interface eth2 --zone external --permanent
+<% firewall.each do |zone, info| -%>
+# Create zone
+firewall-cmd --info=zone=<%= zone %>
+if [ $? != 0 ] ; then
+    firewall-cmd --new-zone --permanent <%= zone %>
+fi
+# Add services
+<%     info.services.split(' ').each do |service| -%>
+firewall-cmd --add-service <%= service %> --zone <%= zone %>
+<%     end -%>
+
+<% end -%>
+firewall-cmd --reload
+
+# Add interfaces to zones
+<% networks.each do |network, info| -%>
+<%     if info.defined -%>
+firewall-cmd --add-interface <%= info.interface %> --zone <%= info.firewallpolicy %> --permanent
+<%     end -%>
+<% end -%>
+firewall-cmd --add-interface <%= firewall.external.interface %> --zone external --permanent
 
 systemctl disable NetworkManager
-
 
 # Network services
 yum -y install dhcp fence-agents tftp xinetd tftp-server syslinux syslinux-tftpboot httpd php
