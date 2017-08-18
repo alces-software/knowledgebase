@@ -51,9 +51,9 @@ systemctl start firewalld
 
 <% firewall.each do |zone, info| -%>
 # Create zone
-firewall-cmd --info=zone=<%= zone %>
+firewall-cmd --info-zone=<%= zone %>
 if [ $? != 0 ] ; then
-    firewall-cmd --new-zone --permanent <%= zone %>
+    firewall-cmd --new-zone <%= zone %> --permanent
 fi
 # Add services
 <%     info.services.split(' ').each do |service| -%>
