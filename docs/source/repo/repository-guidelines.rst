@@ -85,6 +85,21 @@ On Controller VM
         baseurl: <%= awsrepos.repourl %>/epel
         enabled: 0
         priority: 11
+      lustre-el7-client:
+        name: lustre-el7-client
+        baseurl: <%= awsrepos.repourl %>/lustre/el7/client
+        enabled: 0
+        priority: 5
+      lustre-el7-server:
+        name: lustre-el7-server
+        baseurl: <%= awsrepos.repourl %>/lustre/el7/server
+        enabled: 0
+        priority: 5
+      e2fsprogs-el7:
+        name: e2fsprogs-el7
+        baseurl: <%= awsrepos.repourl %>/e2fsprogs/el7
+        enabled: 0
+        priority: 5
     alcesrepos:
       repourl: http://repo.alces-software.com/repo
       centos:
@@ -101,6 +116,21 @@ On Controller VM
         baseurl: <%= alcesrepos.repourl %>/epel/
         enabled: 0
         priority: 11
+      lustre-el7-client:
+        name: lustre-el7-client
+        baseurl: <%= alcesrepos.repourl %>/lustre/el7/client
+        enabled: 0
+        priority: 5
+      lustre-el7-server:
+        name: lustre-el7-server
+        baseurl: <%= alcesrepos.repourl %>/lustre/el7/server
+        enabled: 0
+        priority: 5
+      e2fsprogs-el7:
+        name: e2fsprogs-el7
+        baseurl: <%= alcesrepos.repourl %>/e2fsprogs/el7
+        enabled: 0
+        priority: 5
     localrepos:
       repourl: http://10.10.0.2/repo
       centos:
