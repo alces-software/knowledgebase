@@ -13,7 +13,7 @@ PXE_BOOT=<%= build.pxeboot_path %>
 # Network and hostname
 echo "<%= build.controller_hostname %>.<%= domain %>" > /etc/hostname
 
-cat << EOF > /etc/sysconfig/network-scripts/<%= networks.pri.interface %>
+cat << EOF > /etc/sysconfig/network-scripts/ifcfg-<%= networks.pri.interface %>
 TYPE=Ethernet
 DEVICE=<%= networks.pri.interface %>
 ONBOOT=yes
