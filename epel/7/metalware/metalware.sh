@@ -57,7 +57,7 @@ if [ $? != 0 ] ; then
 fi
 # Add services
 <%     info.services.split(' ').each do |service| -%>
-firewall-cmd --add-service <%= service %> --zone <%= zone %>
+firewall-cmd --add-service <%= service %> --zone <%= zone %> --permanent
 <%     end -%>
 
 <% end -%>
