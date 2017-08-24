@@ -1,4 +1,4 @@
-<% if lustre.is_server -%>
+<% if lustreconfig.type == 'server' -%>
 yum-config-manager --enable lustre-el7-server --enable e2fsprogs-el7
 
 yum -y update
@@ -12,7 +12,7 @@ EOF
 
 yum-config-manager --disable lustre-el7-server --disable e2fsprogs-el7
 
-<% else -%>
+<% elsif lustreconfig.type == 'client' -%>
 
 yum-config-manager --enable lustre-el7-client --enable e2fsprogs-el7
 
