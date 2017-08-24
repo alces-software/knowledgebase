@@ -13,8 +13,13 @@ Components
 
 The monitoring system will provide the following applications:
 
-  - Ganglia, a passive monitoring system with metric graphs 
+  - Ganglia, a passive monitoring system with metric graphs
+  
+      - Clients send metrics to the Ganglia host system which are plotted on graphs for viewing data trends for the environment. The data is available through both a command-line utility and a web interface.
+  
   - Nagios, an active monitoring system with notifications
+  
+      - Nagios clients are configured on the server and are not required to run client software unless additional metrics are needed. The system will actively monitor metrics and if the values go over a predefined, customisable threshold.
 
 Key Files
 ---------

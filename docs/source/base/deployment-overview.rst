@@ -26,16 +26,30 @@ This package will set up and configure:
   - Metalware cluster management software, providing:
 
     - Custom yum repository for providing additional packages to nodes
+    
+        - The directory ``/opt/alces/repo/custom/Packages`` can be used to store RPMs that will then be served to client nodes, allowing for custom, additional or non-supported packages to be installed.
+    
     - DHCP and TFTP server configuration for network booting
+    
+        - DHCP will provide host identity management, such as, serving IPs and hostnames to client systems based on the hardware MAC address of the client. This information is used during installation to configure the node uniquely.
+        - TFTP will provide the boot configuration of the system in order to provide the build or boot environment of client systems.
+        
     - NTP for keeping the cluster clocks in sync
 
   - Name resolution services either:
 
     - DNSmasq using ``/etc/hosts``
+    
+        - Alongside the server providing lookup responses, the client systems will also have a fully populated ``/etc/hosts`` files for local queries.
+    
     - *or*
     - Named from bind packages
     
+        - Named creates forward and reverse search zones on the controller node that can be queried by all clients. Unlike DNSmasq, the client systems have an empty ``/etc/hosts`` as named is serving all of the additional host information.
+    
   - Management tools built around ipmitool, pdsh and libgenders
+  
+      - These management tools allow for running commands on multiple systems defined in groups, improving the ease and flexibility of environment management.
 
 Key Files
 ---------

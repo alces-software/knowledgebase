@@ -14,7 +14,13 @@ Components
 The components in this package are:
 
   - First boot environment for automatically executing installers at boot time
-  - Infiniband driver first-boot script 
+  
+      - This provides a system service that can be used to run installation scripts when a system is turned on. For example, Nvidia graphics driver can be set to compile after the initial build of the system such that it is compiled against the correct kernel version.
+  
+  - Infiniband driver first-boot script
+  
+      - A script that can install the Mellanox Infiniband driver either from upstream repositories or through local compilation from the source files
+  
   - Nvidia graphics driver first-boot script
 
 Key Files
