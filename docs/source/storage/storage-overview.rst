@@ -15,7 +15,7 @@ The storage solution is comprised of the following:
 
   - NFS server
   
-      - The NFS server will serve redundant network storage (depending on hardware and network configuration) to the client systems in the environment. This allows for distributed access to project and user data.
+      - The NFS server serves redundant network storage (depending on hardware and network configuration) to the client systems in the environment. This allows for distributed access to project and user data.
   
   - Filesystem formatting
   

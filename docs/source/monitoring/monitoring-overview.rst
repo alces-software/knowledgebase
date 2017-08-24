@@ -19,7 +19,7 @@ The monitoring system will provide the following applications:
   
   - Nagios, an active monitoring system with notifications
   
-      - Nagios clients are configured on the server and are not required to run client software unless additional metrics are needed. The system will actively monitor metrics and if the values go over a predefined, customisable threshold.
+      - Nagios clients are configured on the server and are not required to run client software unless additional metrics are needed. The system actively monitors metrics and if the values go over a predefined, customisable threshold.
 
 Key Files
 ---------

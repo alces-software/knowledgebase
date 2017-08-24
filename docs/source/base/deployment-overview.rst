@@ -27,12 +27,12 @@ This package will set up and configure:
 
     - Custom yum repository for providing additional packages to nodes
     
-        - The directory ``/opt/alces/repo/custom/Packages`` can be used to store RPMs that will then be served to client nodes, allowing for custom, additional or non-supported packages to be installed.
+        - The directory ``/opt/alces/repo/custom/Packages`` can be used to store RPMs that are then be served to client nodes, allowing for custom, additional or non-supported packages to be installed.
     
     - DHCP and TFTP server configuration for network booting
     
-        - DHCP will provide host identity management, such as, serving IPs and hostnames to client systems based on the hardware MAC address of the client. This information is used during installation to configure the node uniquely.
-        - TFTP will provide the boot configuration of the system in order to provide the build or boot environment of client systems.
+        - DHCP provides host identity management, such as, serving IPs and hostnames to client systems based on the hardware MAC address of the client. This information is used during installation to configure the node uniquely.
+        - TFTP provides the boot configuration of the system in order to provide the build or boot environment of client systems.
         
     - NTP for keeping the cluster clocks in sync
 
