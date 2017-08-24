@@ -215,43 +215,4 @@ createrepo custom
 
 systemctl restart httpd.service
 
-yum -y install bind bind-utils
-
-cat << EOF > /etc/named.conf
-options {
-          listen-on port 53 { any; };
-          directory       "/var/named";
-          dump-file       "/var/named/data/cache_dump.db";
-          statistics-file "/var/named/data/named_stats.txt";
-          memstatistics-file "/var/named/data/named_mem_stats.txt";
-          allow-query     { any; };
-          recursion yes;
-
-
-          dnssec-enable no;
-          dnssec-validation no;
-          dnssec-lookaside auto;
-
-          forward first;
-          forwarders {
-              ${EXTERNALDNS};
-          };
-
-};
-
-logging {
-        channel default_debug {
-                file "data/named.run";
-                severity dynamic;
-        };
-};
-
-include "/etc/named/metalware.conf";
-EOF
-
-systemctl disable dnsmasq
-systemctl stop dnsmasq
-systemctl enable named
-systemctl restart named
-
 echo "You need to reboot"
