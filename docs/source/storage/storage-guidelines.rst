@@ -129,3 +129,96 @@ On Controller VM
     wget -O 01-nfs.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nfs/nfs.sh
 
 - Follow :ref:`client-deployment` to setup the compute nodes
+
+Lustre Server Setup
+-------------------
+
+On Master Node
+^^^^^^^^^^^^^^
+
+- Create ``/opt/vm/lustre-mds.xml`` for deploying the lustre metadata server VM (:download:`Available here <lustre-mds.xml>`)
+
+- Create disk image for the lustre metadata server VM::
+
+    qemu-img create -f qcow2 lustre-mds.qcow2 80G
+
+- Define the VM::
+
+    virsh define lustre-mds.xml
+
+.. _deploy-lustre-mds:
+
+On Controller VM
+^^^^^^^^^^^^^^^^
+
+- Add the lustre metadata server to ``/opt/metalware/etc/genders``, an example entry is below::
+
+    # SERVICES
+    lustre-mds lustre-mds,lustre,services,cluster,domain
+
+- Create a deployment file specifically for ``lustre-mds`` at ``/var/lib/metalware/repo/config/lustre-mds.yaml`` with the following content::
+
+    networks:
+      pri:
+        ip: 10.10.0.10
+      
+      mgt:
+        defined: false
+    
+    lustreconfig:
+      type: server
+
+- Add the following to ``/var/lib/metalware/repo/config/domain.yaml``::
+
+    lustreconfig:
+      type: none
+
+.. note:: For clients to lustre, replicate the above entry into the group or node config file and change ``type: node`` to ``type: client``.
+
+- Additionally, add the following to the ``setup:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``::
+
+    - /opt/alces/install/scripts/08-lustre.sh
+
+- Download the ``lustre.sh`` script to the above location::
+
+    mkdir -p /opt/alces/install/scripts/
+    cd /opt/alces/install/scripts/
+    wget -O 08-lustre.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/lustre/lustre.sh
+
+- Follow :ref:`client-deployment` to setup the lustre node
+
+- Once this has completed the lustre-mds node will have the necessary configuration to host a lustre metadata target or storage configuration. To configure the metadata disk or storage configuration see the below section.
+
+Lustre Storage Setup
+^^^^^^^^^^^^^^^^^^^^
+
+A lustre storage configuration usually consists of a metadata server (that is used to authorise mount, read and write requests to the lustre storage volume) and multiple storage servers (with disk arrays attached to them). The above configuration shows how a metadata server can be configured as part of the network but with some naming tweaks the lustre storage servers can also be added to the environment.
+
+
+**Metadata Storage Target**
+
+- To format a metadata storage disk from the metadata server run a command similar to the following (replacing ``lustre`` with the desired name of the lustre filesystem and ``/dev/sda`` with the path to the disk for storing metadata)::
+
+    mkfs.lustre --index=0 --mgs --mdt --fsname=lustre --servicenode=10.10.0.10 --reformat /dev/sda
+
+- To activate the storage, mount it somewhere on the metadata server::
+
+    mount -t lustre /dev/sda /mnt/lustre/mdt
+
+**Lustre Storage Target**
+
+These commands should be performed from different systems connected to the same storage backends across the storage configuration (depending on the network configuration) to ensure that the device management is distributed.
+
+- A storage target for the lustre filesystem can be formatted as follows (replacing ``lustre`` with the name of the filesystem from mdt configuration, repeat ``--servicenode=IP-OF-OSSX`` for each storage system that's also connected to the same storage backend and replace ``/dev/mapper/ostX`` with the path to the storage device)::
+
+    mkfs.lustre --ost --index=0 --fsname=lustre --mgsnode=IP-OF-MDS-NODE --mkfsoptions="-E stride=32,stripe_width=256" --servicenode=IP-OF-OSSX /dev/mapper/ostX
+
+- The device can then be mounted::
+
+    mount -t lustre /dev/mapper/ostX /mnt/lustre/ostX
+
+**Client Mount**
+
+- The following command will mount the example lustre volume created from the above steps::
+
+    mount -t lustre 10.10.0.10:/lustre /mnt/lustre
