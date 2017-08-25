@@ -8,29 +8,32 @@ Storage Hardware
 
 When selecting the storage solution it is worth considering the size, performance and resilience of the desired storage solution. Usually some sort of storage array will be used, that is, a collection of disks (otherwise known as JBOD - Just a Bunch Of Disks) in the form of an internal or external RAID array.
 
-
 Network Storage Solutions
 -------------------------
 
-- Single server w/ NFS (internal or external RAID 6 array)
-- 2 servers w/ NFS (external RAID 6 array - SAS expanders from servers connect to the array)
-- 2 servers w/ parallel file system (same as above but with additional hardware and software config)
+Single server w/ NFS
+^^^^^^^^^^^^^^^^^^^^
 
-.. note:: GFS is used for storing VM images when high availability VM solution is being used.
+.. image:: SingleServerNFS.png
+    :alt: Single Server with NFS
 
-Storage Array
-- RAID card
-- separate JBOD [what technology is this called?]
+In this example, a single server is connected to a RAID 6 storage array which it is serving over NFS to the systems on the network. While simple in design and implementation, this design only provides redundancy at the RAID level.
 
-Storage Server Connection
-- PCI (for RAID card)
-- iSCSI (for separate JBOD) - This allows for multipathing, correct?
+Multiple Servers w/ NFS
+^^^^^^^^^^^^^^^^^^^^^^^
 
-Network Export
-- NFS
-- GFS
-- Parallel
+.. image:: MultiServerNFS.png
+    :alt: Multi Server with NFS
 
+In addition to the previous example, this setup features multiple storage servers which balance the load of serving the disk over NFS.
+
+Multiple Servers w/ Lustre
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. image:: MultiServerLustre.png
+    :alt: Multi Server with Lustre
+
+This setup features multiple RAID sets which sit externally to the storage servers and are connected to both of them using multipath - this allows for multiple paths to the storage devices to be utilised. On top of this, a Lustre volume has been configured which consists of all the external disks, authorisation of access to the storage volume is managed by the metadata node.
 
 Additional Considerations and Questions
 ---------------------------------------
