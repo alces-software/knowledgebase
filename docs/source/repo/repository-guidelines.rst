@@ -189,6 +189,15 @@ Custom Repository Setup
 
 The above configuration will allow the controller VM to be configured as a local custom repository (even if local upstream mirrors are not being created). The purpose of this repository is to provide packages to the network that aren't available in upstream repositories or require higher installation priority than other available packages (e.g. a newer kernel package).
 
-To setup the custom repo, run the following command from the deployment VM::
+- Install package dependencies::
 
-    metal render /opt/alces/install/scripts/00-repos.sh metalware |/bin/bash
+    yum -y install createrepo httpd yum-plugin-priorities yum-utils
+
+- Create custom repository directory::
+
+    mkdir -p /opt/alces/repo/custom/
+
+- Define the repository::
+
+    cd /opt/alces/repo/
+    createrepo custom
