@@ -78,20 +78,16 @@ On Master Node
 On Controller VM
 ^^^^^^^^^^^^^^^^
 
-- Add the storage server to ``/opt/metalware/etc/genders``, an example entry is below::
+- Create a group for the storage VM (add at least ``storage1`` as a node in the group, set additional groups of ``services,cluster,domain`` allows for more diverse group management)::
 
-    # SERVICES
-    storage1 storage,services,cluster,domain
+    metal configure group storage
+    
+- Customise ``storage1`` node configuration (set the primary IP address to 10.10.0.3)::
+
+    metal configure node storage1
 
 - Create ``/var/lib/metalware/repo/config/storage1.yaml`` with the ip definition::
 
-    networks:
-      pri:
-        ip: 10.10.0.3
-    
-      mgt:
-        defined: disabled
-    
     nfsconfig:
       is_server: true
     
@@ -151,20 +147,16 @@ On Master Node
 On Controller VM
 ^^^^^^^^^^^^^^^^
 
-- Add the lustre metadata server to ``/opt/metalware/etc/genders``, an example entry is below::
+- Create a group for the lustre VM (add at least ``lustre-mds1`` as a node in the group, set additional groups of ``lustre,services,cluster,domain`` allows for more diverse group management)::
 
-    # SERVICES
-    lustre-mds lustre-mds,lustre,services,cluster,domain
-
-- Create a deployment file specifically for ``lustre-mds`` at ``/var/lib/metalware/repo/config/lustre-mds.yaml`` with the following content::
-
-    networks:
-      pri:
-        ip: 10.10.0.10
-      
-      mgt:
-        defined: false
+    metal configure group lustre-mds
     
+- Customise ``lustre-mds1`` node configuration (set the primary IP address to 10.10.0.10)::
+
+    metal configure node lustre-mds1
+
+- Create a deployment file specifically for ``lustre-mds1`` at ``/var/lib/metalware/repo/config/lustre-mds1.yaml`` with the following content::
+
     lustreconfig:
       type: server
 

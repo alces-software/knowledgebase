@@ -24,20 +24,16 @@ On Master Node
 On Controller VM
 ^^^^^^^^^^^^^^^^
 
-- Add the monitor server to ``/opt/metalware/etc/genders``, an example entry is below::
+- Create a group for the monitor VM (add at least ``monitor1`` as a node in the group, set additional groups of ``services,cluster,domain`` allows for more diverse group management)::
 
-    # SERVICES
-    monitor1 monitor,services,cluster,domain
+    metal configure group monitor
+    
+- Customise ``monitor1`` node configuration (set the primary IP address to 10.10.0.5)::
+
+    metal configure node monitor1
 
 - Create ``/var/lib/metalware/repo/config/monitor1.yaml`` with the following network and server definition::
 
-    networks:
-      pri:
-        ip: 10.10.0.5
-      
-      mgt:
-        defined: false
-    
     ganglia:
       is_server: true
       

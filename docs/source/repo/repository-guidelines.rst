@@ -21,20 +21,16 @@ On Master Node
 On Controller VM
 ----------------
 
-- Add the repo server to ``/opt/metalware/etc/genders``, an example entry is below::
+- Create a group for the repo VM (add at least ``repo1`` as a node in the group, set additional groups of ``services,cluster,domain`` allows for more diverse group management)::
 
-    # SERVICES
-    repo1 repo,services,cluster,domain
+    metal configure group repo
+    
+- Customise ``repo1`` node configuration (set the primary IP address to 10.10.0.2)::
+
+    metal configure node repo1
 
 - Create a deployment file specifically for ``repo1`` at ``/var/lib/metalware/repo/config/repo1.yaml`` with the following content::
 
-    networks:
-      pri:
-        ip: 10.10.0.2
-
-      mgt:
-        defined: false
-    
     repoconfig:
       is_server: true
 

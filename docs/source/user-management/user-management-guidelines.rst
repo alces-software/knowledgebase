@@ -24,20 +24,16 @@ On Master Node
 On Controller VM
 ^^^^^^^^^^^^^^^^
 
-- Add the storage server to ``/opt/metalware/etc/genders``, an example entry is below::
+- Create a group for the nis VM (add at least ``nis1`` as a node in the group, set additional groups of ``services,cluster,domain`` allows for more diverse group management)::
 
-    # SERVICES
-    nis1 nis,services,cluster,domain
-
-- Create ``/var/lib/metalware/repo/config/nis1.yaml`` with the ip definition::
-
-    networks:
-      pri:
-        ip: 10.10.0.4
+    metal configure group nis
     
-      mgt:
-        defined: disabled
-    
+- Customise ``nis1`` node configuration (set the primary IP address to 10.10.0.4)::
+
+    metal configure node nis1
+
+- Create a deployment file specifically for ``nis1`` at ``/var/lib/metalware/repo/config/nis1.yaml`` with the following content::
+
     nisconfig:
       is_server: true
 

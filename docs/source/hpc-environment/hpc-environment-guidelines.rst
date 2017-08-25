@@ -6,27 +6,23 @@ Recommendations for HPC Environment Design
 SLURM Setup (From Controller VM)
 --------------------------------
 
-- Add the slurm server to ``/opt/metalware/etc/genders``, an example entry is below::
+- Create a group for the slurm VM (add at least ``slurm1`` as a node in the group, set additional groups of ``services,cluster,domain`` allows for more diverse group management)::
 
-    # SERVICES
-    slurm slurm,services,cluster,domain
-
-- Create ``/var/lib/metalware/repo/config/slurm.yaml`` with the following network and server definition::
-
-    networks:
-      pri:
-        ip: 10.10.0.6
-      
-      mgt:
-        defined: false
+    metal configure group slurm
     
+- Customise ``slurm1`` node configuration (set the primary IP address to 10.10.0.6)::
+
+    metal configure node slurm1
+
+- Create ``/var/lib/metalware/repo/config/slurm1.yaml`` with the following network and server definition::
+
     slurm:
       is_server: true
 
 - Add the following to ``/var/lib/metalware/repo/config/domain.yaml`` (set ``server`` to the hostname of the SLURM VM)::
 
     slurm:
-      server: slurm
+      server: slurm1
       is_server: false
       mungekey: ff9a5f673699ba8928bbe009fb3fe3dead3c860c
 
@@ -51,20 +47,16 @@ Modules Setup (From Deployment VM)
 
 The environment modules software allows for dynamic path changing on a user profile.
 
-- Add the apps server to ``/opt/metalware/etc/genders``, an example entry is below::
+- Create a group for the modules VM (add at least ``apps1`` as a node in the group, set additional groups of ``services,cluster,domain`` allows for more diverse group management)::
 
-    # SERVICES
-    apps1 apps,services,cluster,domain
+    metal configure group apps
+    
+- Customise ``apps1`` node configuration (set the primary IP address to 10.10.0.7)::
+
+    metal configure node apps1
 
 - Create ``/var/lib/metalware/repo/config/apps1.yaml`` with the following network and server definition::
 
-    networks:
-      pri:
-        ip: 10.10.0.7
-      
-      mgt:
-        defined: false
-    
     modules:
       is_server: true
 
