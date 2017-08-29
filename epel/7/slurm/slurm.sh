@@ -32,11 +32,9 @@ PartitionName=all Nodes=ALL Default=YES MaxTime=UNLIMITED
 EOF
 `
 
-yum-config-manager --enable epel
-
-yum -y -e0 install munge munge-devel munge-libs perl-Switch
+yum -y -e0 --enablerepo epel install munge munge-devel munge-libs perl-Switch
 <% if slurm.is_server -%>
-yum -y -e0 install mariadb mariadb-test mariadb-libs mariadb-embedded mariadb-embedded-devel mariadb-devel mariadb-bench
+yum -y -e0 --enablerepo epel install mariadb mariadb-test mariadb-libs mariadb-embedded mariadb-embedded-devel mariadb-devel mariadb-bench
 systemctl enable mariadb
 systemctl start mariadb
 <% end -%>
@@ -48,7 +46,7 @@ chown munge /etc/munge/munge.key
 systemctl enable munge
 systemctl start munge
 
-yum -y -e 0 --nogpgcheck install slurm slurm-devel slurm-munge slurm-perlapi slurm-plugins slurm-sjobexit slurm-sjstat slurm-torque
+yum -y -e 0 --nogpgcheck --enablerepo epel install slurm slurm-devel slurm-munge slurm-perlapi slurm-plugins slurm-sjobexit slurm-sjstat slurm-torque
 
 mkdir /var/log/slurm
 chown nobody /var/log/slurm
@@ -62,5 +60,3 @@ systemctl start slurmctld
 
 systemctl enable slurmd
 systemctl start slurmd
-
-yum-config-manager --disable epel

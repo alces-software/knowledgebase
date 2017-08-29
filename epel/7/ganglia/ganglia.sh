@@ -275,8 +275,7 @@ include ("/etc/ganglia/conf.d/*.conf")
 EOF
 `
 
-yum-config-manager --enable epel
-yum -y install ganglia-gmond
+yum -y --enablerepo epel install ganglia-gmond
 
 <% if ganglia.is_server then -%>
 GMETAD=`cat << EOF
@@ -288,7 +287,7 @@ case_sensitive_hostnames 0
 EOF
 `
 
-yum -y install ganglia ganglia-web ganglia-gmetad
+yum -y --enablerepo epel install ganglia ganglia-web ganglia-gmetad
 sed -i -e 's/^\s*Require.*$/  Require all granted/g' /etc/httpd/conf.d/ganglia.conf
 systemctl enable httpd
 systemctl restart httpd
@@ -302,5 +301,3 @@ echo "$GMOND" > /etc/ganglia/gmond.conf
 
 systemctl enable gmond
 systemctl restart gmond
-
-yum-config-manager --disable epel
