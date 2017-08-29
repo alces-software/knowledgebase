@@ -23,7 +23,7 @@ EOF
 
 cat << EOF > /var/lib/firstrun/bin/firstrun-stop
 #!/bin/bash
-/bin/systemctl disable symphony-firstrun.service
+/bin/systemctl disable firstrun.service
 if [ -f /firstrun.reboot ]; then
   echo -n "Reboot flag set.. Rebooting.."
   rm -f /firstrun.rebooot
