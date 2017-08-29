@@ -69,57 +69,57 @@ On Controller VM
       repourl: http://alces-repo.s3.amazonaws.com
       centos:
         name: centos
-        baseurl: <%= awsrepos.repourl %>/centos
+        baseurl: <%= awsrepos.repourl %>/centos/7/base/
       centos-updates:
         name: centos-updates
-        baseurl: <%= awsrepos.repourl %>/centos-updates
+        baseurl: <%= awsrepos.repourl %>/centos/7/updates/
       centos-extras:
         name: centos-extras
-        baseurl: <%= awsrepos.repourl %>/centos-extras
+        baseurl: <%= awsrepos.repourl %>/centos/7/extras/
       epel:
         name: epel
-        baseurl: <%= awsrepos.repourl %>/epel
+        baseurl: <%= awsrepos.repourl %>/epel/7/
         enabled: 0
         priority: 11
       lustre-el7-client:
         name: lustre-el7-client
-        baseurl: <%= awsrepos.repourl %>/lustre/el7/client
+        baseurl: <%= awsrepos.repourl %>/lustre/el7/client/
         enabled: 0
         priority: 5
       lustre-el7-server:
         name: lustre-el7-server
-        baseurl: <%= awsrepos.repourl %>/lustre/el7/server
+        baseurl: <%= awsrepos.repourl %>/lustre/el7/server/
         enabled: 0
         priority: 5
       e2fsprogs-el7:
         name: e2fsprogs-el7
-        baseurl: <%= awsrepos.repourl %>/e2fsprogs/el7
+        baseurl: <%= awsrepos.repourl %>/e2fsprogs/el7/
         enabled: 0
         priority: 5
     alcesrepos:
       repourl: http://repo.alces-software.com/repo
       centos:
         name: centos
-        baseurl: <%= alcesrepos.repourl %>/centos/
+        baseurl: <%= alcesrepos.repourl %>/centos/7/base/
       centos-updates:
         name: centos-updates
-        baseurl: <%= alcesrepos.repourl %>/centos-updates/
+        baseurl: <%= alcesrepos.repourl %>/centos/7/updates/
       centos-extras:
         name: centos-extras
-        baseurl: <%= alcesrepos.repourl %>/centos-extras/
+        baseurl: <%= alcesrepos.repourl %>/centos/7/extras/
       epel:
         name: epel
-        baseurl: <%= alcesrepos.repourl %>/epel/
+        baseurl: <%= alcesrepos.repourl %>/epel/7/
         enabled: 0
         priority: 11
       lustre-el7-client:
         name: lustre-el7-client
-        baseurl: <%= alcesrepos.repourl %>/lustre/el7/client
+        baseurl: <%= alcesrepos.repourl %>/lustre/el7/client/
         enabled: 0
         priority: 5
       lustre-el7-server:
         name: lustre-el7-server
-        baseurl: <%= alcesrepos.repourl %>/lustre/el7/server
+        baseurl: <%= alcesrepos.repourl %>/lustre/el7/server/
         enabled: 0
         priority: 5
       e2fsprogs-el7:
@@ -131,16 +131,16 @@ On Controller VM
       repourl: http://10.10.0.2/repo
       centos:
         name: centos
-        baseurl: <%= localrepos.repourl %>/centos/
+        baseurl: <%= localrepos.repourl %>/centos/7/base
       centos-updates:
         name: centos-updates
-        baseurl: <%= localrepos.repourl %>/centos-updates/
+        baseurl: <%= localrepos.repourl %>/centos/7/updates/
       centos-extras:
         name: centos-extras
-        baseurl: <%= localrepos.repourl %>/centos-extras/
+        baseurl: <%= localrepos.repourl %>/centos/7/extras/
       epel:
         name: epel
-        baseurl: <%= localrepos.repourl %>/epel/
+        baseurl: <%= localrepos.repourl %>/epel/7/
         enabled: 0
         priority: 11
     customrepo:
