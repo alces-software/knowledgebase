@@ -1,6 +1,6 @@
 yum -y install nfs-utils
 
-<% if nfsconfig.is_server -%>
+<% if (nfsconfig.is_server rescue false) -%>
 # Create export directories
 <% nfsexports.each do | path, opts | -%>
 mkdir -p <%= path %>
@@ -19,7 +19,7 @@ EOF`
 
 echo "$EXPORTS" > /etc/exports
 
-<% elsif !nisconfig.is_server -%>
+<% elsif (!nisconfig.is_server rescue true) -%>
 
 MOUNTS=`cat << EOF
 <% nfsmounts.each do | mount, path | -%>
