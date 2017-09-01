@@ -153,3 +153,37 @@ In this example, a CentOS 6 kickstart profile is configured. This method should 
 - When building nodes, use the new template files by specifying them as arguments to the ``metal build`` command::
 
     metal build -k centos6 -p centos6 slave01
+
+Configuring UEFI Boot
+---------------------
+
+UEFI network booting is an alternative to PXE booting and is usually the standard on newer hardware, support for building nodes with UEFI booting can be configured as follows.
+
+- Create additional TFTP directory and download EFI boot loader::
+
+    mkdir -p /var/lib/tftpboot/efi/
+    cd /var/lib/tftpboot/efi/
+    wget https://github.com/alces-software/knowledgebase/raw/master/epel/7/grub-efi/grubx64.efi
+    chmod +x grubx64.efi
+
+- For UEFI clients, add the following line to the client config file::
+
+    build_method: uefi
+
+- Additionally, a ``/boot/efi`` partition will be required for UEFI clients, an example of this partition as part of the disk setup (in the client config) is below::
+
+    disksetup: |
+      zerombr
+      bootloader --location=mbr --driveorder=sda --append="$bootloaderappend"
+      clearpart --all --initlabel
+
+      #Disk partitioning information
+      part /boot --fstype ext4 --size=4096 --asprimary --ondisk sda
+      part /boot/efi --fstype=efi --size=200 --asprimary --ondisk sda
+      part pv.01 --size=1 --grow --asprimary --ondisk sda
+      volgroup system pv.01
+      logvol  /  --fstype ext4 --vgname=system  --size=16384 --name=root
+      logvol  /var --fstype ext4 --vgname=system --size=16384 --name=var
+      logvol  /tmp --fstype ext4 --vgname=system --size=1 --grow --name=tmp
+      logvol  swap  --fstype swap --vgname=system  --size=8096  --name=swap1
+
