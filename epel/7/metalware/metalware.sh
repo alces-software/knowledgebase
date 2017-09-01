@@ -120,7 +120,13 @@ option fqdn.no-client-update    on;  # set the "O" and "S" flag bits
 option fqdn.rcode2            255;
 option pxegrub code 150 = text ;
 
-
+option space PXE;
+option PXE.mtftp-ip    code 1 = ip-address;
+option PXE.mtftp-cport code 2 = unsigned integer 16;
+option PXE.mtftp-sport code 3 = unsigned integer 16;
+option PXE.mtftp-tmout code 4 = unsigned integer 8;
+option PXE.mtftp-delay code 5 = unsigned integer 8;
+option arch code 93 = unsigned integer 16; # RFC4578
 
 # PXE Handoff.
 next-server ${BUILDSERVER};
@@ -141,6 +147,15 @@ subnet ${PRVNETWORK} netmask ${PRVNETMASK} {
 
   option subnet-mask ${PRVNETMASK};
   option routers ${ROUTER};
+  class "pxeclients" {
+          match if substring (option vendor-class-identifier, 0, 9) = "PXEClient";
+          if option arch = 00:07 {
+                          filename "efi/grubx64.efi";
+                  } else {
+                          filename "pxelinux.0";
+                  }
+        }
+
 }
 EOF
 
@@ -214,5 +229,42 @@ mkdir custom
 createrepo custom
 
 systemctl restart httpd.service
+
+yum -y install chrony
+
+cat << EOF > /etc/chrony.conf
+server 0.centos.pool.ntp.org iburst
+server 1.centos.pool.ntp.org iburst
+server 2.centos.pool.ntp.org iburst
+server 3.centos.pool.ntp.org iburst
+
+stratumweight 0
+
+driftfile /var/lib/chrony/drift
+
+rtcsync
+
+makestep 10 3
+
+bindcmdaddress 127.0.0.1
+bindcmdaddress ::1
+
+keyfile /etc/chrony.keys
+
+commandkey 1
+
+generatecommandkey
+
+noclientlog
+
+logchange 0.5
+
+logdir /var/log/chrony
+
+allow <%= networks.pri.network %>/<% require 'ipaddr'; puts IPAddr.new(networks.pri.netmask).to_i.to_s(2).count('1') %>
+EOF
+
+systemctl start chronyd
+systemctl enable chronyd
 
 echo "You need to reboot"
