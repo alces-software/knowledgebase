@@ -86,7 +86,8 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
    :name: hardware-drivers
 
    hardware-drivers/hardware-drivers-overview
-   hardware-drivers/*
+   hardware-drivers/first-boot-setup
+   hardware-drivers/compute-node-setup
 
 .. toctree::
    :maxdepth: 1
