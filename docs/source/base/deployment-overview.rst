@@ -51,6 +51,10 @@ This package will set up and configure:
   
       - These management tools allow for running commands on multiple systems defined in groups, improving the ease and flexibility of environment management.
 
+  - Combined logging for clients with rsyslog server
+
+      - All clients built from the master write out build progress and syslog messages to ``/var/log/slave/<NODENAME>/messages.log``
+
 Key Files
 ---------
 
@@ -61,6 +65,7 @@ Key Files
 - ``/var/lib/metalware/*``
 - ``/var/lib/tftpboot/*``
 - ``/etc/ntp.conf``
+- ``/etc/rsyslog.d/metalware.conf``
 
 Licensing
 ---------
