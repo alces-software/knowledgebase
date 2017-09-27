@@ -1,4 +1,4 @@
-<% if repo.is_server -%>
+<% if repoconfig.is_server -%>
 # Download repoman
 cd /opt/
 git clone https://github.com/alces-software/repoman.git
@@ -12,7 +12,7 @@ for repofile in $REPOFILES ; do
 done
 
 # Mirror repos
-/opt/repoman/repoman.rb mirror --distro centos7 --include <%= mirrorrepos %> --reporoot /opt/alces/repo --configurl http://<%= alces.nodename %>/repo/ --configout /opt/alces/repo/client.repo
+/opt/repoman/repoman.rb mirror --distro centos7 --include <%= repoconfig.mirrorrepos %> --reporoot /opt/alces/repo --configurl http://<%= alces.nodename %>/repo/ --configout /opt/alces/repo/client.repo
 
 # HTTP setup
 cat << EOF > /etc/httpd/conf.d/repo.conf
