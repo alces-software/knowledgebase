@@ -34,7 +34,7 @@ On Controller VM
     repoconfig:
       is_server: true
 
-- Add the following to ``/var/lib/metalware/repo/config/domain.yaml`` (``build_url`` is the URL for client kickstart builds to use, ``mirrorrepos`` should be a comma-separated list of source files that :ref:`repoman <https://github.com/alces-software/repoman>` will use on the mirror server, ``clientrepofile`` will need to be a URL to a repo config file for the client to curl)
+- Add the following to ``/var/lib/metalware/repo/config/domain.yaml`` (``build_url`` is the URL for client kickstart builds to use, ``mirrorrepos`` should be a comma-separated list of source files that `repoman <https://github.com/alces-software/repoman>` will use on the mirror server, ``clientrepofile`` will need to be a URL to a repo config file for the client to curl)::
 
 		repoconfig:
 			# Repostiroy URL for kickstart builds
