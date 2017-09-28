@@ -1,4 +1,6 @@
+yum install -y yum-plugin-priorities yum-utils
 <% if repoconfig.is_server -%>
+yum -y install createrepo httpd
 # Download repoman
 cd /opt/
 git clone https://github.com/alces-software/repoman.git
@@ -30,6 +32,8 @@ cat << EOF > /etc/httpd/conf.d/repo.conf
 </Directory>
 Alias /repo /opt/alces/repo
 EOF
+
+systemctl enable httpd.service
 systemctl restart httpd.service
 
 <% else -%>
