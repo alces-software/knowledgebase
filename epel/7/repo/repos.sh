@@ -15,7 +15,7 @@ done
 
 <%     if repoconfig.is_mirror -%>
 # Mirror repos
-/opt/repoman/repoman.rb mirror --distro centos7 --include <%= repoconfig.source_repos %> --reporoot /opt/alces/repo --configurl http://<%= alces.nodename %>/repo/ --configout /opt/alces/repo/client.repo
+/opt/repoman/repoman.rb mirror --distro centos7 --include <%= repoconfig.source_repos %> --reporoot /opt/alces/repo --configurl http://<%= networks.pri.ip %>/repo/ --configout /opt/alces/repo/client.repo
 <%     else -%>
 # Generate repo config
 /opt/repoman/repoman.rb generate --distro centos7 --include <%= repoconfig.source_repos %> --outfile /opt/alces/repo/client.repo
