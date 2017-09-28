@@ -33,18 +33,22 @@ On Controller VM
 
     repoconfig:
       is_server: true
+      is_mirror: true
 
-- Add the following to ``/var/lib/metalware/repo/config/domain.yaml`` (``build_url`` is the URL for client kickstart builds to use, ``mirrorrepos`` should be a comma-separated list of source files that `repoman <https://github.com/alces-software/repoman>` will use on the mirror server, ``clientrepofile`` will need to be a URL to a repo config file for the client to curl)::
+- Add the following to ``/var/lib/metalware/repo/config/domain.yaml`` (``build_url`` is the URL for client kickstart builds to use, ``mirrorrepos`` should be a comma-separated list of source files that `repoman <https://github.com/alces-software/repoman>`_ will use on the mirror server, ``clientrepofile`` will need to be a URL to a repo config file for the client to curl)::
 
-		repoconfig:
-			# Repostiroy URL for kickstart builds
-			build_url: http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
-			is_server: false
-			# Repoman source files for repository mirror server to use (comma separate)
-			mirrorrepos: base.upstream
-			# The file for clients to curl containing repository information [OPTIONAL]
-			# clientrepofile: http://myrepo.com/repo/client.repo
-			clientrepofile: false
+    repoconfig:
+      # Repostiroy URL for kickstart builds
+      build_url: http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
+      # If true, this server will host a client config file for the network
+      is_server: false
+      # If true, this server will mirror source_repos locally and generate a local repo config
+      is_mirror: false
+      # Repoman source files for repository mirror server to use (comma separate)
+      source_repos: base.upstream
+      # The file for clients to curl containing repository information [OPTIONAL]
+      # clientrepofile: http://myrepo.com/repo/client.repo
+      clientrepofile: false
 
 .. note:: See the repoman project page for the included repository template files. To add customised repositories, create them in ``/var/lib/repoman/templates/centos/7/`` on the repository server.
 
@@ -62,7 +66,7 @@ On Controller VM
 
 - Follow :ref:`client-deployment` to setup the repo node
 
-- The repo VM will now be up and can be logged in with passwordless SSH from the controller VM and will have a clone of the CentOS upstream repositories locally.
+- The repo VM will now be up and can be logged in with passwordless SSH from the controller VM and will have a clone of the CentOS upstream repositories locally. Modify ``build_url`` in ``/var/lib/metalware/repo/config/domain.yaml`` to be the, now built, repo server's URL so that new client builds will use that repository.
 
 Custom Repository Setup
 -----------------------
