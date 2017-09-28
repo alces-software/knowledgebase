@@ -1,6 +1,6 @@
 yum install -y yum-plugin-priorities yum-utils
 <% if repoconfig.is_server -%>
-yum -y install createrepo httpd
+yum -y install createrepo httpd git
 # Download repoman
 cd /opt/
 git clone https://github.com/alces-software/repoman.git
