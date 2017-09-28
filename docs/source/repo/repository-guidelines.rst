@@ -34,139 +34,23 @@ On Controller VM
     repoconfig:
       is_server: true
 
-- Add the following to ``/var/lib/metalware/repo/config/domain.yaml`` (the reposerver IP in ``localrepo`` should match the one specified in ``repo1.yaml``, ``localmirror`` should match the name of one of the repo sections [``upstreamrepos``, ``awsrepos``, ``alcesrepos`` or ``localrepo``], ``mirrorfrom`` should be set to the set of repositories to use when mirroring to create a local repo)::
+- Add the following to ``/var/lib/metalware/repo/config/domain.yaml`` (``build_url`` is the URL for client kickstart builds to use, ``mirrorrepos`` should be a comma-separated list of source files that :ref:`repoman <https://github.com/alces-software/repoman>` will use on the mirror server, ``clientrepofile`` will need to be a URL to a repo config file for the client to curl)
 
-    localmirror: localrepos
-    repoconfig:
-      mirrorfrom: upstreamrepos
-      repopath: repo
-      is_server: false
-    upstreamrepos:
-      repourl: http://mirror.ox.ac.uk/sites/mirror.centos.org/7
-      centos:
-        name: centos
-        baseurl: <%= upstreamrepos.repourl %>/os/x86_64/
-        # description to be used for yum repo [optional] 
-        #description: The base CentOS repository
-      centos-updates:
-        name: centos-updates
-        baseurl: <%= upstreamrepos.repourl %>/updates/x86_64/
-        # check GPG signatures of packages [optional]
-        #gpgcheck: 1
-      centos-extras:
-        name: centos-extras
-        baseurl: <%= upstreamrepos.repourl %>/extras/x86_64/
-      epel:
-        name: epel
-        baseurl: http://anorien.csc.warwick.ac.uk/mirrors/epel/7/x86_64/
-        # disable the repository [optional]
-        enabled: 0
-        # lower the repo priority [optional]
-        priority: 11
-        # don't skip repo if it isn't available [optional]
-        #skip_if_unavailable: 0
-    awsrepos:
-      repourl: http://alces-repo.s3.amazonaws.com
-      centos:
-        name: centos
-        baseurl: <%= awsrepos.repourl %>/centos/7/base/
-      centos-updates:
-        name: centos-updates
-        baseurl: <%= awsrepos.repourl %>/centos/7/updates/
-      centos-extras:
-        name: centos-extras
-        baseurl: <%= awsrepos.repourl %>/centos/7/extras/
-      epel:
-        name: epel
-        baseurl: <%= awsrepos.repourl %>/epel/7/
-        enabled: 0
-        priority: 11
-      lustre-el7-client:
-        name: lustre-el7-client
-        baseurl: <%= awsrepos.repourl %>/lustre/el7/client/
-        enabled: 0
-        priority: 5
-      lustre-el7-server:
-        name: lustre-el7-server
-        baseurl: <%= awsrepos.repourl %>/lustre/el7/server/
-        enabled: 0
-        priority: 5
-      e2fsprogs-el7:
-        name: e2fsprogs-el7
-        baseurl: <%= awsrepos.repourl %>/e2fsprogs/el7/
-        enabled: 0
-        priority: 5
-    alcesrepos:
-      repourl: http://repo.alces-software.com/repo
-      centos:
-        name: centos
-        baseurl: <%= alcesrepos.repourl %>/centos/7/base/
-      centos-updates:
-        name: centos-updates
-        baseurl: <%= alcesrepos.repourl %>/centos/7/updates/
-      centos-extras:
-        name: centos-extras
-        baseurl: <%= alcesrepos.repourl %>/centos/7/extras/
-      epel:
-        name: epel
-        baseurl: <%= alcesrepos.repourl %>/epel/7/
-        enabled: 0
-        priority: 11
-      lustre-el7-client:
-        name: lustre-el7-client
-        baseurl: <%= alcesrepos.repourl %>/lustre/el7/client/
-        enabled: 0
-        priority: 5
-      lustre-el7-server:
-        name: lustre-el7-server
-        baseurl: <%= alcesrepos.repourl %>/lustre/el7/server/
-        enabled: 0
-        priority: 5
-      e2fsprogs-el7:
-        name: e2fsprogs-el7
-        baseurl: <%= alcesrepos.repourl %>/e2fsprogs/el7
-        enabled: 0
-        priority: 5
-    localrepos:
-      repourl: http://10.10.0.2/repo
-      centos:
-        name: centos
-        baseurl: <%= localrepos.repourl %>/centos/7/base
-      centos-updates:
-        name: centos-updates
-        baseurl: <%= localrepos.repourl %>/centos/7/updates/
-      centos-extras:
-        name: centos-extras
-        baseurl: <%= localrepos.repourl %>/centos/7/extras/
-      epel:
-        name: epel
-        baseurl: <%= localrepos.repourl %>/epel/7/
-        enabled: 0
-        priority: 11
-    customrepo:
-      custom:
-        # custom repo at /opt/alces/repo/custom on the deployment VM for storing any additional RPMs
-        name: custom
-        baseurl: http://<%= alces.hostip %>/<%= repoconfig.repopath %>/custom/
-        # increase the repo priority [optional]
-        priority: 1
+		repoconfig:
+			# Repostiroy URL for kickstart builds
+			build_url: http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
+			is_server: false
+			# Repoman source files for repository mirror server to use (comma separate)
+			mirrorrepos: base.upstream
+			# The file for clients to curl containing repository information [OPTIONAL]
+			# clientrepofile: http://myrepo.com/repo/client.repo
+			clientrepofile: false
 
-.. note:: Any repos added to ``domain.yaml`` must include a ``name`` and a ``baseurl`` element. Optionally the repo definitions can include ``description``, ``enabled`` (default: 1), ``skip_if_unavailable`` (default: 1), ``gpgcheck`` (default: 0) and ``priority`` (default: 10) to override the default values that are set when generating the repos.
+.. note:: See the repoman project page for the included repository template files. To add customised repositories, create them in ``/var/lib/repoman/templates/centos/7/`` on the repository server.
 
 - Additionally, add the following to the ``setup:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``::
 
     - /opt/alces/install/scripts/00-repos.sh
-
-- Modify ``/var/lib/metalware/repo/kickstart/default``
-
-  - Old line::
-  
-      #url --url=http://${_ALCES_BUILDSERVER}/${_ALCES_CLUSTER}/repo/centos/
-      url --url=http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
-  
-  - New line::
-  
-      url --url=<%= eval(localmirror.to_s).centos.baseurl.gsub(/\/$/,'') %>
 
 - Download the ``repos.sh`` script to the above location::
 
