@@ -21,6 +21,7 @@
 # https://github.com/alces-software/metalware
 #==============================================================================
 TAG=-stuts2
+LIBVIRTPOOL=/opt/vm/
 
 BASEPATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 NAME=controller$TAG
@@ -28,7 +29,7 @@ NAME=controller$TAG
 virt-install \
 --name $NAME \
 --ram 4096 \
---disk path=/opt/vm/$NAME.qcow2,size=80 \
+--disk path=$LIBVIRTPOOL/$NAME.qcow2,size=80 \
 --vcpus 2 \
 --os-type linux \
 --os-variant centos7.0 \
