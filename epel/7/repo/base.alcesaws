@@ -1,0 +1,36 @@
+[centos-7-base]
+name=centos-7-base
+baseurl=http://alces-repo.s3.amazonaws.com/centos/7/base
+description=No description specified
+enabled=1
+skip_if_unavailable=1
+gpgcheck=0
+priority=10
+
+[centos-7-updates]
+name=centos-7-updates
+baseurl=http://alces-repo.s3.amazonaws.com/centos/7/updates/
+description=No description specified
+enabled=1
+skip_if_unavailable=1
+gpgcheck=0
+priority=10
+
+[centos-7-extras]
+name=centos-7-extras
+baseurl=http://alces-repo.s3.amazonaws.com/centos/7/extras/
+description=No description specified
+enabled=1
+skip_if_unavailable=1
+gpgcheck=0
+priority=10
+
+[epel-7]
+name=epel-7
+baseurl=http://alces-repo.s3.amazonaws.com/epel/7/
+description=No description specified
+enabled=0
+skip_if_unavailable=1
+gpgcheck=0
+priority=11
+
