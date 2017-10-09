@@ -43,6 +43,12 @@ if (lsmod |grep -q ib_qib) ; then
     echo "for dev in `ls -d /sys/class/infiniband/qib*` ; do echo `hostname -s` > $dev/node_desc; done" >> /etc/rc.local
 fi
 
+#Intel Omnipath
+if (lsmod | grep -q hfi1) ; then
+  #Install additional packages
+  yum $YUM_COMMON opa-basic-tools opa-fastfabric opa-fm 
+fi
+
 if ( [ -e /usr/bin/systemctl ] ) ; then
     systemctl enable rdma
 else
@@ -59,32 +65,32 @@ cat << EOF > /etc/security/limits.d/99-alcesinfiniband.conf
 EOF
 
 # Don't stop ib drivers if lustre module is loaded (causes hang on shutdown)
-if [ -f /etc/init.d/rdma ]; then
-    yum -e 0 -y install patch
-    patch -p0 << 'EOD'
---- /etc/init.d/rdma    2015-03-04 15:19:11.691026292 +0000
-+++ /etc/init.d/rdma.lustrepatch        2015-03-04 15:18:15.069852927 +0000
-@@ -316,6 +316,14 @@
-        return 1
-     fi
-
-+    if is_module ko2iblnd; then
-+      echo "Lustre modules are still enabled."
-+      if ( mount | grep -q "type lustre" ); then
-+        echo "Lustre is still mounted - attempting unmount."
-+        echo "Please stop lustre and remove modules before stopping the rdma service."
-+        /bin/umount -a -f -t lustre
-+      fi
-+      /usr/sbin/lustre_rmmod
-+      sleep 20
-+      return 0
-+    fi
-+
-     if ! is_module ib_core; then
-        # Nothing to do, make sure lock file is gone and return
-        rm -f /var/lock/subsys/rdma
-EOD
-fi
+#if [ -f /etc/init.d/rdma ]; then
+#    yum -e 0 -y install patch
+#    patch -p0 << 'EOD'
+#--- /etc/init.d/rdma    2015-03-04 15:19:11.691026292 +0000
+#+++ /etc/init.d/rdma.lustrepatch        2015-03-04 15:18:15.069852927 +0000
+#@@ -316,6 +316,14 @@
+#        return 1
+#     fi
+#
+#+    if is_module ko2iblnd; then
+#+      echo "Lustre modules are still enabled."
+#+      if ( mount | grep -q "type lustre" ); then
+#+        echo "Lustre is still mounted - attempting unmount."
+#+        echo "Please stop lustre and remove modules before stopping the rdma service."
+#+        /bin/umount -a -f -t lustre
+#+      fi
+#+      /usr/sbin/lustre_rmmod
+#+      sleep 20
+#+      return 0
+#+    fi
+#+
+#     if ! is_module ib_core; then
+#        # Nothing to do, make sure lock file is gone and return
+#        rm -f /var/lock/subsys/rdma
+#EOD
+#fi
 
 
 <% else -%>
