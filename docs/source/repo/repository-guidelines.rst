@@ -68,7 +68,7 @@ On Controller VM
 Custom Repository Setup
 -----------------------
 
-The above configuration will allow the controller VM to be configured as a local custom repository (even if local upstream mirrors are not being created). The purpose of this repository is to provide packages to the network that aren't available in upstream repositories or require higher installation priority than other available packages (e.g. a newer kernel package).
+As well as using different sources for the upstream repositories it is beneficial to have a local repository that can be used to serve additional packages which are not part of upstream repos to clients. This will be known as the custom repository, details on setting up the custom repository are below. The purpose of this repository is to provide packages to the network that aren't available in upstream repositories or require higher installation priority than other available packages (e.g. a newer kernel package).
 
 - Install package dependencies::
 
@@ -82,3 +82,27 @@ The above configuration will allow the controller VM to be configured as a local
 
     cd /opt/alces/repo/
     createrepo custom
+
+- Create a repo source file to be served to clients at ``/var/lib/repoman/templates/centos/7/custom.local``::
+
+    [custom]
+    name=custom
+    baseurl=http://myrepo.com/repo/custom/
+    description=Custom repository local to the cluster
+    enabled=1
+    skip_if_unavailable=1
+    gpgcheck=0
+    priority=1
+
+- Add the custom repository to the source repos in ``/var/lib/metalware/repo/config/domain.yaml``::
+   
+    repoconfig:
+       # Repostiroy URL for kickstart builds
+       build_url: http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
+       # If true, this server will host a client config file for the network
+       is_server: false
+       # Repoman source files for repository mirror server to use (comma separate)
+       source_repos: base.upstream,custom.local
+       # The file for clients to curl containing repository information [OPTIONAL]
+       # clientrepofile: http://myrepo.com/repo/client.repo
+       clientrepofile: false
