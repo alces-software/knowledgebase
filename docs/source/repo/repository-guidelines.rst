@@ -33,17 +33,14 @@ On Controller VM
 
     repoconfig:
       is_server: true
-      is_mirror: true
 
-- Add the following to ``/var/lib/metalware/repo/config/domain.yaml`` (``build_url`` is the URL for client kickstart builds to use, ``source_repos`` should be a comma-separated list of source files that `repoman <https://github.com/alces-software/repoman>`_ will use on the mirror server, ``clientrepofile`` will need to be a URL to a repo config file for the client to curl)::
+- Add the following to ``/var/lib/metalware/repo/config/domain.yaml`` (``build_url`` is the URL for client kickstart builds to use, ``source_repos`` should be a comma-separated list of source files that `repoman <https://github.com/alces-software/repoman>`_ will use to generate client configurations, ``clientrepofile`` will need to be a URL to a repo config file for the client to curl)::
 
     repoconfig:
       # Repostiroy URL for kickstart builds
       build_url: http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
       # If true, this server will host a client config file for the network
       is_server: false
-      # If true, this server will mirror source_repos locally and generate a local repo config
-      is_mirror: false
       # Repoman source files for repository mirror server to use (comma separate)
       source_repos: base.upstream
       # The file for clients to curl containing repository information [OPTIONAL]
