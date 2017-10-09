@@ -5,7 +5,7 @@ description=No description specified
 enabled=1
 skip_if_unavailable=1
 gpgcheck=0
-priority=10
+priority=5
 
 [lustre-el7-server]
 name=lustre-el7-server
@@ -14,7 +14,7 @@ description=No description specified
 enabled=0
 skip_if_unavailable=1
 gpgcheck=0
-priority=10
+priority=5
 
 [e2fsprogs-el7]
 name=e2fsprogs-el7
@@ -23,5 +23,5 @@ description=No description specified
 enabled=1
 skip_if_unavailable=1
 gpgcheck=0
-priority=10
+priority=5
 
