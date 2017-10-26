@@ -159,13 +159,19 @@ On Controller VM
 
     lustreconfig:
       type: server
+      networks: tcp0(<%= networks.pri.interface %>)
+      mountentry: "10.10.0.10:/lustre    /mnt/lustre    lustre    default,_netdev    0 0"
+
+.. note:: If the server has an Infiniband interface that can be used for storage access then set ``networks`` to a list of modules which includes Infiniband, e.g. ``o2ib(<%= networks.ib.interface %>),tcp0(<%= networks.pri.interface %>)``
 
 - Add the following to ``/var/lib/metalware/repo/config/domain.yaml``::
 
     lustreconfig:
       type: none
+      networks: tcp0(<%= networks.pri.interface %>)
+      mountentry: "10.10.0.10:/lustre    /mnt/lustre    lustre    default,_netdev    0 0"
 
-.. note:: For clients to lustre, replicate the above entry into the group or node config file and change ``type: node`` to ``type: client``.
+.. note:: For clients to lustre, replicate the above entry into the group or node config file and change ``type: none`` to ``type: client``, also ensuring that ``networks`` reflects the available modules and interfaces on the system
 
 - Additionally, add the following to the ``setup:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``::
 
