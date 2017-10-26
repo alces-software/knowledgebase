@@ -99,15 +99,17 @@ On Controller VM
 
 .. note:: The ``options:`` namespace is optional, if not specified then the default export options will be used (``<%= networks.pri.network %>/<%= networks.pri.netmask %>(rw,no_root_squash,sync)``)
 
-- Add the following to ``/var/lib/metalware/repo/config/domain.yaml``::
+- Add the following to ``/var/lib/metalware/repo/config/domain.yaml`` (toggle ``defined`` to ``false`` to prevent a client from creating an fstab entry for the mount on a node)::
 
     nfsconfig:
       is_server: false
     nfsmounts:
       /users:
+        defined: true
         server: 10.10.0.3
         export: /export/users
       /data:
+        defined: true
         server: 10.10.0.3
         export: /export/data
         options: intr,sync,rsize=32768,wsize=32768,_netdev
