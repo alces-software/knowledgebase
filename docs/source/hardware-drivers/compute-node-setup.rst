@@ -32,8 +32,6 @@ Infiniband Setup
 Nvidia Driver Setup
 -------------------
 
-- This requires the :ref:`First Boot Script Environment <04-first-boot>` to be setup
-
 - Download the Nvidia installer to ``/opt/alces/installers/`` on the controller VM as ``nvidia.run``
 
 - Download the ``nvidia.sh`` script from the knowledgebase::
