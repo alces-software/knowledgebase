@@ -66,7 +66,7 @@ Master Node Setup
 - Install components for VM service::
 
     yum groupinstall -y virtualization-platform virtualization-tools 
-    yum install -y virt-viewer
+    yum install -y virt-viewer virt-install
 
 - Enable and start the virtualisation service::
 

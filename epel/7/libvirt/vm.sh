@@ -26,7 +26,6 @@ echo '<%= alces.nodename %>: <%= vm.primac %>' >> /var/lib/metalware/cache/hunte
 metal dhcp
 
 # Login to controller and create VM
-ssh <%= vm.master %> '
 NAME=<%= vm.nodename %>
 BASEPATH=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 LIBVIRTPOOL=<%= vm.virtpool %>
@@ -43,5 +42,5 @@ virt-install \
  --network bridge=pri,mac="<%= vm.primac %>" \
  --network bridge=ext,mac="<%= vm.extmac %>" \
  --graphics vnc,password="<%= vm.vncpassword %>",listen=0.0.0.0,port="-1" --noautoconsole \
- --console pty,target_type=serial
-'
+ --console pty,target_type=serial \
+ --connect qemu://<%= vm.server %>/system

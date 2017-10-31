@@ -3,6 +3,15 @@
 Deploy VMs From Controller
 ==========================
 
+On Master VM
+------------
+
+- Uncomment the line ``LIBVIRTD_ARGS="--listen"`` in ``/etc/sysconfig/libvirtd``
+
+- Restart libvirtd service::
+
+    systemctl restart libvirtd
+
 On Controller VM
 ----------------
 
@@ -13,7 +22,7 @@ On Controller VM
 - Create a deployment file for the ``infra`` group at ``/var/lib/metalware/repo/config/infra.yaml`` with the following content::
 
     vm:
-      master: 10.10.0.11
+      server: master
       virtpool: /opt/vm/
       nodename: "<%= alces.nodename %>-<%= cluster %>"
       primac: 52:54:00:78:<%= '%02x' % alces.group_index %>:<%= '%02x' % alces.index %>
@@ -21,13 +30,18 @@ On Controller VM
       vncpassword: 'password'
       disksize: 250
 
-- Additionally, download the VM creation script to ``/opt/alces/install/scripts/vm.sh``::
+.. note:: Replace ``master`` with the hostname of the libvirt master, ensure that there's an entry for the server in ``/etc/hosts``
+
+- Additionally, download the certificate authority script to ``/opt/alces/install/scripts/certificate_authority.sh`` and VM creation script to ``/opt/alces/install/scripts/vm.sh``::
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
+    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/certificate_authority/certificate_authority.sh
     wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/libvirt/vm.sh
 
-.. note:: Ensure that passwordless SSH is configured from the controller to the system set as ``vm.master`` in the configuration file before running the script
+- Run the script to configure the certificate authority (and perform any additional steps which the script instructs)::
+
+    metal render /opt/alces/install/scripts/certificate_authority.sh self |/bin/bash
 
 - Run the script for a node::
 
