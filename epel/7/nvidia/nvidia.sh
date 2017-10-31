@@ -1,4 +1,4 @@
-<% if nvidia -%>
+<% if (nvidia rescue false) -%>
 sed -i "s/GRUB_CMDLINE_LINUX=\"\(.*\)\"/GRUB_CMDLINE_LINUX=\"\1 rdblacklist=nouveau blacklist=nouveau\"/" /etc/default/grub
 grub2-mkconfig > /etc/grub2.cfg
 mkinitrd --force /boot/initramfs-`uname -r`.img `uname -r`

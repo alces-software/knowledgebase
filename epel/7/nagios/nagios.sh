@@ -1,5 +1,5 @@
 yum -y --enablerepo epel install nagios-nrpe nagios-plugins nagios-plugins-{load,ping,disk,http,procs,users,ssh,swap,procs}
-<% if nagios.is_server then -%>
+<% if (nagios.is_server rescue false) then -%>
 yum -y --enablerepo epel install nagios
 
 # setup config file

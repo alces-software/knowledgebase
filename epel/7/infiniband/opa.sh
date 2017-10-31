@@ -2,7 +2,7 @@
 #Download Intel OPA install package to /opt/alces/installers on metalware master, and create link to opa.tgz
 #Eg ln -snf IntelOPA-IFS.RHEL73-x86_64.10.4.2.0.7.tgz opa.tgz
 
-<% if networks.ib.defined -%>
+<% if (networks.ib.defined rescue false) -%>
 if (lspci | grep -q 'Omni-Path'); then
   mkdir -p /var/lib/alceskb/opainstall/
   curl http://<%= alces.hostip %>/installers/opa.tgz > /var/lib/alceskb/opainstall/opa.tgz

@@ -1,5 +1,5 @@
 yum install -y yum-plugin-priorities yum-utils
-<% if repoconfig.is_server -%>
+<% if (repoconfig.is_server rescue false) -%>
 yum -y install createrepo httpd git ruby
 # Download repoman
 cd /opt/
@@ -32,7 +32,7 @@ systemctl enable httpd.service
 systemctl restart httpd.service
 
 <% else -%>
-<%     if repoconfig.clientrepofile -%>
+<%     if (repoconfig.clientrepofile rescue false) -%>
 find /etc/yum.repos.d/*.repo -exec mv -fv {} {}.bak \;
 curl <%= repoconfig.clientrepofile %> > /etc/yum.repos.d/cluster.repo
 yum clean all

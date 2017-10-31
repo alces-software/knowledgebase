@@ -1,4 +1,4 @@
-<% if nisconfig.is_server -%>
+<% if (nisconfig.is_server rescue false) -%>
 
 yum install -y ypserv yp-tools
 <% if !nisconfig.users_dir.nil? -%>

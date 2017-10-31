@@ -1,4 +1,4 @@
-<% if lustreconfig.type == 'server' -%>
+<% if (lustreconfig.type == 'server' rescue false) -%>
 yum -y --enablerepo lustre-el7-server --enablerepo e2fsprogs-el7 update
 yum -y --enablerepo lustre-el7-server --enablerepo e2fsprogs-el7 install lustre kmod-lustre-osd-ldiskfs
 
@@ -8,7 +8,7 @@ options ost oss_num_threads=96
 options mdt mds_num_threads=96
 EOF
 
-<% elsif lustreconfig.type == 'client' -%>
+<% elsif (lustreconfig.type == 'client' rescue false) -%>
 
 yum -y --enablerepo lustre-el7-server --enablerepo e2fsprogs-el7 install lustre-client
 

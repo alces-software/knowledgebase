@@ -277,7 +277,7 @@ EOF
 
 yum -y --enablerepo epel install ganglia-gmond
 
-<% if ganglia.is_server then -%>
+<% if (ganglia.is_server rescue false) then -%>
 GMETAD=`cat << EOF
 data_source '<%= alces.nodename %>' localhost:8659
 gridname '<%= cluster %>'

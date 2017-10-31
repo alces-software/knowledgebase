@@ -43,7 +43,7 @@ IN NS <%= alces.hostip %>.
 <% alces.groups do |group| -%>
 <% group.nodes do |node| -%>
 <% node.networks.each do |name, network| -%>
-<% if network.defined -%>
+<% if (network.defined rescue false) -%>
 <% if name.to_s == zone.to_s -%>
 <%= node.alces.nodename %> IN A <%= network.ip %>;
 <% end -%>
@@ -75,7 +75,7 @@ cat << EOF > /var/named/<%= split_net[1] %>.<%= split_net[0] %>
 <% alces.groups do |group| -%>
 <% group.nodes do |node| -%>
 <% node.networks.each do |name, network| -%>
-<% if network.defined -%>
+<% if (network.defined rescue false) -%>
 <% if network.network.to_s == net.network.to_s -%>
 <% ip_split = network.ip.split(/\./) -%>
 <%= ip_split[3] %>.<%= ip_split[2] %> IN PTR <%= node.alces.nodename %>.<%= name %>.<%= domain %>.;

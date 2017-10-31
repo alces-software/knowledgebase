@@ -33,7 +33,7 @@ EOF
 `
 
 yum -y -e0 --enablerepo epel install munge munge-devel munge-libs perl-Switch
-<% if slurm.is_server -%>
+<% if (slurm.is_server rescue false) -%>
 yum -y -e0 --enablerepo epel install mariadb mariadb-test mariadb-libs mariadb-embedded mariadb-embedded-devel mariadb-devel mariadb-bench
 systemctl enable mariadb
 systemctl start mariadb
@@ -53,10 +53,10 @@ chown nobody /var/log/slurm
 
 echo "$SLURMCONF" > /etc/slurm/slurm.conf
 
-<% if slurm.is_server %>
+<% if (slurm.is_server rescue false) -%>
 systemctl enable slurmctld
 systemctl start slurmctld
-<% end %>
+<% end -%>
 
 systemctl enable slurmd
 systemctl start slurmd
