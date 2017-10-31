@@ -13,7 +13,7 @@ On Controller VM
 - Create a deployment file for the ``infra`` group at ``/var/lib/metalware/repo/config/infra.yaml`` with the following content::
 
     vm:
-      master: 10.101.0.50
+      master: 10.10.0.11
       virtpool: /opt/vm/
       nodename: "<%= alces.nodename %>-<%= cluster %>"
       primac: 52:54:00:78:<%= '%02x' % alces.group_index %>:<%= '%02x' % alces.index %>
