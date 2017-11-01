@@ -43,4 +43,5 @@ virt-install \
  --network bridge=ext,mac="<%= vm.extmac %>" \
  --graphics vnc,password="<%= vm.vncpassword %>",listen=0.0.0.0,port="-1" --noautoconsole \
  --console pty,target_type=serial \
- --connect qemu://<%= vm.server %>/system
+
+virsh destroy $NAME
