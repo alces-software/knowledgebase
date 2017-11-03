@@ -46,10 +46,6 @@ On Controller VM
 
 .. note:: Replace ``master`` with the hostname of the libvirt master, ensure that there's an entry for the server in ``/etc/hosts``
 
-- Add the following line to ``/etc/libvirt/libvirt.conf`` to automatically query the VM master::
-
-    uri_default = "qemu://master/system"
-
 - Additionally, download the certificate authority script to ``/opt/alces/install/scripts/certificate_authority.sh`` and VM creation script to ``/opt/alces/install/scripts/vm.sh``::
 
     mkdir -p /opt/alces/install/scripts/
@@ -60,6 +56,10 @@ On Controller VM
 - Run the script to configure the certificate authority (and perform any additional steps which the script instructs)::
 
     metal render /opt/alces/install/scripts/certificate_authority.sh self |/bin/bash
+
+- Add the following line to ``/etc/libvirt/libvirt.conf`` to automatically query the VM master::
+
+    uri_default = "qemu://master/system"
 
 - Run the script for a node::
 
