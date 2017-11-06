@@ -1,5 +1,7 @@
 #!/bin/bash
 
+yum -y install gnutls-utils-3.3.26-9.el7.x86_64
+
 # Setup directory
 CA_DIR=/opt/alces/ca_setup
 mkdir -p $CA_DIR
@@ -12,7 +14,7 @@ cn = Alces Software
 ca
 cert_signing_key
 EOF
-certtool -—generate-self-signed —-load-privkey $CA_DIR/cakey.pem —-template $CA_DIR/ca.info —-outfile $CA_DIR/cacert.pem
+certtool --generate-self-signed --load-privkey $CA_DIR/cakey.pem --template $CA_DIR/ca.info --outfile $CA_DIR/cacert.pem
 cp $CA_DIR/cacert.pem /etc/pki/CA/
 echo "Copy $CA_DIR/cacert.pem to /etc/pki/CA/cacert.pem on the libvirt servers"
 echo
