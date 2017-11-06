@@ -115,7 +115,7 @@ Setup IPA Server
 - Download the server configuration script to the controller::
 
     cd /opt/alces/install/scripts/
-    wget http://raw.githubusercontent.com/alces- software/knowledgebase/master/epel/7/ipa/ipa_server.sh
+    wget http://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/ipa/ipa_server.sh
 
 - Render the script for the IPA server::
 
