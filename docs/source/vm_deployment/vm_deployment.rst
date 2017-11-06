@@ -62,6 +62,8 @@ On Controller VM
     wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/certificate_authority/certificate_authority.sh
     wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/libvirt/vm.sh
 
+- Add the master server IP to ``/etc/hosts`` on the controller
+
 - Run the script to configure the certificate authority (and perform any additional steps which the script instructs)::
 
     metal render /opt/alces/install/scripts/certificate_authority.sh self |/bin/bash
