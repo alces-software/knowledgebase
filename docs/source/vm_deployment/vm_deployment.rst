@@ -46,6 +46,15 @@ On Controller VM
 
 .. note:: Replace ``master`` with the hostname of the libvirt master, ensure that there's an entry for the server in ``/etc/hosts``
 
+- Add the following to the configuration file for the controller node at ``/var/lib/metalware/repo/config/self.yaml`` (using the same vm server name as above)::
+
+    vm:
+      server: master
+
+- Install the libvirt client package on the controller for managing the VM master server::
+
+    yum -y install libvirt-client virt-install
+
 - Additionally, download the certificate authority script to ``/opt/alces/install/scripts/certificate_authority.sh`` and VM creation script to ``/opt/alces/install/scripts/vm.sh``::
 
     mkdir -p /opt/alces/install/scripts/
