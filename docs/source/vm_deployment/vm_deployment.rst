@@ -3,15 +3,6 @@
 Deploy VMs From Controller
 ==========================
 
-On Master VM
-------------
-
-- Uncomment the line ``LIBVIRTD_ARGS="--listen"`` in ``/etc/sysconfig/libvirtd``
-
-- Restart libvirtd service::
-
-    systemctl restart libvirtd
-
 On Controller VM
 ----------------
 
@@ -67,6 +58,18 @@ On Controller VM
 - Run the script to configure the certificate authority (and perform any additional steps which the script instructs)::
 
     metal render /opt/alces/install/scripts/certificate_authority.sh self |/bin/bash
+
+On Master VM
+------------
+
+- Uncomment the line ``LIBVIRTD_ARGS="--listen"`` in ``/etc/sysconfig/libvirtd``
+
+- Restart libvirtd service::
+
+    systemctl restart libvirtd
+
+Back on Controller VM
+---------------------
 
 - Add the following line to ``/etc/libvirt/libvirt.conf`` to automatically query the VM master::
 
