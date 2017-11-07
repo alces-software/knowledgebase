@@ -1,6 +1,6 @@
-yum -y --enablerepo epel install nagios-nrpe nagios-plugins nagios-plugins-{load,ping,disk,http,procs,users,ssh,swap,procs}
+yum -y install nagios-nrpe nagios-plugins nagios-plugins-{load,ping,disk,http,procs,users,ssh,swap,procs}
 <% if (nagios.is_server rescue false) then -%>
-yum -y --enablerepo epel install nagios
+yum -y install nagios
 
 # setup config file
 sed -i -e 's/bare_update_check.*/bare_update_check=1/g' \
