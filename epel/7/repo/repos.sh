@@ -14,6 +14,7 @@ for repofile in $REPOFILES ; do
 done
 
 # Generate repo config
+mkdir -p /opt/alces/repo/
 /opt/repoman/repoman.rb generate --distro centos7 --include <%= repoconfig.source_repos %> --outfile /opt/alces/repo/client.repo
 
 # HTTP setup
