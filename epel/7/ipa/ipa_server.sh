@@ -48,6 +48,7 @@ ipa hostgroup-add adminnodes --desc "All nodes allowing only admin user access"
 # Add alces user
 ipa user-add alces-cluster --first Alces --last Software --random
 ipa group-add-member AdminUsers --users alces-cluster
+echo "ALCES USER PASSWORD"
 ipa user-mod alces-cluster --password # Sets user password through prompts
 
 # Access rules
