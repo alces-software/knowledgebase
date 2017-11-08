@@ -120,6 +120,14 @@ EOF
 
 # Mail relay
 sed -n -e '/^relayhost\s*=/!p' -e '$arelayhost=[<%=flightcenter.mailserver%>]' /etc/postfix/main.cf -i
+sed -n -e '/^inet_interfaces\s*=/!p' -e '$ainet_interfaces = all' /etc/postfix/main.cf -i
+cat << EOF >> /etc/postfix/main.cf
+sender_canonical_maps = regexp:/etc/postfix/master-rewrite-sender
+local_header_rewrite_clients = static:all
+myorigin = <%= cluster %>.alces-software.com
+EOF
+
+echo '/^.*$/  <%= cluster %>@alces-software.com' > /etc/postfix/master-rewrite-sender
 
 # Ganglia
 systemctl stop gmetad
