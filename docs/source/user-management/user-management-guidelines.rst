@@ -125,6 +125,8 @@ Setup IPA Server
 
     scp /tmp/ipa_server.sh ipa1:/root/
 
+.. note:: Before launching the script it is currently necessary to disable named on the controller from serving the primary forward and reverse domains such that the IPA installation will work. This can be re-enabled once the IPA script has finished running.
+
 - Launch the script on the IPA server (following any on-screen prompts)::
 
     ssh ipa1 "/root/ipa_server.sh"
