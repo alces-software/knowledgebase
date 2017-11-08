@@ -3,10 +3,10 @@
 Flight Center - Managed Machine Configuration
 =============================================
 
-Before proceeding with the Flight Center setup, ensure that the:
+Before proceeding with the Flight Center setup, ensure that the **controller**:
 
-  - :ref:`Ganglia server has been configured <deploy-monitor>`.
-  - Connect the controller system to Flight Center VPN
+  - :ref:`Has been configured as a Ganglia server <deploy-monitor>`.
+  - Is connected to Flight Center VPN
 
 A managed cluster can be integrated with Flight Center by:
 
@@ -20,9 +20,6 @@ A managed cluster can be integrated with Flight Center by:
       mailserver: 10.78.0.15
       # ntpserver: flightcenter-mail.flightcenter.alces-flight.com
       ntpserver: 10.78.0.15
-      # gangliaserver: flightcenter-ganglia.flightcenter.alces-flight.com
-      gangliaserver: 10.78.0.20
-
 
 - Adding the script reference to the ``scripts:`` namespace in ``/var/lib/metalware/repo/config/domain.yaml``::
 
