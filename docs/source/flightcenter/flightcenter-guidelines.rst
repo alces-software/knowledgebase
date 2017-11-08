@@ -16,9 +16,12 @@ A managed cluster can be integrated with Flight Center by:
       archivedir: '/mnt/data1/users'
       sharedscratchdir: '/mnt/lustre/users'
       localscratchdir: '/tmp/users/'
-      mailserver: flightcenter-mail.flightcenter.alces-flight.com
-      ntpserver: flightcenter-mail.flightcenter.alces-flight.com
-      gangliaserver: flightcenter-ganglia.flightcenter.alces-flight.com
+      # mailserver: flightcenter-mail.flightcenter.alces-flight.com
+      mailserver: 10.78.0.15
+      # ntpserver: flightcenter-mail.flightcenter.alces-flight.com
+      ntpserver: 10.78.0.15
+      # gangliaserver: flightcenter-ganglia.flightcenter.alces-flight.com
+      gangliaserver: 10.78.0.20
 
 
 - Adding the script reference to the ``scripts:`` namespace in ``/var/lib/metalware/repo/config/domain.yaml``::
