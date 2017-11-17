@@ -1,9 +1,0 @@
-[flightcenter]
-name=flightcenter
-baseurl=http://alces-repo.s3.amazonaws.com/flightcenter
-description=No description specified
-enabled=1
-skip_if_unavailable=1
-gpgcheck=0
-priority=10
-

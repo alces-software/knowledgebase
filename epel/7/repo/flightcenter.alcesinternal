@@ -1,9 +1,0 @@
-[flightcenter]
-name=flightcenter
-baseurl=http://repo.alces-software.com/repo/flightcenter
-description=No description specified
-enabled=1
-skip_if_unavailable=1
-gpgcheck=0
-priority=10
-

@@ -8,7 +8,7 @@ git clone https://github.com/alces-software/repoman.git
 # Add additional repositories
 mkdir -p /var/lib/repoman/templates/centos/7/
 cd /var/lib/repoman/templates/centos/7/
-REPOFILES="base.alcesaws base.alcesinternal lustre.alcesaws lustre.alcesinternal flightcenter.alcesaws flightcenter.alcesinternal"
+REPOFILES="base.alcesaws base.alcesinternal base.flightcenter lustre.alcesaws lustre.alcesinternal lustre.flightcenter"
 for repofile in $REPOFILES ; do
   wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/repo/$repofile
 done
