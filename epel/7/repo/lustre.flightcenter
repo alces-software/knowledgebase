@@ -1,6 +1,6 @@
 [lustre-el7-client]
 name=lustre-el7-client
-baseurl=http://flightcenter-repo/repo/lustre/el7/client
+baseurl=http://10.78.0.40/repo/lustre/el7/client
 description=No description specified
 enabled=1
 skip_if_unavailable=1
@@ -9,7 +9,7 @@ priority=5
 
 [lustre-el7-server]
 name=lustre-el7-server
-baseurl=http://flightcenter-repo/repo/lustre/el7/server/
+baseurl=http://10.78.0.40/repo/lustre/el7/server/
 description=No description specified
 enabled=0
 skip_if_unavailable=1
@@ -18,7 +18,7 @@ priority=5
 
 [e2fsprogs-el7]
 name=e2fsprogs-el7
-baseurl=http://flightcenter-repo/repo/e2fsprogs/el7/
+baseurl=http://10.78.0.40/repo/e2fsprogs/el7/
 description=No description specified
 enabled=1
 skip_if_unavailable=1
