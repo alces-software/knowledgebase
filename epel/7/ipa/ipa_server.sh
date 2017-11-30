@@ -68,6 +68,22 @@ ipa sudorule-add-user --groups=adminusers All
 ipa sudorule-mod All --hostcat='all'
 ipa sudorule-add-option All --sudooption '!authenticate'
 
+#Site stuff
+ipa user-add siteadmin --first Site --last Admin --random
+ipa group-add siteadmins --desc="Site admin users (power users)"
+ipa hostgroup-add sitenodes --desc "All nodes allowing site admin access"
+ipa group-add-member siteadmins --users siteadmin
+ipa hbacrule-add siteaccess --desc "Allow siteadmins access to site hosts"
+ipa hbacrule-add-service siteaccess --hbacsvcs sshd
+ipa hbacrule-add-user adminaccess --groups siteadmins
+ipa hbacrule-add-host adminaccess --hostgroups sitenodes
+
+ipa sudorule-add --cmdcat=all Site
+ipa sudorule-add-user --groups=siteadmins Site
+ipa sudorule-mod Site --hostcat=''
+ipa sudorule-add-option Site --sudooption '!authenticate'
+ipa sudorule-add-host Site --hostgroups=sitenodes
+
 # Add all hosts to IPA (disables and resets password as precaution)
 <% alces.groups do |group| -%>
 <%     group.nodes do |node| -%>
