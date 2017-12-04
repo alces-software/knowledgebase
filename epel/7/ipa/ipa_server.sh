@@ -88,8 +88,6 @@ ipa sudorule-add-host Site --hostgroups=sitenodes
 <% alces.groups do |group| -%>
 <%     group.nodes do |node| -%>
 ipa host-add <%= node.networks.pri.hostname %> --password="<%= node.ipaconfig.insecurepassword %>" --ip-address=<%= node.networks.pri.ip %>
-ipa host-disable <%= node.alces.nodename %>
-ipa host-mod <%= node.alces.nodename %> --password="<%= node.ipaconfig.                 insecurepassword %>"
 <%     end -%>
 <% end -%>
 
