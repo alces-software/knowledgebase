@@ -124,10 +124,10 @@ sed -n -e '/^inet_interfaces\s*=/!p' -e '$ainet_interfaces = all' /etc/postfix/m
 cat << EOF >> /etc/postfix/main.cf
 sender_canonical_maps = regexp:/etc/postfix/master-rewrite-sender
 local_header_rewrite_clients = static:all
-myorigin = <%= cluster %>.alces-software.com
+myorigin = <%= cluster %>.alces.network
 EOF
 
-echo '/^.*$/  <%= cluster %>@alces-software.com' > /etc/postfix/master-rewrite-sender
+echo '/^.*$/  admin@<%= cluster %>.alces.network' > /etc/postfix/master-rewrite-sender
 
 # Ganglia
 systemctl stop gmetad
