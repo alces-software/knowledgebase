@@ -127,7 +127,7 @@ local_header_rewrite_clients = static:all
 myorigin = <%= cluster %>.alces.network
 EOF
 
-echo '/^.*$/  admin@<%= cluster %>.alces.network' > /etc/postfix/master-rewrite-sender
+echo '/^(.*)@.*$/  ${1}@<%= cluster %>.alces.network' > /etc/postfix/master-rewrite-sender
 
 # Ganglia
 systemctl stop gmetad
