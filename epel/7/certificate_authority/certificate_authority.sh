@@ -20,18 +20,20 @@ echo "Copy $CA_DIR/cacert.pem to /etc/pki/CA/cacert.pem on the libvirt servers"
 echo
 
 # Server Authority
-echo "Setting up server certificate"
-certtool --generate-privkey > $CA_DIR/serverkey.pem
-cat << EOF > $CA_DIR/server.info
+for server in <%= vm.server %> ; do
+    echo "Setting up server certificate for $server"
+    certtool --generate-privkey > $CA_DIR/$server-key.pem
+    cat << EOF > $CA_DIR/$server.info
 organization = Alces Software
-cn = <%= vm.server %>
+cn = $server
 tls_www_server
 encryption_key
 signing_key
 EOF
-certtool --generate-certificate --load-privkey $CA_DIR/serverkey.pem --load-ca-certificate $CA_DIR/cacert.pem --load-ca-privkey $CA_DIR/cakey.pem --template $CA_DIR/server.info --outfile $CA_DIR/servercert.pem
-echo "Copy $CA_DIR/server{key,cert}.pem to /etc/pki/libvirt/{servercert.pem,/private/serverkey.pem} on the libvirt servers"
-echo
+    certtool --generate-certificate --load-privkey $CA_DIR/$server-key.pem --load-ca-certificate $CA_DIR/cacert.pem --load-ca-privkey $CA_DIR/cakey.pem --template $CA_DIR/$server.info --outfile $CA_DIR/$server-cert.pem
+    echo "Copy $CA_DIR/$server-{key,cert}.pem to /etc/pki/libvirt/{servercert.pem,/private/serverkey.pem} on $server"
+    echo
+done
 
 # Client (controller) Authority
 echo "Setting up client certificate"

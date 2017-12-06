@@ -13,7 +13,7 @@ On Controller VM
 - Create a deployment file for the ``infra`` group at ``/var/lib/metalware/repo/config/infra.yaml`` with the following content::
 
     vm:
-      server: master
+      server: master1 master2
       virtpool: /opt/vm/
       nodename: "<%= alces.nodename %>-<%= cluster %>"
       primac: 52:54:00:78:<%= '%02x' % alces.group_index %>:<%= '%02x' % alces.index %>
@@ -35,12 +35,12 @@ On Controller VM
       logvol  /tmp --fstype ext4 --vgname=system --size=1 --grow --name=tmp
       logvol  swap  --fstype swap --vgname=system  --size=8096  --name=swap1
 
-.. note:: Replace ``master`` with the hostname of the libvirt master, ensure that there's an entry for the server in ``/etc/hosts``
+.. note:: Replace ``master1 master2`` with the hostnames of the libvirt master, ensure that there's an entry for the server in ``/etc/hosts``. If there are more than one VM servers then create a space separated list
 
-- Add the following to the configuration file for the controller node at ``/var/lib/metalware/repo/config/self.yaml`` (using the same vm server name as above)::
+- Add the following to the configuration file for the controller node at ``/var/lib/metalware/repo/config/self.yaml`` (using the same vm server names as above)::
 
     vm:
-      server: master
+      server: master1 master2
 
 - Install the libvirt client package on the controller for managing the VM master server::
 
@@ -73,7 +73,9 @@ Back on Controller VM
 
 - Add the following line to ``/etc/libvirt/libvirt.conf`` to automatically query the VM master::
 
-    uri_default = "qemu://master/system"
+    uri_default = "qemu://master1/system"
+
+.. note:: If using multiple VM masters then a different master can be specified using ``-c qemu://master2/system`` as an argument to ``virsh`` or ``virt-install``
 
 - Run the script for a node::
 
