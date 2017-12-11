@@ -57,7 +57,7 @@ On Controller VM
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget  -O 00-repos.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/repo/repos.sh
+    wget  -O 00-repos.sh https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.1/epel/7/repo/repos.sh
 
 .. note:: The script is renamed to ``00-repos.sh`` to guarantee that it is run before any other setup scripts.
 

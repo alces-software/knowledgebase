@@ -50,8 +50,8 @@ On Controller VM
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/certificate_authority/certificate_authority.sh
-    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/libvirt/vm.sh
+    wget https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.1/epel/7/certificate_authority/certificate_authority.sh
+    wget https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.1/epel/7/libvirt/vm.sh
 
 - Add the master server IP to ``/etc/hosts`` on the controller
 

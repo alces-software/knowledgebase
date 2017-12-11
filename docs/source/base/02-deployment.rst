@@ -76,7 +76,7 @@ Metalware Install
 
 - Run the metalware setup script (there are variables within this script that may need updating if your network setup differs from the examples used in this documentation - it is recommended to download this script before running it to check the variables are correct)::
 
-    curl -sL https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/metalware/metalware.sh | sudo /bin/bash
+    curl -sL https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.1/epel/7/metalware/metalware.sh | sudo /bin/bash
  
 - Reboot the VM
 
@@ -105,4 +105,4 @@ There is currently a script for configuring the AWS EL7 platform available on gi
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/platform/aws.sh
+    wget https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.1/epel/7/platform/aws.sh
