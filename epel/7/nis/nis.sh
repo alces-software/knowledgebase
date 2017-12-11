@@ -1,18 +1,18 @@
-<% if (nisconfig.is_server rescue false) -%>
+<% if (config.nisconfig.is_server rescue false) -%>
 
 yum install -y ypserv yp-tools
-<% if !nisconfig.users_dir.nil? -%>
+<% if !config.nisconfig.users_dir.nil? -%>
 # Modify default user home directory
-sed -i -e 's|^HOME=.*$|HOME=<%= nisconfig.users_dir %>|g' /etc/default/useradd
+sed -i -e 's|^HOME=.*$|HOME=<%= config.nisconfig.users_dir %>|g' /etc/default/useradd
 <% end -%>
 
-echo "domain <%= nisconfig.nisdomain %> server 127.0.0.1" > /etc/yp.conf
-nisdomainname <%= nisconfig.nisdomain %>
-echo "NISDOMAIN=<%= nisconfig.nisdomain %>" > /etc/sysconfig/network
+echo "domain <%= config.nisconfig.nisdomain %> server 127.0.0.1" > /etc/yp.conf
+nisdomainname <%= config.nisconfig.nisdomain %>
+echo "NISDOMAIN=<%= config.nisconfig.nisdomain %>" > /etc/sysconfig/network
 
 cat << EOF > /var/yp/sercurenets
 host 127.0.0.1
-<%= networks.pri.netmask %> <%= networks.pri.network %>
+<%= config.networks.pri.netmask %> <%= config.networks.pri.network %>
 EOF
 
 sed -e 's/^all.*$/all:  passwd group hosts rpc services netid protocols mail shadow \\/g' -e 's/^MERGE_PASSWD.*$/MERGE_PASSWD=false/g' -i /var/yp/Makefile
@@ -27,9 +27,9 @@ make -C /var/yp
 <% else -%>
 
 yum -y install ypbind
-echo "domain <%= nisconfig.nisdomain %> server <%= nisconfig.nisserver %>" > /etc/yp.conf
-nisdomainname <%= nisconfig.nisdomain %>
-echo "NISDOMAIN=<%= nisconfig.nisdomain %>" > /etc/sysconfig/network
+echo "domain <%= config.nisconfig.nisdomain %> server <%= config.nisconfig.nisserver %>" > /etc/yp.conf
+nisdomainname <%= config.nisconfig.nisdomain %>
+echo "NISDOMAIN=<%= config.nisconfig.nisdomain %>" > /etc/sysconfig/network
 
 sed -i -e 's/^passwd:.*/passwd:     files nis/g' \
 -e 's/^shadow:.*/shadow:     files nis/g' \

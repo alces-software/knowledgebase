@@ -1,5 +1,5 @@
 yum -y install nagios-nrpe nagios-plugins nagios-plugins-{load,ping,disk,http,procs,users,ssh,swap,procs}
-<% if (nagios.is_server rescue false) then -%>
+<% if (config.nagios.is_server rescue false) then -%>
 yum -y install nagios
 
 # setup config file
@@ -10,7 +10,7 @@ sed -i -e 's/bare_update_check.*/bare_update_check=1/g' \
 
 # setup hosts
 HOSTS=`cat << EOF
-<% alces.genders.domain.each do |node| %>
+<% genders.domain.each do |node| %>
 define host{
     use                     linux-server
     host_name               <%= node %>
@@ -20,7 +20,7 @@ define host{
 define hostgroup{
     hostgroup_name          domain-servers
     alias                   Domain Servers
-    members                 <% alces.genders.domain.each do |node| %><%= node %>,<% end %>
+    members                 <% genders.domain.each do |node| %><%= node %>,<% end %>
     }
 define service{
     use                     local-service

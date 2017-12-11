@@ -1,6 +1,6 @@
 yum install -y rsyslog
 
-<% if networks.pri.ip == alces.hostip -%>
+<% if config.networks.pri.ip == domain.hostip -%>
 cat << EOF > /etc/rsyslog.d/metalware.conf
 \$template remoteMessage, "/var/log/slave/%FROMHOST%/messages.log"
 :fromhost-ip, !isequal, "127.0.0.1" ?remoteMessage
@@ -24,7 +24,7 @@ cat << EOF > /etc/logrotate.d/rsyslog-remote
 }
 EOF
 <% else -%>
-echo '*.* @<%= alces.hostip %>:514' >> /etc/rsyslog.conf
+echo '*.* @<%= domain.hostip %>:514' >> /etc/rsyslog.conf
 <% end -%>
 
 systemctl enable rsyslog
