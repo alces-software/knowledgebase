@@ -15,9 +15,9 @@ On Controller VM
     vm:
       server: master1 master2
       virtpool: /opt/vm/
-      nodename: "<%= alces.nodename %>-<%= cluster %>"
-      primac: 52:54:00:78:<%= '%02x' % alces.group_index %>:<%= '%02x' % alces.index %>
-      extmac: 52:54:00:78:<%= '%02x' % (alces.group_index + 1) %>:<%= '%02x' % alces.index %>
+      nodename: "<%= node.name %>-<%= domain.config.cluster %>"
+      primac: 52:54:00:78:<%= '%02x' % node.group.index %>:<%= '%02x' % node.index %>
+      extmac: 52:54:00:78:<%= '%02x' % (node.group.index + 1) %>:<%= '%02x' % node.index %>
       vncpassword: 'password'
       disksize: 250
     kernelappendoptions: "console=tty0 console=ttyS0 115200n8"
@@ -50,8 +50,8 @@ On Controller VM
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/certificate_authority/certificate_authority.sh
-    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/libvirt/vm.sh
+    wget https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.2/epel/7/certificate_authority/certificate_authority.sh
+    wget https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.2/epel/7/libvirt/vm.sh
 
 - Add the master server IP to ``/etc/hosts`` on the controller
 
@@ -83,7 +83,7 @@ Back on Controller VM
 
 - Alternatively, run the script for the entire group::
 
-    metal each -g infra 'metal render /opt/alces/install/scripts/vm.sh <%= alces.nodename %> |/bin/bash'
+    metal each -g infra 'metal render /opt/alces/install/scripts/vm.sh <%= node.name %> |/bin/bash'
 
 - The above will create the virtual machines, these will then need to be started (from the VM master with ``virsh start infra1-testcluster``) and the metal build command run to grab them for the build::
 

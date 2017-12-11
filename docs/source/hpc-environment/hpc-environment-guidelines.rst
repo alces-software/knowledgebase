@@ -34,7 +34,7 @@ SLURM Setup (From Controller VM)
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget -O 06-slurm.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/slurm/slurm.sh
+    wget -O 06-slurm.sh https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.2/epel/7/slurm/slurm.sh
 
 - Build SLURM RPMs in custom repo (``/opt/alces/repo/custom/Packages``), a guide to building the SLURM RPMs can be found in the `SLURM documentation <https://slurm.schedmd.com/quickstart_admin.html>`_. Once the packages have been moved to the previously mentioned custom repo directory, rebuild the repo with ``createrepo custom``
 
@@ -75,7 +75,7 @@ The environment modules software allows for dynamic path changing on a user prof
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget -O 07-modules.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/modules/modules.sh
+    wget -O 07-modules.sh https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.2/epel/7/modules/modules.sh
     
 - Follow :ref:`client-deployment` to setup the apps node
 

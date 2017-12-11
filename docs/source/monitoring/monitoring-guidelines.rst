@@ -57,8 +57,8 @@ On Controller VM
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget -O 03-ganglia.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/ganglia/ganglia.sh
-    wget -O 04-nagios.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nagios/nagios.sh
+    wget -O 03-ganglia.sh https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.2/epel/7/ganglia/ganglia.sh
+    wget -O 04-nagios.sh https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.2/epel/7/nagios/nagios.sh
 
 - Follow :ref:`client-deployment` to setup the compute nodes
 

@@ -62,7 +62,7 @@ In this example, a CentOS 6 kickstart profile is configured. This method should 
 
     LABEL INSTALL
          KERNEL boot/centos6-kernel
-            APPEND initrd=boot/centos6-initrd.img ksdevice=<%= networks.pri.interface %> ks=<%= alces.kickstart_url %> network ks.sendmac _ALCES_BASE_HOSTNAME=<%= alces.nodename %> <%= kernelappendoptions %>
+            APPEND initrd=boot/centos6-initrd.img ksdevice=<%= config.networks.pri.interface %> ks=<%= alces.kickstart_url %> network ks.sendmac _ALCES_BASE_HOSTNAME=<%= node.name %> <%= config.kernelappendoptions %>
             IPAPPEND 2
 
     LABEL local
@@ -76,7 +76,7 @@ In this example, a CentOS 6 kickstart profile is configured. This method should 
     ##(c)2017 Alces Software Ltd. HPC Consulting Build Suite
     ## vim: set filetype=kickstart :
 
-    network --onboot yes --device <%= networks.pri.interface %> --bootproto dhcp --noipv6
+    network --onboot yes --device <%= config.networks.pri.interface %> --bootproto dhcp --noipv6
 
     #MISC
     text
@@ -91,7 +91,7 @@ In this example, a CentOS 6 kickstart profile is configured. This method should 
 
     #AUTH
     auth  --useshadow  --enablemd5
-    rootpw --iscrypted <%= encrypted_root_password %>
+    rootpw --iscrypted <%= config.encrypted_root_password %>
 
     #LOCALIZATION
     keyboard uk
@@ -112,7 +112,7 @@ In this example, a CentOS 6 kickstart profile is configured. This method should 
     DISKFILE=/tmp/disk.part
     bootloaderappend="console=tty0 console=ttyS1,115200n8"
     cat > $DISKFILE << EOF
-    <%= disksetup %>
+    <%= config.disksetup %>
     EOF
 
     #PACKAGES
@@ -146,9 +146,9 @@ In this example, a CentOS 6 kickstart profile is configured. This method should 
 
     # Example of using rendered Metalware file; this file itself also uses other
     # rendered files.
-    curl <%= alces.files.main.first.url %> | /bin/bash | tee /tmp/metalware-default-output
+    curl <%= node.files.main.first.url %> | /bin/bash | tee /tmp/metalware-default-output
 
-    curl <%= alces.build_complete_url %>
+    curl <%= node.build_complete_url %>
 
 - When building nodes, use the new template files by specifying them as arguments to the ``metal build`` command::
 

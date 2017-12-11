@@ -43,7 +43,7 @@ On Controller VM
 
     nisconfig:
       nisserver: 10.10.0.4
-      nisdomain: nis.<%= domain %>
+      nisdomain: nis.<%= config.domain %>
       is_server: false
       # specify non-standard user directory [optional]
       users_dir: /users
@@ -56,7 +56,7 @@ On Controller VM
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget -O 02-nis.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nis/nis.sh
+    wget -O 02-nis.sh https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.2/epel/7/nis/nis.sh
 
 - Follow :ref:`client-deployment` to setup the compute nodes
 
@@ -105,7 +105,7 @@ On Controller VM
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget -O 02-ipa.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/ipa/ipa.sh
+    wget -O 02-ipa.sh https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.2/epel/7/ipa/ipa.sh
 
 - Follow :ref:`client-deployment` to setup the IPA node and continue to the next session to configure the IPA server with a script
 
@@ -115,7 +115,7 @@ Setup IPA Server
 - Download the server configuration script to the controller::
 
     cd /opt/alces/install/scripts/
-    wget http://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/ipa/ipa_server.sh
+    wget http://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.2/epel/7/ipa/ipa_server.sh
 
 - Render the script for the IPA server::
 
