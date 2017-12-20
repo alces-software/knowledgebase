@@ -22,26 +22,26 @@
 #==============================================================================
 
 # Add to hunter
-echo '<%= alces.nodename %>: <%= vm.primac %>' >> /var/lib/metalware/cache/hunter.yaml
+echo '<%= node.name %>: <%= config.vm.primac %>' >> /var/lib/metalware/cache/hunter.yaml
 metal dhcp
 
 # Login to controller and create VM
-NAME=<%= vm.nodename %>
+NAME=<%= config.vm.nodename %>
 BASEPATH=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-LIBVIRTPOOL=<%= vm.virtpool %>
+LIBVIRTPOOL=<%= config.vm.virtpool %>
 
 virt-install \
  --name $NAME \
  --import \
  --ram 4096 \
  --boot "network,hd" \
- --disk path=$LIBVIRTPOOL/$NAME.qcow2,size=<%= vm.disksize %> \
+ --disk path=$LIBVIRTPOOL/$NAME.qcow2,size=<%= config.vm.disksize %> \
  --vcpus 2 \
  --os-type linux \
  --os-variant centos7.0 \
- --network bridge=pri,mac="<%= vm.primac %>" \
- --network bridge=ext,mac="<%= vm.extmac %>" \
- --graphics vnc,password="<%= vm.vncpassword %>",listen=0.0.0.0,port="-1" --noautoconsole \
+ --network bridge=pri,mac="<%= config.vm.primac %>" \
+ --network bridge=ext,mac="<%= config.vm.extmac %>" \
+ --graphics vnc,password="<%= config.vm.vncpassword %>",listen=0.0.0.0,port="-1" --noautoconsole \
  --console pty,target_type=serial \
 
 virsh destroy $NAME

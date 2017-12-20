@@ -21,7 +21,7 @@ Infiniband Setup
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget -O 06-infiniband.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/infiniband/infiniband.sh
+    wget -O 06-infiniband.sh https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.2/epel/7/infiniband/infiniband.sh
 
 - Add the script to the ``scripts:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``::
 
@@ -38,7 +38,7 @@ Nvidia Driver Setup
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget -O 07-nvidia.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nvidia/nvidia.sh
+    wget -O 07-nvidia.sh https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.2/epel/7/nvidia/nvidia.sh
 
 - Add the script to the ``scripts:`` namespace list in ``/var/lib/metalware/repo/config/domain.yaml``::
 

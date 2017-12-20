@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Variables
-REALM="<%= networks.pri.domain.upcase %>.<%= domain.upcase %>"
-SERVICES="ldap ldaps kerberos kpasswd <%= firewall.internal.services %>"
+REALM="<%= config.networks.pri.domain.upcase %>.<%= config.domain.upcase %>"
+SERVICES="ldap ldaps kerberos kpasswd <%= config.firewall.internal.services %>"
 CONTROLLER_HOSTNAME="controller"
 CONTROLLER_IP="10.10.0.1"
 CONTROLLER_IP_REVERSE="1.0"
@@ -12,7 +12,7 @@ yum -y install ipa-server bind bind-dyndb-ldap ipa-server-dns
 
 # Firewall setup
 for service in $SERVICES ; do
-    firewall-cmd --add-service $service --zone <%= networks.pri.firewallpolicy %> --permanent
+    firewall-cmd --add-service $service --zone <%= config.networks.pri.firewallpolicy %> --permanent
 done
 
 firewall-cmd --reload
@@ -21,21 +21,21 @@ echo -n "Secure Admin Password:"
 read PASSWORD
 
 # Server setup
-ipa-server-install -a $PASSWORD --hostname <%= networks.pri.hostname %> --ip-address=<%= networks.pri.ip %> -r "$REALM" -p $PASSWORD -n "<%= networks.pri.domain %>.<%= domain %>" --no-ntp --setup-dns --forwarder='<%= internaldns %>' --reverse-zone='<%= networks.pri.named_rev_zone %>.in-addr.arpa.' --ssh-trust-dns --unattended
+ipa-server-install -a $PASSWORD --hostname <%= config.networks.pri.hostname %> --ip-address=<%= config.networks.pri.ip %> -r "$REALM" -p $PASSWORD -n "<%= config.networks.pri.domain %>.<%= config.domain %>" --no-ntp --setup-dns --forwarder='<%= config.internaldns %>' --reverse-zone='<%= config.networks.pri.named_rev_zone %>.in-addr.arpa.' --ssh-trust-dns --unattended
 
 # Auth
 kinit admin
 
 # Add controller DNS entry
-ipa dnsrecord-add <%= networks.pri.domain %>.<%= domain %> $CONTROLLER_HOSTNAME --a-ip-address=$CONTROLLER_IP
-ipa dnsrecord-add <%= networks.pri.named_rev_zone %>.in-addr.arpa. $CONTROLLER_IP_REVERSE --ptr-hostname $CONTROLLER_HOSTNAME.<%= networks.pri.domain %>.<%= domain %>
+ipa dnsrecord-add <%= config.networks.pri.domain %>.<%= config.domain %> $CONTROLLER_HOSTNAME --a-ip-address=$CONTROLLER_IP
+ipa dnsrecord-add <%= config.networks.pri.named_rev_zone %>.in-addr.arpa. $CONTROLLER_IP_REVERSE --ptr-hostname $CONTROLLER_HOSTNAME.<%= config.networks.pri.domain %>.<%= config.domain %>
 
 # Add mail entry
-ipa dnsrecord-add <%= networks.pri.domain %>.<%= domain %> @ --mx-preference=0 --mx-exchanger=$CONTROLLER_HOSTNAME
+ipa dnsrecord-add <%= config.networks.pri.domain %>.<%= config.domain %> @ --mx-preference=0 --mx-exchanger=$CONTROLLER_HOSTNAME
 
 # Add user config (home dir, shell, groups)
 ipa config-mod --defaultshell /bin/bash
-ipa config-mod --homedirectory <%= ipaconfig.userdir %>
+ipa config-mod --homedirectory <%= config.ipaconfig.userdir %>
 ipa group-add ClusterUsers --desc="Generic Cluster Users"
 ipa group-add AdminUsers --desc="Admin Cluster Users"
 ipa config-mod --defaultgroup ClusterUsers
@@ -85,16 +85,16 @@ ipa sudorule-add-option Site --sudooption '!authenticate'
 ipa sudorule-add-host Site --hostgroups=sitenodes
 
 # Add all hosts to IPA (disables and resets password as precaution)
-<% alces.groups do |group| -%>
-<%     group.nodes do |node| -%>
+<% groups.each do |group| -%>
+<%     group.nodes.each do |node| -%>
 ipa host-add <%= node.networks.pri.hostname %> --password="<%= node.ipaconfig.insecurepassword %>" --ip-address=<%= node.networks.pri.ip %>
 <%     end -%>
 <% end -%>
 
 # Update name resolution
 cat << EOF > /etc/resolv.conf
-search <%= search_domains %>
-nameserver <%= networks.pri.ip %>
+search <%= config.search_domains %>
+nameserver <%= config.networks.pri.ip %>
 EOF
 
 # Reboot

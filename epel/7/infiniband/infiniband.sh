@@ -1,11 +1,11 @@
-<% if (networks.ib.defined rescue false) -%>
+<% if (config.networks.ib.defined rescue false) -%>
 
 YUM_COMMON="-e 0 -y -x compat-openmpi -x compate-openmpi-psm install @infiniband infiniband-diags"
 
 # Mellanox Infiniband
 if (lsmod |grep -q mlx4_core) ; then
-    <% if (networks.ib.ib_use_installer rescue false) -%>
-    curl <%= networks.ib.mellanoxinstaller %> > /tmp/MLNX_OFED_INSTALLER.tgz
+    <% if (config.networks.ib.ib_use_installer rescue false) -%>
+    curl <%= config.networks.ib.mellanoxinstaller %> > /tmp/MLNX_OFED_INSTALLER.tgz
     tar -zxvf /tmp/MLNX_OFED_INSTALLER.tgz -C /tmp/
     rm -v /tmp/MLNX_OFED_INSTALLER.tgz
     cd /tmp/MLNX_*

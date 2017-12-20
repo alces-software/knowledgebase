@@ -3,7 +3,7 @@ cat << "EOF" > /etc/profile.d/flightcenter.sh
 #Custom PS1 with client name
 [ -f /etc/flightcentersupported ] && c=32 || c=31
 if [ "$PS1" ]; then
-  PS1="[\u@\h\[\e[1;${c}m\][<%=cluster%>]\[\e[0m\] \W]\\$ "
+  PS1="[\u@\h\[\e[1;${c}m\][<%=domain.config.cluster%>]\[\e[0m\] \W]\\$ "
 fi
 EOF
 
@@ -27,9 +27,9 @@ cat << 'EOF' > /etc/profile.d/alces-fs.sh
 ##
 ################################################################################
 
-ARCHIVE_DIR="<%= flightcenter.archivedir %>"
-SHAREDSCRATCH_DIR="<%= flightcenter.sharedscratchdir %>"
-LOCALSCRATCH_DIR="<%= flightcenter.localscratchdir %>"
+ARCHIVE_DIR="<%= config.flightcenter.archivedir %>"
+SHAREDSCRATCH_DIR="<%= config.flightcenter.sharedscratchdir %>"
+LOCALSCRATCH_DIR="<%= config.flightcenter.localscratchdir %>"
 
 USERDIR=$USER/
 
@@ -87,10 +87,10 @@ fi
 
 EOF
 
-<% if alces.nodename == 'self' -%>
+<% if node.name == 'local' -%>
 # NTP
 cat << EOF > /etc/chrony.conf
-server <%= flightcenter.ntpserver %> iburst
+server <%= config.flightcenter.ntpserver %> iburst
 
 stratumweight 0
 
@@ -115,19 +115,19 @@ logchange 0.5
 
 logdir /var/log/chrony
 
-allow <%= networks.pri.network %>/<% require 'ipaddr'; netmask=IPAddr.new(networks.pri.netmask).to_i.to_s(2).count('1') %><%= netmask %>
+allow <%= config.networks.pri.network %>/<% require 'ipaddr'; netmask=IPAddr.new(config.networks.pri.netmask).to_i.to_s(2).count('1') %><%= netmask %>
 EOF
 
 # Mail relay
-sed -n -e '/^relayhost\s*=/!p' -e '$arelayhost=[<%=flightcenter.mailserver%>]' /etc/postfix/main.cf -i
+sed -n -e '/^relayhost\s*=/!p' -e '$arelayhost=[<%=config.flightcenter.mailserver%>]' /etc/postfix/main.cf -i
 sed -n -e '/^inet_interfaces\s*=/!p' -e '$ainet_interfaces = all' /etc/postfix/main.cf -i
 cat << EOF >> /etc/postfix/main.cf
 sender_canonical_maps = regexp:/etc/postfix/master-rewrite-sender
 local_header_rewrite_clients = static:all
-myorigin = <%= cluster %>.alces.network
+myorigin = <%= domain.config.cluster %>.alces.network
 EOF
 
-echo '/^(.*)@.*$/  ${1}@<%= cluster %>.alces.network' > /etc/postfix/master-rewrite-sender
+echo '/^(.*)@.*$/  ${1}@<%= domain.config.cluster %>.alces.network' > /etc/postfix/master-rewrite-sender
 
 # Ganglia
 systemctl stop gmetad

@@ -122,4 +122,4 @@ There is currently a script for configuring the AWS EL7 platform available on gi
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/platform/aws.sh
+    wget https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.2/epel/7/platform/aws.sh

@@ -15,7 +15,7 @@ globals {
   send_metadata_interval = 0
 }
 cluster {
-  name = "<%= cluster %>"
+  name = "<%= domain.config.cluster %>"
   owner = "unspecified"
   latlong = "unspecified"
   url = "unspecified"
@@ -24,7 +24,7 @@ host {
   location = "unspecified"
 }
 udp_send_channel {
-  mcast_join = <%= ganglia.server %>
+  mcast_join = <%= config.ganglia.server %>
   port = 8649
   ttl = 1
 }
@@ -277,11 +277,11 @@ EOF
 
 yum -y install ganglia-gmond
 
-<% if (ganglia.is_server rescue false) then -%>
+<% if (config.ganglia.is_server rescue false) then -%>
 GMETAD=`cat << EOF
-data_source '<%= alces.nodename %>' localhost:8659
-gridname '<%= cluster %>'
-authority "http://<%= ganglia.server %>/ganglia/"
+data_source '<%= node.name %>' localhost:8659
+gridname '<%= domain.config.cluster %>'
+authority "http://<%= config.ganglia.server %>/ganglia/"
 setuid_username ganglia
 case_sensitive_hostnames 0
 EOF
@@ -294,7 +294,7 @@ systemctl restart httpd
 systemctl enable gmetad
 systemctl restart gmetad
 
-firewall-cmd --add-port 8659/tcp --add-port 8649/tcp --add-port 8649/udp --add-port 8659/udp --zone <%= networks.pri.firewallpolicy %> --permanent
+firewall-cmd --add-port 8659/tcp --add-port 8649/tcp --add-port 8649/udp --add-port 8659/udp --zone <%= config.networks.pri.firewallpolicy %> --permanent
 firewall-cmd --reload
 
 echo "$GMETAD" > /etc/ganglia/gmetad.conf

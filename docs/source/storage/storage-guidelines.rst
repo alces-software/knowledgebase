@@ -95,9 +95,9 @@ On Controller VM
       /export/users:
       /export/data:
         # Modify the export options [optional]
-        #options: <%= networks.pri.network %>/<%= networks.pri.netmask %>(ro,no_root_squash,async)
+        #options: <%= config.networks.pri.network %>/<%= config.networks.pri.netmask %>(ro,no_root_squash,async)
 
-.. note:: The ``options:`` namespace is optional, if not specified then the default export options will be used (``<%= networks.pri.network %>/<%= networks.pri.netmask %>(rw,no_root_squash,sync)``)
+.. note:: The ``options:`` namespace is optional, if not specified then the default export options will be used (``<%= config.networks.pri.network %>/<%= confignetworks.pri.netmask %>(rw,no_root_squash,sync)``)
 
 - Add the following to ``/var/lib/metalware/repo/config/domain.yaml`` (toggle ``defined`` to ``false`` to prevent a client from creating an fstab entry for the mount on a node)::
 
@@ -124,7 +124,7 @@ On Controller VM
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget -O 01-nfs.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nfs/nfs.sh
+    wget -O 01-nfs.sh https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.2/epel/7/nfs/nfs.sh
 
 - Follow :ref:`client-deployment` to setup the compute nodes
 
@@ -161,16 +161,16 @@ On Controller VM
 
     lustreconfig:
       type: server
-      networks: tcp0(<%= networks.pri.interface %>)
+      networks: tcp0(<%= config.networks.pri.interface %>)
       mountentry: "10.10.0.10:/lustre    /mnt/lustre    lustre    default,_netdev    0 0"
 
-.. note:: If the server has an Infiniband interface that can be used for storage access then set ``networks`` to a list of modules which includes Infiniband, e.g. ``o2ib(<%= networks.ib.interface %>),tcp0(<%= networks.pri.interface %>)``
+.. note:: If the server has an Infiniband interface that can be used for storage access then set ``networks`` to a list of modules which includes Infiniband, e.g. ``o2ib(<%= config.networks.ib.interface %>),tcp0(<%= config.networks.pri.interface %>)``
 
 - Add the following to ``/var/lib/metalware/repo/config/domain.yaml``::
 
     lustreconfig:
       type: none
-      networks: tcp0(<%= networks.pri.interface %>)
+      networks: tcp0(<%= config.networks.pri.interface %>)
       mountentry: "10.10.0.10:/lustre    /mnt/lustre    lustre    default,_netdev    0 0"
 
 .. note:: For clients to lustre, replicate the above entry into the group or node config file and change ``type: none`` to ``type: client``, also ensuring that ``networks`` reflects the available modules and interfaces on the system
@@ -183,7 +183,7 @@ On Controller VM
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget -O 08-lustre.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/lustre/lustre.sh
+    wget -O 08-lustre.sh https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.2/epel/7/lustre/lustre.sh
 
 - Follow :ref:`client-deployment` to setup the lustre node
 

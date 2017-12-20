@@ -20,7 +20,7 @@ echo "Copy $CA_DIR/cacert.pem to /etc/pki/CA/cacert.pem on the libvirt servers"
 echo
 
 # Server Authority
-for server in <%= vm.server %> ; do
+for server in <%= config.vm.server %> ; do
     echo "Setting up server certificate for $server"
     certtool --generate-privkey > $CA_DIR/$server-key.pem
     cat << EOF > $CA_DIR/$server.info
@@ -40,7 +40,7 @@ echo "Setting up client certificate"
 certtool --generate-privkey > $CA_DIR/clientkey.pem
 cat << EOF > $CA_DIR/client.info
 organization = Alces Software
-cn = <%= alces.nodename %>
+cn = <%= node.name %>
 tls_www_client
 encryption_key
 signing_key

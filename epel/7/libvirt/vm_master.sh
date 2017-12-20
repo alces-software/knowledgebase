@@ -15,10 +15,10 @@ virsh pool-autostart local
 
 cp $CORE_DIR/cacert.pem /etc/pki/CA/cacert.pem
 mkdir -p /etc/pki/libvirt/private
-cp $CORE_DIR/<%= alces.nodename %>-key.pem /etc/pki/libvirt/private/serverkey.pem
-cp $CORE_DIR/<%= alces.nodename %>-cert.pem /etc/pki/libvirt/servercert.pem
+cp $CORE_DIR/<%= node.name %>-key.pem /etc/pki/libvirt/private/serverkey.pem
+cp $CORE_DIR/<%= node.name %>-cert.pem /etc/pki/libvirt/servercert.pem
 
-firewall-cmd --add-port 16514/tcp --zone=<%= networks.pri.firewallpolicy %> --permanent
+firewall-cmd --add-port 16514/tcp --zone=<%= config.networks.pri.firewallpolicy %> --permanent
 firewall-cmd --reload
 
 systemctl restart libvirtd
