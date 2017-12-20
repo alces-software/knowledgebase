@@ -29,7 +29,7 @@ A managed cluster can be integrated with Flight Center by:
 
     mkdir -p /opt/alces/install/scripts/
     cd /op/alces/install/scripts/
-    wget -O 20-flightcenter.sh https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.2/epel/7/flight/flightcenter.sh
+    wget -O 20-flightcenter.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/flight/flightcenter.sh
 
 What this script does is:
 

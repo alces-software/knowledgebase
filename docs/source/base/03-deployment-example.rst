@@ -14,7 +14,7 @@ Client Deployment Example
  
 - Start the controller VM listening for PXE requests::
 
-    metal hunter -i eth0
+    metal hunter
 
 - Boot up the client node
 
@@ -24,7 +24,7 @@ Client Deployment Example
 
 - Generate DHCP entry for the node::
 
-    metal dhcp -t default
+    metal dhcp
 
 - Start the controller VM serving installation files to the node (replace slave01 with the hostname of the client node)::
 
@@ -62,7 +62,7 @@ In this example, a CentOS 6 kickstart profile is configured. This method should 
 
     LABEL INSTALL
          KERNEL boot/centos6-kernel
-            APPEND initrd=boot/centos6-initrd.img ksdevice=<%= config.networks.pri.interface %> ks=<%= alces.kickstart_url %> network ks.sendmac _ALCES_BASE_HOSTNAME=<%= node.name %> <%= config.kernelappendoptions %>
+            APPEND initrd=boot/centos6-initrd.img ksdevice=<%= config.networks.pri.interface %> ks=<%= node.kickstart_url %> network ks.sendmac _ALCES_BASE_HOSTNAME=<%= node.name %> <%= config.kernelappendoptions %>
             IPAPPEND 2
 
     LABEL local
@@ -99,7 +99,7 @@ In this example, a CentOS 6 kickstart profile is configured. This method should 
     timezone  Europe/London
 
     #REPOS
-    url --url=http://mirror.ox.ac.uk/sites/mirror.centos.org/6/os/x86_64/
+    url --url=<%= config.repoconfig.build_url %>
 
     #DISK
     %include /tmp/disk.part
@@ -148,7 +148,7 @@ In this example, a CentOS 6 kickstart profile is configured. This method should 
     # rendered files.
     curl <%= node.files.main.first.url %> | /bin/bash | tee /tmp/metalware-default-output
 
-    curl <%= node.build_complete_url %>
+    curl '<%= node.build_complete_url %>&event=complete&msg=Build%20is%20complete'
 
 - When building nodes, use the new template files by specifying them as arguments to the ``metal build`` command::
 

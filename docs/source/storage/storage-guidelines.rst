@@ -124,7 +124,7 @@ On Controller VM
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget -O 01-nfs.sh https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.2/epel/7/nfs/nfs.sh
+    wget -O 01-nfs.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/nfs/nfs.sh
 
 - Follow :ref:`client-deployment` to setup the compute nodes
 
@@ -183,7 +183,7 @@ On Controller VM
 
     mkdir -p /opt/alces/install/scripts/
     cd /opt/alces/install/scripts/
-    wget -O 08-lustre.sh https://raw.githubusercontent.com/alces-software/knowledgebase/release/2017.2/epel/7/lustre/lustre.sh
+    wget -O 08-lustre.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/lustre/lustre.sh
 
 - Follow :ref:`client-deployment` to setup the lustre node
 

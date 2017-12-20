@@ -117,7 +117,7 @@ If using metalware, a controller can be used to deploy it's own master. By setti
         network: 10.101.0.0
         netmask: 255.255.0.0
         gateway: 10.101.0.1
-        short_hostname: <%= alces.nodename %>.<%= networks.ext.domain %>
+        short_hostname: <%= node.name %>.<%= config.networks.ext.domain %>
         interface: ext
         firewallpolicy: external
         slave_interfaces: p1p4
