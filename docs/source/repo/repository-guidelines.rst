@@ -70,6 +70,9 @@ Custom Repository Setup
 
 As well as using different sources for the upstream repositories it is beneficial to have a local repository that can be used to serve additional packages which are not part of upstream repos to clients. This will be known as the custom repository, details on setting up the custom repository are below. The purpose of this repository is to provide packages to the network that aren't available in upstream repositories or require higher installation priority than other available packages (e.g. a newer kernel package).
 
+Manual
+######
+
 - Install package dependencies::
 
     yum -y install createrepo httpd yum-plugin-priorities yum-utils
@@ -107,3 +110,10 @@ As well as using different sources for the upstream repositories it is beneficia
        # The file for clients to curl containing repository information [OPTIONAL]
        # clientrepofile: http://myrepo.com/repo/client.repo
        clientrepofile: false
+
+Repoman Setup
+#############
+
+Alternatively to manually creating the custom repository, the `repoman <https://github.com/alces-software/repoman>`_ command can handle the setup of a custom repository::
+
+    /opt/repoman/repoman.rb mirror --distro centos77 --include base.upstream --reporoot /opt/alces/repo --configurl http://myrepo.com/repo --custom
