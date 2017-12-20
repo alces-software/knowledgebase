@@ -93,7 +93,7 @@ If using metalware, a controller can be used to deploy it's own master. By setti
 
 - Configure certificate authority for libvirt from the controller as described in :ref:`VM Deployment from the Controller <vm-deployment>`
 
-- Create a deployment file for the master node (``/var/lib/metalware/repo/config/master1.yaml``) containing the following::
+- Create a deployment file for the master node (``/var/lib/metalware/repo/config/master1.yaml``) containing the following (the network setup configures network bridges and the external interface)::
 
     files:
       setup:
@@ -101,6 +101,26 @@ If using metalware, a controller can be used to deploy it's own master. By setti
       core:
         - /opt/alces/ca_setup/master1-key.pem
         - /opt/alces/ca_setup/master1-cert.pem
+    networks:
+      pri:
+        interface: pri
+        type: Bridge
+        slave_interfaces: em1
+      mgt:
+        interface: mgt
+        type: Bridge
+        slave_interfaces: em2
+      ext:
+        defined: true
+        domain: ext
+        ip: 10.101.100.99
+        network: 10.101.0.0
+        netmask: 255.255.0.0
+        gateway: 10.101.0.1
+        short_hostname: <%= alces.nodename %>.<%= networks.ext.domain %>
+        interface: ext
+        firewallpolicy: external
+        slave_interfaces: p1p4
 
 .. note:: If additional scripts are defined in the domain level ``setup`` and ``core`` lists then be sure to include them in the master1 file
 
