@@ -14,7 +14,7 @@ Client Deployment Example
  
 - Start the controller VM listening for PXE requests::
 
-    metal hunter
+    metal hunter -i eth0
 
 - Boot up the client node
 
@@ -22,17 +22,15 @@ Client Deployment Example
 
 - Once the hostname has been added the previous metal command can be cancelled (with ctrl-c)
 
-- Sync the updated configuration files and template the node (replace slave01 with the hostname of the client node)::
+- Generate DHCP entry for the node::
 
-    metal sync
-    metal template slave01
-    metal sync
+    metal dhcp -t default
 
 - Start the controller VM serving installation files to the node (replace slave01 with the hostname of the client node)::
 
     metal build slave01
 
-.. note:: If building multiple systems the genders group can be specified instead of the node hostname. For example, all compute nodes can be templated with ``metal template -g nodes`` and then built with ``metal build -g nodes``.
+.. note:: If building multiple systems the genders group can be specified instead of the node hostname. For example, all compute nodes can be built with ``metal build -g nodes``.
 
 - The client node can be rebooted and it will begin an automatic installation of CentOS 7
 
@@ -64,7 +62,7 @@ In this example, a CentOS 6 kickstart profile is configured. This method should 
 
     LABEL INSTALL
          KERNEL boot/centos6-kernel
-            APPEND initrd=boot/centos6-initrd.img ksdevice=<%= config.networks.pri.interface %> ks=<%= node.kickstart_url %> network ks.sendmac _ALCES_BASE_HOSTNAME=<%= node.name %> <%= kernelappendoptions %>
+            APPEND initrd=boot/centos6-initrd.img ksdevice=<%= networks.pri.interface %> ks=<%= alces.kickstart_url %> network ks.sendmac _ALCES_BASE_HOSTNAME=<%= alces.nodename %> <%= kernelappendoptions %>
             IPAPPEND 2
 
     LABEL local
@@ -78,7 +76,7 @@ In this example, a CentOS 6 kickstart profile is configured. This method should 
     ##(c)2017 Alces Software Ltd. HPC Consulting Build Suite
     ## vim: set filetype=kickstart :
 
-    network --onboot yes --device <%= config.networks.pri.interface %> --bootproto dhcp --noipv6
+    network --onboot yes --device <%= networks.pri.interface %> --bootproto dhcp --noipv6
 
     #MISC
     text
@@ -93,7 +91,7 @@ In this example, a CentOS 6 kickstart profile is configured. This method should 
 
     #AUTH
     auth  --useshadow  --enablemd5
-    rootpw --iscrypted <%= config.encrypted_root_password %>
+    rootpw --iscrypted <%= encrypted_root_password %>
 
     #LOCALIZATION
     keyboard uk
@@ -101,7 +99,7 @@ In this example, a CentOS 6 kickstart profile is configured. This method should 
     timezone  Europe/London
 
     #REPOS
-    url --url=<%= config.repoconfig.build_url %>
+    url --url=http://mirror.ox.ac.uk/sites/mirror.centos.org/6/os/x86_64/
 
     #DISK
     %include /tmp/disk.part
@@ -114,7 +112,7 @@ In this example, a CentOS 6 kickstart profile is configured. This method should 
     DISKFILE=/tmp/disk.part
     bootloaderappend="console=tty0 console=ttyS1,115200n8"
     cat > $DISKFILE << EOF
-    <%= config.disksetup %>
+    <%= disksetup %>
     EOF
 
     #PACKAGES
@@ -148,9 +146,9 @@ In this example, a CentOS 6 kickstart profile is configured. This method should 
 
     # Example of using rendered Metalware file; this file itself also uses other
     # rendered files.
-    curl <%= node.files.main.first.url %> | /bin/bash | tee /tmp/metalware-default-output
+    curl <%= alces.files.main.first.url %> | /bin/bash | tee /tmp/metalware-default-output
 
-    curl '<%= node.build_complete_url %>&event=complete&msg=Build%20is%20complete'
+    curl <%= alces.build_complete_url %>
 
 - When building nodes, use the new template files by specifying them as arguments to the ``metal build`` command::
 
