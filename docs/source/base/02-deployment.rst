@@ -102,6 +102,11 @@ Controller Build
 
     metal sync
 
+- Template the scripts and sync them into place::
+
+    metal template local
+    metal sync
+
 - Build the controller::
 
     metal build local
