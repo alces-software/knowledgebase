@@ -3,6 +3,9 @@
 Master Node Setup
 =================
 
+Manual Setup
+------------
+
 - Run a minimal CentOS installation on the system (this can be performed manually or via an automated install service if you have one setup)
 - It is recommended to update the packages on the system for any bug fixes and patches that may have been introduced to core packages::
 
@@ -80,3 +83,29 @@ Master Node Setup
     virsh pool-build local
     virsh pool-start local
     virsh pool-autostart local
+
+Automated Setup
+---------------
+
+If using metalware, a controller can be used to deploy it's own master. By setting up the controller on a separate machine to the master, the master can then be defined and hunted (see :ref:`Deployment Example <deployment-kickstart>` for hunting instructions). The following will add the build config and scripts to configure a functional master (much like the above).
+
+.. note:: In the following guide the group is called ``masters`` and the master node is ``master1``
+
+- Configure certificate authority for libvirt from the controller as described in :ref:`VM Deployment from the Controller <vm-deployment>`
+
+- Create a deployment file for the master node (``/var/lib/metalware/repo/config/master1.yaml``) containing the following::
+
+    files:
+      setup:
+        - /opt/alces/install/scripts/10-vm_master.sh
+      core:
+        - /opt/alces/ca_setup/master1-key.pem
+        - /opt/alces/ca_setup/master1-cert.pem
+
+.. note:: If additional scripts are defined in the domain level ``setup`` and ``core`` lists then be sure to include them in the master1 file
+
+- Additionally, download the VM master script to ``/opt/alces/install/scripts/10-vm_master.sh``::
+
+    mkdir -p /opt/alces/install/scripts/
+    cd /opt/alces/install/scripts/
+    wget -O 10-vm_master.sh https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/libvirt/vm_master.sh
