@@ -74,25 +74,37 @@ Metalware Install
 
     curl -sL http://git.io/metalware-installer | sudo alces_OS=el7 /bin/bash
 
-- Run the metalware setup script (there are variables within this script that may need updating if your network setup differs from the examples used in this documentation - it is recommended to download this script before running it to check the variables are correct)::
-
-    curl -sL https://raw.githubusercontent.com/alces-software/knowledgebase/master/epel/7/metalware/metalware.sh | sudo /bin/bash
- 
-- Reboot the VM
-
 - Set metalware to use default repository::
 
     metal repo use https://github.com/alces-software/metalware-default.git
+
+Domain Configuration
+####################
 
 - Configure the domain settings (this will prompt for various details regarding the domain setup, such as, root password, SSH RSA key [which can be created with ``ssh-keygen``] and default network parameters)::
 
     metal configure domain
 
-- Set the IPMI/BMC admin password in ``/var/lib/metalware/repo/config/domain.yaml`` in the ``bmc:`` namespace::
+- Uncomment the ``PASSWORD=`` line in ``/opt/metalware/etc/ipmi.conf`` and replace ``password`` with the IPMI password from the domain configuration
 
-    bmcpassword: 'Pa55Word'
+- Sync the configuration changes::
 
-- Uncomment the ``PASSWORD=`` line in ``/opt/metalware/etc/ipmi.conf`` and replace ``password`` with the IPMI password above
+    metal sync
+
+Controller Build
+################
+
+- Configure the controller node::
+
+    metal configure local
+
+- Sync the configuration changes::
+
+    metal sync
+
+- Build the controller::
+
+    metal build local
 
 .. note:: If you wish to install an OS other than CentOS 7 then see the :ref:`Configure Alternative Kickstart Profile <deployment-kickstart>` instructions.
 
