@@ -99,7 +99,7 @@ In this example, a CentOS 6 kickstart profile is configured. This method should 
     timezone  Europe/London
 
     #REPOS
-    url --url=<%= config.repoconfig.build_url %>
+    url --url=<%= config.yumrepo.build_url %>
 
     #DISK
     %include /tmp/disk.part

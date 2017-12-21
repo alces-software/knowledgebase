@@ -31,12 +31,12 @@ On Controller VM
 
 - Create a deployment file specifically for ``repo1`` at ``/var/lib/metalware/repo/config/repo1.yaml`` with the following content::
 
-    repoconfig:
+    yumrepo:
       is_server: true
 
 - Add the following to ``/var/lib/metalware/repo/config/domain.yaml`` (``build_url`` is the URL for client kickstart builds to use, ``source_repos`` should be a comma-separated list of source files that `repoman <https://github.com/alces-software/repoman>`_ will use to generate client configurations, ``clientrepofile`` will need to be a URL to a repo config file for the client to curl)::
 
-    repoconfig:
+    yumrepo:
       # Repostiroy URL for kickstart builds
       build_url: http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
       # If true, this server will host a client config file for the network
@@ -100,7 +100,7 @@ Manual
 
 - Add the custom repository to the source repos in ``/var/lib/metalware/repo/config/domain.yaml``::
    
-    repoconfig:
+    yumrepo:
        # Repostiroy URL for kickstart builds
        build_url: http://mirror.ox.ac.uk/sites/mirror.centos.org/7/os/x86_64/
        # If true, this server will host a client config file for the network

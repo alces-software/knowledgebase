@@ -1,5 +1,5 @@
 yum install -y yum-plugin-priorities yum-utils
-<% if (config.repoconfig.is_server rescue false) -%>
+<% if (config.yumrepo.is_server rescue false) -%>
 yum -y install createrepo httpd git ruby
 # Download repoman
 cd /opt/
@@ -15,7 +15,7 @@ done
 
 # Generate repo config
 mkdir -p /opt/alces/repo/
-/opt/repoman/repoman.rb generate --distro centos7 --include <%= config.repoconfig.source_repos %> --outfile /opt/alces/repo/client.repo
+/opt/repoman/repoman.rb generate --distro centos7 --include <%= config.yumrepo.source_repos %> --outfile /opt/alces/repo/client.repo
 
 # HTTP setup
 cat << EOF > /etc/httpd/conf.d/repo.conf
@@ -33,9 +33,9 @@ systemctl enable httpd.service
 systemctl restart httpd.service
 
 <% else -%>
-<%     if (config.repoconfig.clientrepofile rescue false) -%>
+<%     if (config.yumrepo.clientrepofile rescue false) -%>
 find /etc/yum.repos.d/*.repo -exec mv -fv {} {}.bak \;
-curl <%= config.repoconfig.clientrepofile %> > /etc/yum.repos.d/cluster.repo
+curl <%= config.yumrepo.clientrepofile %> > /etc/yum.repos.d/cluster.repo
 yum clean all
 <%     end -%>
 <% end -%>
