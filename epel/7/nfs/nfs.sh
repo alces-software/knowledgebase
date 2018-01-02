@@ -13,9 +13,7 @@ EXPORTOPTS="<%= config.networks.pri.network %>/<%= config.networks.pri.netmask %
 
 EXPORTS=`cat << EOF
 <% config.nfsexports.each do | path, opts | -%>
-<%     if opts.defined -%>
-<%= path %>   <%= if defined?(opts.options) then opts.options else "#{config.networks.pri.network}/#{configs.networks.pri.netmask}(rw,no_root_squash,sync)" end %>
-<%     end -%>
+<%= path %>   <%= if defined?(opts.options) then opts.options else "#{config.networks.pri.network}/#{config.networks.pri.netmask}(rw,no_root_squash,sync)" end %>
 <% end -%>
 EOF`
 
