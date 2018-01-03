@@ -16,8 +16,8 @@ On Controller VM
       server: master1 master2
       virtpool: /opt/vm/
       nodename: "<%= node.name %>-<%= domain.config.cluster %>"
-      primac: 52:54:00:78:<%= '%02x' % node.group.index %>:<%= '%02x' % node.index %>
-      extmac: 52:54:00:78:<%= '%02x' % (node.group.index + 1) %>:<%= '%02x' % node.index %>
+      primac: 52:54:00:78:<%= '%02x' % node.group.index.to_s %>:<%= '%02x' % node.index.to_s %>
+      extmac: 52:54:00:78:<%= '%02x' % (node.group.index + 1).to_s %>:<%= '%02x' % node.index.to_s %>
       vncpassword: 'password'
       disksize: 250
     kernelappendoptions: "console=tty0 console=ttyS0 115200n8"
