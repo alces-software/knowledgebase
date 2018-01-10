@@ -73,6 +73,8 @@ ipa user-add siteadmin --first Site --last Admin --random
 ipa group-add siteadmins --desc="Site admin users (power users)"
 ipa hostgroup-add sitenodes --desc "All nodes allowing site admin access"
 ipa group-add-member siteadmins --users siteadmin
+echo "SITE ADMIN USER PASSWORD"
+ipa user-mod siteadmin --password # Sets user password through prompts
 ipa hbacrule-add siteaccess --desc "Allow siteadmins access to site hosts"
 ipa hbacrule-add-service siteaccess --hbacsvcs sshd
 ipa hbacrule-add-user adminaccess --groups siteadmins
