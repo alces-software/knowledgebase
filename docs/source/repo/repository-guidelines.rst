@@ -116,4 +116,4 @@ Repoman Setup
 
 Alternatively to manually creating the custom repository, the `repoman <https://github.com/alces-software/repoman>`_ command can handle the setup of a custom repository::
 
-    /opt/repoman/repoman.rb mirror --distro centos77 --include base.upstream --reporoot /opt/alces/repo --configurl http://myrepo.com/repo --custom
+    /opt/repoman/repoman.rb mirror --distro centos7 --include base.upstream --reporoot /opt/alces/repo --configurl http://myrepo.com/repo --custom
