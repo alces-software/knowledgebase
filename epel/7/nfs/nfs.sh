@@ -23,7 +23,7 @@ echo "$EXPORTS" > /etc/exports
 
 MOUNTS=`cat << EOF
 <% config.nfsmounts.each do | mount, path | -%>
-<%= path.server %>:<%= path.export %>    <%= mount %>    nfs    <%= if defined?(path.options) then path.options else 'intr,rsize=32768,wsize=32768,_netdev' end -%>    0 0
+<%= path.server %>:<%= path.export %>    <%= mount %>    nfs    <%= if defined?(path.options) then path.options else 'intr,rsize=32768,wsize=32768,vers=3,_netdev' end -%>    0 0
 <% end -%>
 EOF`
 
