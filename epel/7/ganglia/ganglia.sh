@@ -294,8 +294,10 @@ systemctl restart httpd
 systemctl enable gmetad
 systemctl restart gmetad
 
+cat << EOF > /var/lib/firstrun/scripts/gangliafirewall.bash
 firewall-cmd --add-port 8659/tcp --add-port 8649/tcp --add-port 8649/udp --add-port 8659/udp --zone <%= config.networks.pri.firewallpolicy %> --permanent
 firewall-cmd --reload
+EOF
 
 echo "$GMETAD" > /etc/ganglia/gmetad.conf
 <% end -%>
