@@ -4,15 +4,6 @@ require 'optparse'
 require 'ostruct'
 require 'colorize'
 
-# Set build options
-basedir=File.expand_path File.dirname(__FILE__)
-ks="#{basedir}/centos7-azure.ks.template"
-tdl="#{basedir}/centos7.tdl"
-cfg="#{basedir}/oz.cfg"
-vmdir="/opt/vm"
-
-libvirtxml="/tmp/c7-#{$$}.xml"
-
 # Set cluster options
 
 options = OpenStruct.new
@@ -24,6 +15,15 @@ OptionParser.new do |opt|
 end.parse!
 
 appliancetype=options.type || 'base'
+
+# Set build options
+basedir=File.expand_path File.dirname(__FILE__)
+ks="#{basedir}/alces-#{appliancetype}.ks.template"
+tdl="#{basedir}/centos7.tdl"
+cfg="#{basedir}/oz.cfg"
+vmdir="/opt/vm"
+
+libvirtxml="/tmp/c7-#{$$}.xml"
 
 # Set name
 tagname = options.name || `uuidgen  | head -c 8`
