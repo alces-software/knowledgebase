@@ -4,6 +4,7 @@
 
 * A Libvirt master with the standard Alces setup
 * Azure credentials configured on the machine, the command-line utility must be installed
+* `qemu-img` version 2.9.0 or above available as a binary in `/opt/vm` (or change the pathname in the script)
 
 ## Creating an image
 
