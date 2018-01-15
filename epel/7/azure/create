@@ -1,0 +1,78 @@
+#!/usr/bin/env ruby
+require 'yaml'
+require 'optparse'
+require 'ostruct'
+require 'colorize'
+
+# Set build options
+basedir=File.expand_path File.dirname(__FILE__)
+ks="#{basedir}/centos7-azure.ks.template"
+tdl="#{basedir}/centos7.tdl"
+cfg="#{basedir}/oz.cfg"
+vmdir="/opt/vm"
+
+libvirtxml="/tmp/c7-#{$$}.xml"
+
+# Set cluster options
+
+options = OpenStruct.new
+OptionParser.new do |opt|
+  opt.banner = "\nBuild an Alces Azure image"
+  opt.on('-t', '--type TYPE', 'Imageware appliance profile to build') { |o| options.type = o }
+  opt.on('-n', '--name TAG', 'Optional tag for created AMI/stack name') { |o| options.name = o }
+  opt.on('--jfdi', "Don't ask for confirmation, just do it") { |o| options.jfdi = true }
+end.parse!
+
+appliancetype=options.type || 'base'
+
+# Set name
+tagname = options.name || `uuidgen  | head -c 8`
+if tagname.to_s.empty?
+  puts "Set a name please".red
+  exit
+end
+
+name = tagname.to_s.empty? ? "#{appliancetype}" : "#{appliancetype}-#{tagname}"
+#Prepare TDL
+tdlrendered="/tmp/imageware#{$$}.tdl"
+::File::write(tdlrendered, (::File::read tdl).gsub('c7',name))
+
+ksrendered="/tmp/imageware#{$$}.ks"
+::File::write(ksrendered, (::File::read ks))
+
+puts <<EOF
+Image creation parameters
+=========================
+Appliance type: #{appliancetype}
+           Tag: #{name}
+
+EOF
+unless options.jfdi
+  puts "\nHit ENTER to build, or CTRL+C to quit like a coward."
+  begin
+    STDIN.gets
+  rescue Interrupt
+    puts "Fine. Coward."
+    exit
+  end
+end
+
+begin
+
+  Dir.mkdir("#{vmdir}") unless Dir.exist?("#{vmdir}")
+
+  puts "Building image".green
+  system "oz-install -d3 -u #{tdlrendered} -x #{libvirtxml} -p -a #{ksrendered} -c #{cfg} -t 1800"
+
+  puts "Preparing image".green
+  system "virt-sysprep -a #{vmdir}/#{name}.qcow2"
+
+  puts "Sparsifying image".green
+  Dir.mkdir("#{vmdir}/qcow-creator") unless Dir.exist?("#{vmdir}/qcow-creator")
+  system "virt-sparsify --compress --format qcow2 #{vmdir}/#{name}.qcow2 #{vmdir}/qcow-creator/#{name}.qcow2"
+
+  puts "Image created: #{vmdir}/#{name}.qcow2".bold
+
+rescue Interrupt
+  puts "Quitting. Killing build VM."
+end
