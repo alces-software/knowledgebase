@@ -43,3 +43,11 @@ skip_if_unavailable=1
 gpgcheck=0
 priority=10
 
+[alces]
+name=alces
+baseurl=http://repo.alces-software.com/repo/alces
+description=Alces RPMs and files
+enabled=1
+skip_if_unavailable=1
+gpgcheck=0
+priority=10
