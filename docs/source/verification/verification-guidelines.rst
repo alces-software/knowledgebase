@@ -3,6 +3,30 @@
 Recommendations for HPC Platform Verification
 =============================================
 
+Checking System Configuration
+-----------------------------
+
+For the system configuration (depending on which previous sections had been configured), it is worth checking: 
+
+- Clocks - The dates are correct, clients are syncing with the controller
+- User Login - Users from the chosen verification method (local, nis, ipa) can login to:
+
+  - Infra node
+  - Login node
+  - Compute node
+
+- NFS/Lustre mounts - Mounted with correct mount options and permissions
+- SLURM/SGE - Jobs can be submitted, nodes are all present and available on the queue
+- Ganglia - All nodes present, metrics are logging
+- Nagios - All nodes present, services are in positive state
+
+
+Checking Hardware Configuration
+-------------------------------
+
+Benchmarking Software
+^^^^^^^^^^^^^^^^^^^^^
+
 For general notes on running memtester, IOZone, IMB and HPL see - https://github.com/alces-software/knowledgebase/wiki/Burn-in-Testing
 
 Further details can be found at:
@@ -12,9 +36,8 @@ Further details can be found at:
   - `IMB <https://github.com/alces-software/knowledgebase/wiki/Burn-In-Tests:-IMB>`_
   - `HPL <https://github.com/alces-software/knowledgebase/wiki/Burn-In-Tests:-HPL>`_
 
-
-Checking Hardware and Software Configuration
---------------------------------------------
+Hardware Information
+^^^^^^^^^^^^^^^^^^^^
 
 - Check CPU type::
 
