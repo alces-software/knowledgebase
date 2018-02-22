@@ -89,7 +89,7 @@ ipa sudorule-add-host Site --hostgroups=sitenodes
 # Add all hosts to IPA (disables and resets password as precaution)
 <% groups.each do |group| -%>
 <%     group.nodes.each do |node| -%>
-ipa host-add <%= node.networks.pri.hostname %> --password="<%= node.ipaconfig.insecurepassword %>" --ip-address=<%= node.networks.pri.ip %>
+ipa host-add <%= node.config.networks.pri.hostname %> --password="<%= node.ipaconfig.insecurepassword %>" --ip-address=<%= node.config.networks.pri.ip %>
 <%     end -%>
 <% end -%>
 
