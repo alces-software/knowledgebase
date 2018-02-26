@@ -35,7 +35,7 @@ gpgcheck=0
 priority=11
 
 [centos-7-flightcenter]
-name=flightcenter
+name=centos-7-flightcenter
 baseurl=http://alces-repo.s3.amazonaws.com/centos/7/flightcenter
 description=No description specified
 enabled=1
