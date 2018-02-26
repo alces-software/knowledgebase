@@ -2,7 +2,7 @@
 name=lustre-el7-client
 baseurl=http://repo.alces-software.com/repo/lustre/el7/client
 description=No description specified
-enabled=1
+enabled=0
 skip_if_unavailable=1
 gpgcheck=0
 priority=5
@@ -20,7 +20,7 @@ priority=5
 name=e2fsprogs-el7
 baseurl=http://repo.alces-software.com/repo/e2fsprogs/el7/
 description=No description specified
-enabled=1
+enabled=0
 skip_if_unavailable=1
 gpgcheck=0
 priority=5
