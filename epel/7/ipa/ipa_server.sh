@@ -53,13 +53,13 @@ ipa user-mod alces-cluster --password # Sets user password through prompts
 
 # Access rules
 ipa hbacrule-disable allow_all
-ipa hbacrule-add adminaccess --desc "Allow admin access to admin hosts"
+ipa hbacrule-add siteaccess --desc "Allow admin access to admin hosts"
 ipa hbacrule-add useraccess --desc "Allow user access to user hosts"
-ipa hbacrule-add-service adminaccess --hbacsvcs sshd
+ipa hbacrule-add-service siteaccess --hbacsvcs sshd
 ipa hbacrule-add-service useraccess --hbacsvcs sshd
-ipa hbacrule-add-user adminaccess --groups AdminUsers
+ipa hbacrule-add-user siteaccess --groups AdminUsers
 ipa hbacrule-add-user useraccess --groups ClusterUsers
-ipa hbacrule-add-host adminaccess --hostgroups adminnodes
+ipa hbacrule-add-host siteaccess --hostgroups adminnodes
 ipa hbacrule-add-host useraccess --hostgroups usernodes
 
 # Sudo rules
@@ -77,8 +77,8 @@ echo "SITE ADMIN USER PASSWORD"
 ipa user-mod siteadmin --password # Sets user password through prompts
 ipa hbacrule-add siteaccess --desc "Allow siteadmins access to site hosts"
 ipa hbacrule-add-service siteaccess --hbacsvcs sshd
-ipa hbacrule-add-user adminaccess --groups siteadmins
-ipa hbacrule-add-host adminaccess --hostgroups sitenodes
+ipa hbacrule-add-user siteaccess --groups siteadmins
+ipa hbacrule-add-host siteaccess --hostgroups sitenodes
 
 ipa sudorule-add --cmdcat=all Site
 ipa sudorule-add-user --groups=siteadmins Site
