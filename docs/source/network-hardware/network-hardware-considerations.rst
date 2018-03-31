@@ -11,7 +11,7 @@ In general, the things to consider when designing the hardware and network solut
   - The level of resilience desired
   - The hostname and domain naming convention
   
-These are covered in more detail below...
+These topics are covered in more detail below.
 
 .. _hardware-env:
 
@@ -36,6 +36,7 @@ A complete HPC platform will be comprised of systems that serve different purpos
   - **Login Node** - A login node will usually provide access to the HPC platform and will be the central system that users access to run applications. How users will access the system should be considered, usually this will be SSH and some graphical login service, such as, VNC.
   - **Master Node** - A master node will usually run services for the HPC platform. Such as, the master process for a job scheduler, monitoring software and user management services.
   - **Compute Node** - Compute nodes are usually used for running HPC applications that are queued through a job scheduler. Additionally, these can be used for VM deployments (via software like OpenStack) or other computational uses. Compute nodes usually have large amounts of cores and memory as well as high bandwidth interconnect (like Infiniband).
+  - **Special-purpose Node** - Some compute nodes may feature a particular specification to be used for a particular job, or stage in your workflow. Examples may include nodes with more memory, larger amounts of local scratch storage, or GPU/FPGA devices installed.
   - **Storage Node** - The storage node will serve network storage solutions to systems on the network. It would have some sort of storage array connected to it which would provide large and resilient storage.
 
 The above types are not strict. Services can be mixed, matched and moved around to create the desired balance and distribution of services and functions for the platform.
@@ -99,7 +100,7 @@ It is also worth considering the performance and usability impacts of security m
 
 Much like with resilience, a Cloud provider will most likely implement the above security features - it is worth knowing what security features and limitations are in place when selecting a cloud environment.
 
-.. note:: Non-Ethernet networks usually cannot be properly secured to the same level so be aware of what the security drawbacks are for the chosen network technology.
+.. note:: Non-Ethernet networks usually cannot usually be secured to the same level as Ethernet so be aware of what the security drawbacks are for the chosen network technology.
 
 Additional Considerations and Questions
 ---------------------------------------
