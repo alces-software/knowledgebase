@@ -30,13 +30,12 @@ VM Platform
 
 A VM platform provides an additional layer of isolation between services. This can allow for services to be configured, migrated and modified without potentially effecting other services. 
 
-There are a few solutions for hosting virtual machines, including:
+There are a number of solutions for hosting virtual machines, including:
 
-  - VirtualBox
-  - KVM
-  - Xen
+  - Open-source solutions (e.g. VirtualBox, KVM, Xen)
+  - Commercial solutions (e.g. VMware)
 
-The above software solutions are similar and can all provide a valid virtualisation platform. Further investigation into the ease of use, flexibility and features of the software is recommended to identify the ideal solution for the HPC platform.
+The above software solutions provide similar functionality and can all be used as a valid virtualisation platform. Further investigation into the ease of use, flexibility and features of the software is recommended to identify the ideal solution for your HPC platform.
 
 High Availability VM Platform
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -49,7 +48,7 @@ Node Network Configuration
 In addition to the availability of services, the network configuration on the node can provide better performance and redundancy. Some of the network configuration options that can improve the infrastructure are:
 
   - **Channel Bonding** - Bonding interfaces allows for traffic to be shared between 2 network interfaces. If the bonded interfaces are connected to separate network switches then this solution
-  - **Interface Bridging** - Network bridges are used by interfaces on virtual machines to connect to the rest of the network. A bridge can sit on top of a channel bond such that the VMs network connection in constantly available.
+  - **Interface Bridging** - Network bridges are used by interfaces on virtual machines to connect to the rest of the network. A bridge can sit on top of a channel bond such that the VM service network connection is constantly available.
   - **VLAN Interface Tagging** - VLAN management can be performed both on a managed switch and on the node. The node is able to create subdivisions of network interfaces to add VLAN tags to packets. This will create separate interfaces that can be seen by the operating system (e.g. eth0.1 and eth0.2) which can individually have IP addresses set.
 
 Additional Considerations and Questions
