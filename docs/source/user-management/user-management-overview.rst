@@ -29,5 +29,5 @@ Key Files
 - ``/etc/sysconfig/network``
 
 - ``/etc/yp.conf``, ``/var/yp/*``
-- *or*
+ *or*
 - ``/etc/ipa/*``
