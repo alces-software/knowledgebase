@@ -7,6 +7,8 @@ License
 ^^^^^^^
 This documentation is released under the `Creative-Commons: Attribution-ShareAlike 4.0 International <http://creativecommons.org/licenses/by-sa/4.0/>`_ license.
 
+This knowledgebase document is broken down into the following sections:
+
 .. Navigation/TOC
 
 .. toctree::
@@ -37,7 +39,7 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
 .. toctree::
    :maxdepth: 1
    :glob:
-   :caption: 01. Base System Deployment
+   :caption: Base System Deployment
    :name: base-system
    
    base/deployment-overview
@@ -47,7 +49,7 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
 .. toctree::
    :maxdepth: 1
    :glob:
-   :caption: 02. Repository Management
+   :caption: Repository Management
    :name: repository-management
 
    repo/repository-overview
@@ -56,7 +58,7 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
 .. toctree::
    :maxdepth: 1
    :glob:
-   :caption: 03. User Management
+   :caption: User Management
    :name: user-management
    
    user-management/user-management-overview
@@ -65,7 +67,7 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
 .. toctree::
    :maxdepth: 1
    :glob:
-   :caption: 04. Storage
+   :caption: Storage
    :name: storage
    
    storage/storage-overview
@@ -74,7 +76,7 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
 .. toctree::
    :maxdepth: 1
    :glob:
-   :caption: 05. Monitoring
+   :caption: Monitoring
    :name: monitoring
    
    monitoring/monitoring-overview
@@ -83,7 +85,7 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
 .. toctree::
    :maxdepth: 1
    :glob:
-   :caption: 06. Hardware Drivers
+   :caption: Hardware Drivers
    :name: hardware-drivers
 
    hardware-drivers/hardware-drivers-overview
@@ -93,7 +95,7 @@ This documentation is released under the `Creative-Commons: Attribution-ShareAli
 .. toctree::
    :maxdepth: 1
    :glob:
-   :caption: 07. HPC Environment
+   :caption: HPC Environment
    :name: hpc-environment
    
    hpc-environment/hpc-environment-overview
