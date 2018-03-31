@@ -6,17 +6,17 @@ Recommendations for HPC Platform Verification
 Checking System Configuration
 -----------------------------
 
-For the system configuration (depending on which previous sections had been configured), it is worth checking: 
+For the system configuration (depending on which previous sections have been configured), the cluster administrator should verify the following settings: 
 
-- Clocks - The dates are correct, clients are syncing with the controller
-- User Login - Users from the chosen verification method (local, nis, ipa) can login to:
+- Clocks - The current date/time is correct on all machines; clients are syncing with the controller
+- User Login - Users from the chosen verification method can login to:
 
-  - Infra node
-  - Login node
-  - Compute node
+  - Infrastructure node(s) (should be possible for admin users only)
+  - Login node(s)
+  - Compute node(s)
 
-- NFS/Lustre mounts - Mounted with correct mount options and permissions
-- SLURM/SGE - Jobs can be submitted, nodes are all present and available on the queue
+- Storage system mounts - Mounted with correct mount options and permissions
+- Job-scheduler - Jobs can be submitted and are run; nodes are all present and available on the queue
 - Ganglia - All nodes present, metrics are logging
 - Nagios - All nodes present, services are in positive state
 
