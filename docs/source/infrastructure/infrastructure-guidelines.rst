@@ -3,7 +3,7 @@
 Recommendations for Infrastructure Design
 =========================================
 
-The example configurations here combine the elements of the examples from :ref:`network-hardware-guides` as well as the different infrastructure solutions from :ref:`infrastructure-considerations`. These focus on the internal configuration of the master node but these examples can be extrapolated for configuring login, storage, compute or any other nodes that are part of the HPC environment.
+The example configurations here combine elements of the :ref:`network-hardware-guides` as well as the different infrastructure solutions from :ref:`infrastructure-considerations`. These focus on the internal configuration of the master node but these examples can be extrapolated for configuring login, storage, compute or any other nodes that are part of the HPC environment.
 
 Simple Infrastructure
 ---------------------
@@ -19,7 +19,7 @@ Virtual Machine Infrastructure
 .. image:: InfrastructureDesign2.png
     :alt: Infrastructure Design Example 2
 
-This solution separates the services into VMs sat on the master node. In order for these VMs to be able to connect to the primary network a network bridge is created that allows the VM interfaces to send traffic over the eth0 interface.
+This solution separates the services into VMs running on the master node. In order for these VMs to be able to connect to the primary network a network bridge is created that allows the VM interfaces to send traffic over the eth0 interface.
 
 Channel Bonded Infrastructure
 -----------------------------
