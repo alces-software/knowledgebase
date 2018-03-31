@@ -3,9 +3,19 @@ Cluster Platform Knowledgebase
 
 This site documents the considerations and guidelines for designing and developing a HPC platform for cluster computing. The documentation describes general practices and considerations when designing a HPC platform as well as recommendations and guides used by Alces Software to configure HPC platforms.
 
+Acknowledgements
+----------------
+
+We recognise the respect the trademarks of all third-party providers referenced in this documentation. Please see the respective EULAs for software packages used in configuring your own environment based on this knowledgebase. 
+
 License
 ^^^^^^^
+
 This documentation is released under the `Creative-Commons: Attribution-ShareAlike 4.0 International <http://creativecommons.org/licenses/by-sa/4.0/>`_ license.
+
+
+HPC Cluster Platform
+--------------------
 
 This knowledgebase document is broken down into the following sections:
 
