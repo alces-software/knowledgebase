@@ -6,6 +6,8 @@ Recommendations for HPC Environment Design
 SLURM Setup (From Controller VM)
 --------------------------------
 
+The instructions below provide guidelines for installing the SLURM job-scheduler on your HPC cluster, and may be modified as required for alternative job-schedulers such as SGE, LSF, PBS or Torque/Maui. 
+
 - Create a group for the slurm VM (add at least ``slurm1`` as a node in the group, set additional groups of ``services,cluster,domain`` allows for more diverse group management)::
 
     metal configure group slurm
@@ -42,10 +44,13 @@ SLURM Setup (From Controller VM)
 
 .. note:: All systems that are built will have SLURM installed and the SLURM daemon running which will allow that node to submit and run jobs. Should this not be desired then the service can be permanently stopped and disabled with ``systemctl disable slurmd && systemctl stop slurmd`` on the node which is no longer to run SLURM.
 
+Once your job-scheduler is installed and running, follow the documentation specific to your chosen package for instructions on how to configure the software for your particular requirements. 
+
+
 Modules Setup (From Deployment VM)
 ----------------------------------
 
-The environment modules software allows for dynamic path changing on a user profile.
+The instructions below provide a simple modules installation for your HPC environment:
 
 - Create a group for the modules VM (add at least ``apps1`` as a node in the group, set additional groups of ``services,cluster,domain`` allows for more diverse group management)::
 
