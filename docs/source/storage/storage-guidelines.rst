@@ -209,7 +209,7 @@ A lustre storage configuration usually consists of a metadata server (that is us
 
 These commands should be performed from different systems connected to the same storage backends across the storage configuration (depending on the network configuration) to ensure that the device management is distributed.
 
-- A storage target for the lustre filesystem can be formatted as follows (replacing ``lustre`` with the name of the filesystem from mdt configuration, repeat ``--servicenode=IP-OF-OSSX`` for each storage system that's also connected to the same storage backend and replace ``/dev/mapper/ostX`` with the path to the storage device)::
+- A storage target for the lustre filesystem can be formatted as follows (replacing ``lustre`` with the name of the filesystem from mdt configuration, repeat ``--servicenode=IP-OF-OSSX`` for each storage system that is also connected to the same storage backend and replace ``/dev/mapper/ostX`` with the path to the storage device)::
 
     mkfs.lustre --ost --index=0 --fsname=lustre --mgsnode=IP-OF-MDS-NODE --mkfsoptions="-E stride=32,stripe_width=256" --servicenode=IP-OF-OSSX /dev/mapper/ostX
 
