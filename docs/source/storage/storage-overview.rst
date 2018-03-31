@@ -20,7 +20,7 @@ The storage solution is comprised of the following:
   - Filesystem formatting
   
     - Ext4
-    - *or*
+    *or*
     - XFS
     
   - Exported filesystems
