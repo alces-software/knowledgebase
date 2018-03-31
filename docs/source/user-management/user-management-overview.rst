@@ -17,7 +17,7 @@ For user management, one of the following software solutions will be implemented
 
     - The Network Information Service (NIS) is a directory service that enables the sharing of user and host information across a network. 
 
-- *or*
+*or*
 
 - IPA (Identity, Policy, Audit)
 
