@@ -6,7 +6,7 @@ Hardware Drivers Overview
 About
 -----
 
-Some clusters may require custom hardware drivers for your chosen operating system. This package will create an environment that allows nodes to run installers on its first boot to build the driver against the up-to-date OS.
+Some clusters may require custom hardware drivers for your chosen operating system. This can be the case for both bare-metal hardware and cloud-based resources for devices such as Infiniband or other accelerated network technologies, GPU and FPGA cards or RAID controllers. This package will create an environment that allows nodes to run installers during first-boot to build the driver against the up-to-date operating system packages.
 
 Components
 ----------
@@ -30,3 +30,6 @@ Key Files
 - ``/var/lib/firstrun/*``
 - ``/var/log/firstrun/*``
 - ``/opt/alces/installers/*``
+
+
+.. note:: In order to use first-boot, the system must be compatible with the base operating system. Review instructions for your chosen operating system if you need to use special drivers in order to allow your nodes to install the base OS. 
