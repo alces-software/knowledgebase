@@ -30,7 +30,7 @@ The HPC environment will be comprised of:
     
         - Modules allows for applications to be loaded dynamically in shell sessions. With the paths being updated on-the-fly, applications can be installed to a network storage location - minimising installation time and improving the ease of application use (both in interactive and non-interactive sessions).
     
-     *or*
+     *and/or*
     - Alces Gridware
     
         - Gridware contains an implementation of environment modules and also provides a useful CLI tool for installing and managing applications from a large repository of HPC applications.
