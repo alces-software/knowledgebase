@@ -8,7 +8,7 @@ The first boot environment is a service that allows for scripts to be executed o
 Creating a First Boot Script
 ----------------------------
 
-A first boot script is made up of a couple of components:
+A first boot script is made up of two main components:
 
   - Setup script
   - First run script
