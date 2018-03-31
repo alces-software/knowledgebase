@@ -63,3 +63,5 @@ On Controller VM
 - Follow :ref:`client-deployment` to setup the compute nodes
 
 This will setup minimal installations of both Ganglia and Nagios. All nodes within the domain will be built to connect to these services such that they can be monitored. It is possible to expand upon the metrics monitored and notification preferences.
+
+Once deployed, both Ganglia and Nagios services can be further configured and customised to deliver the metrics and notifications that you require. Review the documentation for each of the projects for assistance in settings up these tools. 
