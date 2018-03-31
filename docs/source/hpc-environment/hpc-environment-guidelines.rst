@@ -50,6 +50,8 @@ Once your job-scheduler is installed and running, follow the documentation speci
 Modules Setup (From Deployment VM)
 ----------------------------------
 
+The environment modules software allows users to control their environment variables for a particular login session. This enables flexibility to use a library of installed application software whilst maintaining the correct dependencies for each package. Modules can also control environment variables that deliver user assistance (e.g. manual pages, help-files, usage examples), curate software package usage terms and manage license availability for commercial packages.
+
 The instructions below provide a simple modules installation for your HPC environment:
 
 - Create a group for the modules VM (add at least ``apps1`` as a node in the group, set additional groups of ``services,cluster,domain`` allows for more diverse group management)::
