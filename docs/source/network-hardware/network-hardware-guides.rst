@@ -17,24 +17,24 @@ Cluster Architectures
 
 With the :ref:`Network and Hardware Design Considerations<network-hardware-considerations>` in mind, diagrams of different architectures are below. They increase in complexity and redundancy as the list goes on.
 
-Example 1
-^^^^^^^^^
+Example 1 - stand-alone
+^^^^^^^^^^^^^^^^^^^^^^^
 
 .. image:: NodeTypes1.png
     :alt: Node Types Example 1
 
 The above architecture consists of master, login and compute nodes. The services provided by the master & login nodes can be seen to the right of each node type. This architecture only separates the services for users and admins.
 
-Example 2
-^^^^^^^^^
+Example 2 - high-availability
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. image:: NodeTypes2.png
     :alt: Node Types Example 2
 
 This architecture provides additional redundancy to the services running on the master node. For example, the disk array is connected to both master nodes which use multipath to ensure the higher availability of the storage device. 
 
-Example 3
-^^^^^^^^^
+Example 3 - HA VMs
+^^^^^^^^^^^^^^^^^^
 
 .. image:: NodeTypes3.png
     :alt: Node Types Example 3
@@ -46,8 +46,8 @@ Network Designs
 
 The above architectures can be implemented with any of the below network designs.
 
-Example 1
-^^^^^^^^^
+Example 1- simple
+^^^^^^^^^^^^^^^^^
 
 .. image:: NetworkDesign1.png
     :alt: Network Design Example 1
@@ -57,8 +57,8 @@ The above design contains the minimum recommended internal networks. A primary n
 
 .. note:: The master node could additionally be connected to the high performance network so that compute nodes have a faster network connection to storage.
 
-Example 2
-^^^^^^^^^
+Example 2 - VLANs
+^^^^^^^^^^^^^^^^^
 
 .. image:: NetworkDesign2.png
     :alt: Network Design Example 2
