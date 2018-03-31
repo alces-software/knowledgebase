@@ -46,7 +46,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Cluster Platform Knowledgebase'
-copyright = u'2017, Alces Software'
+copyright = u'2018, Alces Software Ltd.'
 author = u'Alces Software'
 
 # The version info for the project you're documenting, acts as replacement for
