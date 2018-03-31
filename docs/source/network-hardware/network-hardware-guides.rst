@@ -20,7 +20,7 @@ With the :ref:`Network and Hardware Design Considerations<network-hardware-consi
 Example 1 - stand-alone
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-.. image:: NodeTypes1.png
+.. image:: NodeTypes1.jpg
     :alt: Node Types Example 1
 
 The above architecture consists of master, login and compute nodes. The services provided by the master & login nodes can be seen to the right of each node type. This architecture only separates the services for users and admins.
@@ -28,7 +28,7 @@ The above architecture consists of master, login and compute nodes. The services
 Example 2 - high-availability
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. image:: NodeTypes2.png
+.. image:: NodeTypes2.jpg
     :alt: Node Types Example 2
 
 This architecture provides additional redundancy to the services running on the master node. For example, the disk array is connected to both master nodes which use multipath to ensure the higher availability of the storage device. 
@@ -36,7 +36,7 @@ This architecture provides additional redundancy to the services running on the 
 Example 3 - HA VMs
 ^^^^^^^^^^^^^^^^^^
 
-.. image:: NodeTypes3.png
+.. image:: NodeTypes3.jpg
     :alt: Node Types Example 3
 
 This architecture puts services inside of VMs to improve the ability to migrate and modify services with little impact to the other services and systems on the architecture. Virtual machines can be moved between VM hosts live without service disruption allowing for hardware replacements to take place on servers.
