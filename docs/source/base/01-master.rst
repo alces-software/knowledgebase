@@ -6,12 +6,12 @@ Master Node Setup
 Manual Setup
 ------------
 
-- Run a minimal CentOS installation on the system (this can be performed manually or via an automated install service if you have one setup)
+- Run a minimal CentOS installation on the system; this can be performed manually or via an automated install service if you have one already setup
 - It is recommended to update the packages on the system for any bug fixes and patches that may have been introduced to core packages::
 
     yum -y update
 
-.. note:: If kickstarting OS installs on many nodes it is worth considering a :ref:`local mirror repository <deploy-repo>` for the OS image and packages so that all nodes aren't trying to connect to the internet at the same time.
+.. note:: If using kickstart OS installation on many nodes it is worth considering a :ref:`local mirror repository <deploy-repo>` for the OS image and packages so that all nodes receive an equivalent software installation, and aren't trying to connect to the internet at the same time.
 
 - Disable and stop NetworkManager::
 
@@ -38,7 +38,7 @@ Manual Setup
 
 - Create bridge interfaces for all other networks (e.g. management [``mgt``] and external [``ext``])
 
-.. note:: The external interface may require getting it's network settings over DHCP, if it does then set ``BOOTPROTO`` to ``dhcp`` instead of static and remove the ``IPADDR`` lines.
+.. note:: The external interface may require getting it's network settings over DHCP; if so then set ``BOOTPROTO`` to ``dhcp`` instead of static and remove the ``IPADDR`` lines.
 
 - Setup config file for network interfaces (do this for all interfaces sitting on the bridges configured above)::
 
@@ -51,16 +51,16 @@ Manual Setup
 
 .. note:: In the above example, the interface ``p1p1`` is connected to the primary network but instead of giving that an IP it is set to use the ``pri`` bridge
 
-- Enable and start firewalld (for masquerading IPs to the external interface and improving the general network security)::
+- Enable and start firewalld to allow masquerading client machines via the external interface and to improve general network security::
 
     systemctl enable firewalld
     systemctl start firewalld
 
-- Add ``ext`` bridge to external zone (the external zone is a zone configured as part of firewalld)::
+- Add ``ext`` bridge to external zone; the external zone is a zone configured as part of firewalld::
 
     firewall-cmd --add-interface ext --zone external --permanent
 
-- Add all the other network interfaces to the trusted zone (replace ``pri`` with the other network names, excluding ``ext``)::
+- Add all the other network interfaces to the trusted zone; replace ``pri`` with the other network names, excluding ``ext``::
 
     firewall-cmd --add-interface pri --zone trusted --permanent
 
