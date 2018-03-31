@@ -20,7 +20,7 @@ Hardware Environment
 
 The hardware environment will generally be one of two setups, metal or cloud.
 
-  - **Metal** - Metal environments are those which are compromised of on-site systems in a datacenter which are usually running 24/7.
+  - **Metal** - Metal environments are those which are composed of on-site systems in a datacenter which are usually running 24/7.
   - **Cloud** - Cloud environments are systems hosted in a third-party datacenter and are usually ephemeral systems that are being created and destroyed on demand. 
   - **Metal/Cloud Hybrid** - A hybrid environment usually consists of a core metal configuration that uses cloud as an overflow for additional capacity at times of high utilisation.
 
