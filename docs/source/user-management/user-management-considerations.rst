@@ -10,8 +10,9 @@ User authentication is usually performed in a server/client setup inside the HPC
 
   - **NIS** - The Network Information Service (NIS) is a directory service that enables the sharing of user and host information across a network. 
   - **FreeIPA** - FreeIPA provides all the information that NIS does as well as providing application and service information to the network. Additionally, FreeIPA uses directory structure such that information can be logically stored in a tree-like structure. It also comes with a web interface for managing the solution.
+  - Connecting to an **externally-managed** user-authentication service (e.g. LDAP, active-directory). This option is not recommended, as a large HPC cluster can put considerable load on external services. Using external user-authentication also creates a dependancy for your cluster on another service, complicating troubleshooting and potentially impacting service availability. 
   
-.. note:: If the user accounts need to be consistent with accounts on the external network then the master node should have a slave service to the external networks account management system. This will allow the account information to be forwarded to the HPC network.
+.. note:: If the user accounts need to be consistent with accounts on the external network then the master node should have a slave service to the external networks account management system. This will allow the account information to be forwarded to the HPC network, without creating a hard-dependancy on an external authentication service. 
 
 User Access
 -----------
