@@ -131,3 +131,38 @@ Setup IPA Server
 
     ssh ipa1 "/root/ipa_server.sh"
 
+IPA Replica Server Setup
+------------------------
+
+For this example, the servers are as follows:
+
+- ``infra01-dom0`` - The IPA server
+- ``infra01-domX`` - The server to replicate IPA
+
+Configuring Replica Host (on ``infra01-domX``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Install IPA tools::
+
+    yum -y install ipa-server bind bind-dyndb-ldap ipa-server-dns
+
+- Configure DNS to use ``infra01-dom0`` as nameserver in ``/etc/resolv.conf``
+
+
+Preparing Server (on ``infra01-dom0``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Add ``infra01-domX`` as a host::
+
+    ipa host-add infra01-domX --password="MyOneTimePassword" --ip-address=10.10.2.51
+
+- Add ``infra01-domX`` to ``ipaservers`` group::
+
+    ipa hostgroup-add-member ipaservers --hosts=infra01-domX
+
+Connecting Replica Host (on ``infra01-domX``)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Run the replica installation::
+
+    ipa-replica-install --realm="PRI.CLUSTER.ALCES.NETWORK" --server="infra01-dom0.pri.cluster.alces.network" --domain="pri.cluster.alces.network" --password="MyOneTimePassword"
