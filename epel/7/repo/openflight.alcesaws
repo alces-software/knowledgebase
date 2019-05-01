@@ -1,0 +1,8 @@
+[openflight-7]
+name=openflight-7
+baseurl=https://openflighthpc.s3-eu-west-1.amazonaws.com/repos/openflight/x86_64/
+description=OpenFlightHPC Tools Repository
+enabled=1
+skip_if_unavailable=1
+gpgcheck=0
+priority=10
